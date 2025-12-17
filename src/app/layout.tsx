@@ -3,7 +3,7 @@ import React from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "KCD Games | Launch your next hit",
+  title: "KC Games | Launch your next hit",
   description:
     "A modern landing page template for game studios to showcase their next hit with speed, style, and clarity.",
 };
