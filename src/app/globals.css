@@ -1,23 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 body {
-  @apply bg-ink-900 text-ink-50 font-body antialiased;
+  @apply bg-navy-950 text-navy-50 font-body antialiased;
 }
 
 a {
-  @apply transition-colors duration-200;
+  @apply transition-all duration-300;
 }
 
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid theme('colors.highlight');
+  outline: 2px solid theme('colors.silver.400');
   outline-offset: 2px;
 }
