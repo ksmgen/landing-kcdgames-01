@@ -64,13 +64,17 @@ export default function Home() {
           <div className="absolute inset-0 bg-navy-950/30" />
         </div>
 
-        <div className="relative z-10 flex h-full flex-col items-center justify-center gap-8 px-6 text-center sm:px-10">
-          <div className="inline-flex items-center gap-2 rounded-full border border-silver-400/30 bg-navy-900/80 px-4 py-1.5 text-sm font-medium text-silver-200 shadow-glow backdrop-blur-md">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-mystic opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-mystic-glow" />
-            </span>
-            <span className="font-display tracking-wide">KC Games Sdn Bhd</span>
+        <div className="relative z-10 flex h-full flex-col items-center justify-center gap-4 px-6 text-center sm:px-10">
+          {/* Company Logo */}
+          <div className="relative w-48 h-48 sm:w-48 sm:h-48">
+            <Image
+              src="/logo.png"
+              alt="KC Games Logo"
+              fill
+              className="object-contain drop-shadow-2xl"
+              style={{ mixBlendMode: 'multiply' }}
+              priority
+            />
           </div>
 
           <div className="space-y-4 max-w-4xl">
@@ -107,7 +111,7 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="mt-8 flex flex-wrap justify-center gap-8 border-t border-white/10 pt-8">
+          <div className="mt-12 flex flex-wrap justify-center gap-8 border-t border-white/10 pt-8">
             {stats.map((stat) => (
               <div key={stat.label} className="flex flex-col items-center gap-1">
                 <p className="font-display text-xs font-bold uppercase tracking-widest text-silver-400">{stat.label}</p>
