@@ -31,7 +31,6 @@ const services = [
 
 const stats = [
   { label: "Location", value: "Kuala Lumpur" },
-  { label: "Established", value: "2025" },
 ];
 
 export default function Home() {
