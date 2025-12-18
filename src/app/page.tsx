@@ -88,16 +88,18 @@ export default function Home() {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <button
-              className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] opacity-50 cursor-not-allowed"
-              disabled
+            <a
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              href="https://betobee.co/sign-up/kc-games-sdn-bhd"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <span className="absolute inset-0 bg-foil opacity-20" />
+              <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
               <span className="relative flex items-center gap-2 font-display tracking-wider">
                 Sign up as retailer
                 <ArrowRight className="h-5 w-5" aria-hidden />
               </span>
-            </button>
+            </a>
             <a
               className="group inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               href="mailto:info@kc-games.com"
@@ -238,16 +240,18 @@ export default function Home() {
                 <span className="font-display tracking-wide">📧 Email Us</span>
               </a>
 
-              <button
-                className="group relative flex items-center justify-center gap-2 overflow-hidden rounded-lg bg-silver-100 px-6 py-4 text-base font-bold text-navy-950 shadow-lg opacity-50 cursor-not-allowed"
-                disabled
+              <a
+                href="https://betobee.co/sign-up/kc-games-sdn-bhd"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex items-center justify-center gap-2 overflow-hidden rounded-lg bg-silver-100 px-6 py-4 text-base font-bold text-navy-950 shadow-lg transition-all hover:bg-white"
               >
-                <span className="absolute inset-0 bg-foil opacity-20" />
+                <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
                 <span className="relative z-10 font-display tracking-wider flex items-center gap-2">
                   Sign up as retailer
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </span>
-              </button>
+              </a>
             </div>
 
             <div className="text-center pt-4 border-t border-navy-700/50">
