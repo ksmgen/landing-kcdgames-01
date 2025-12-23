@@ -1,4 +1,5 @@
 import { ArrowRight, Globe, Handshake, MapPin, Target, Truck, Users } from "lucide-react";
+import ContactWidget from "../components/ContactWidget";
 import Image from "next/image";
 
 const services = [
@@ -102,7 +103,7 @@ export default function Home() {
             </a>
             <a
               className="group inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              href="mailto:info@kc-games.com"
+              href="#contact-us"
             >
               <span className="flex items-center gap-2 font-display tracking-wide">
                 Contact Us
@@ -211,7 +212,7 @@ export default function Home() {
         </section>
 
         {/* Section 5: Company Information */}
-        <section className="relative overflow-hidden rounded-2xl border border-navy-700/50 bg-card-gradient p-8 shadow-2xl sm:p-12">
+        <section id="contact-us" className="relative overflow-hidden rounded-2xl border border-navy-700/50 bg-card-gradient p-8 shadow-2xl sm:p-12">
           <div className="absolute top-0 left-0 h-16 w-16 border-t-2 border-l-2 border-silver-500/30 rounded-tl-2xl" />
           <div className="absolute bottom-0 right-0 h-16 w-16 border-b-2 border-r-2 border-silver-500/30 rounded-br-2xl" />
 
@@ -231,6 +232,8 @@ export default function Home() {
                 <p>W.P. Kuala Lumpur</p>
               </div>
             </div>
+
+            <ContactWidget />
 
             <div className="grid gap-4 sm:grid-cols-2">
               <a
