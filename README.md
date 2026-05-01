@@ -7,7 +7,7 @@ KC Games landing page built with **Next.js 14**, **TypeScript**, and **Tailwind 
 - A single-page marketing site in `src/app/page.tsx`
 - Shared contact UI in `src/components/ContactWidget.tsx`
 - KC Games brand assets in `public/`
-- Deployment workflow in `.github/workflows/`
+- Deployment workflows in `.github/workflows/`
 - Source marketing copy in `CONTENT.MD`
 
 ## Getting started
@@ -33,3 +33,8 @@ Refresh these files before each push when the codebase, structure, or workflow c
 - `AGENTS.md`
 - `docs/PROJECT_STRUCTURE.md`
 - `README.md`
+
+## Deployment
+
+- `main` deploys with Azure Static Web Apps
+- `demo` deploys to Azure Blob Static Website from GitHub Actions

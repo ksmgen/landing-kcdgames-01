@@ -25,3 +25,5 @@ Update these files before every push if the codebase, content, or workflow chang
 - Global metadata and Google Tag Manager are configured in `src/app/layout.tsx`.
 - Shared contact UI lives in `src/components/ContactWidget.tsx`.
 - Static assets are served from `public/`.
+- `main` deploys through Azure Static Web Apps.
+- `demo` deploys to Azure Blob Static Website through GitHub Actions.
