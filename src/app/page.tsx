@@ -258,7 +258,7 @@ export default function Home() {
             </div>
 
             <div className="text-center pt-4 border-t border-navy-700/50">
-              <p className="text-sm text-navy-400">© 2025 KC Games Sdn Bhd. All rights reserved.</p>
+              <p className="text-sm text-navy-400">© 2026 KC Games Sdn Bhd. All rights reserved.</p>
             </div>
           </div>
         </section>
