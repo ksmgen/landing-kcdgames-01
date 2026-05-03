@@ -221,6 +221,56 @@ export default function Home() {
           </p>
         </section>
 
+        <section className="grid gap-6 lg:grid-cols-2">
+          <a
+            href="https://uvsgames.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative overflow-hidden rounded-2xl border border-navy-700/50 bg-navy-900/40 p-8 shadow-card transition-all hover:-translate-y-1 hover:border-silver-500/40 hover:bg-navy-800/60 hover:shadow-card-hover"
+          >
+            <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100" />
+            <div className="relative flex h-full flex-col items-start gap-6">
+              <p className="font-display text-sm font-bold uppercase tracking-[0.35em] text-silver-400">Brands</p>
+              <div className="flex min-h-24 items-center">
+                <Image
+                  src="/partners/uvs-games-logo.png"
+                  alt="UVS Games"
+                  width={220}
+                  height={72}
+                  className="h-auto w-[180px] sm:w-[220px]"
+                />
+              </div>
+              <p className="max-w-xl text-base leading-relaxed text-navy-200">
+                UVS Games is part of the brand portfolio KC Games is presenting to retailers and distribution partners.
+              </p>
+            </div>
+          </a>
+
+          <a
+            href="https://riftbound.leagueoflegends.com/en-us/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative overflow-hidden rounded-2xl border border-navy-700/50 bg-navy-900/40 p-8 shadow-card transition-all hover:-translate-y-1 hover:border-silver-500/40 hover:bg-navy-800/60 hover:shadow-card-hover"
+          >
+            <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100" />
+            <div className="relative flex h-full flex-col items-start gap-6">
+              <p className="font-display text-sm font-bold uppercase tracking-[0.35em] text-silver-400">Partners</p>
+              <div className="flex min-h-24 items-center">
+                <Image
+                  src="/partners/riftbound-logo.svg"
+                  alt="Riftbound"
+                  width={240}
+                  height={72}
+                  className="h-auto w-[190px] sm:w-[240px]"
+                />
+              </div>
+              <p className="max-w-xl text-base leading-relaxed text-navy-200">
+                Riftbound is a key partner property in the current KC Games retailer and launch communication flow.
+              </p>
+            </div>
+          </a>
+        </section>
+
         {/* Section 3: Our Mission */}
         <section className="relative overflow-hidden rounded-2xl border border-navy-700/50 bg-card-gradient p-8 shadow-2xl sm:p-12">
           <div className="absolute top-0 left-0 h-16 w-16 border-t-2 border-l-2 border-silver-500/30 rounded-tl-2xl" />

@@ -27,6 +27,7 @@ Update these files before every push if the codebase, content, or workflow chang
 - Shared contact UI lives in `src/components/ContactWidget.tsx`.
 - Shared footer social link UI lives in `src/components/FacebookFooterLink.tsx`.
 - Static assets are served from `public/`.
+- Brand and partner logos live in `public/partners/`.
 - Retailer flow images mirrored from the source retailer page live in `public/retailer/`.
 - Riftbound announcement assets live in `public/riftbound/`.
 - `main` deploys through Azure Static Web Apps.
