@@ -311,8 +311,8 @@ export default function Home() {
           </div>
         </section>
 
-        <footer className="flex flex-col items-center gap-1 text-center pb-4">
-          <FacebookFooterLink className="text-silver-400 transition hover:text-white" />
+        <footer className="flex flex-col items-center gap-4 text-center -mt-8 pb-4">
+          <FacebookFooterLink className="text-silver-400" />
           <p className="text-sm text-navy-400">© 2026 KC Games Sdn Bhd. All rights reserved.</p>
         </footer>
 
