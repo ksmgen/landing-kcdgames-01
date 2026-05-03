@@ -75,23 +75,23 @@ jobs:
         run: |
           echo "Demo deploy workflow finished with status: ${{ job.status }}"
 
-      - name: Notify Discord thread
+      - name: Notify Telegram topic
         if: always()
         env:
-          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
-          DISCORD_THREAD_ID: '1499909495969550499'
+          TG_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TG_CHAT_GROUP_ID: ${{ secrets.TELEGRAM_CHAT_GROUP_ID }}
           KC_DEMO_PREVIEW_URL: ${{ secrets.KC_DEMO_PREVIEW_URL }}
+          KC_DEMO_AZURE_STORAGE_ACCOUNT: ${{ secrets.KC_DEMO_AZURE_STORAGE_ACCOUNT }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_RUN_ID: ${{ github.run_id }}
-          GITHUB_REF_NAME: ${{ github.ref_name }}
-          GITHUB_ACTOR: ${{ github.actor }}
           JOB_STATUS: ${{ job.status }}
         run: |
           set -euo pipefail
 
-          if [ -z "${DISCORD_BOT_TOKEN:-}" ]; then
-            echo "Discord notify skipped (DISCORD_BOT_TOKEN not set)."
+          if [ -z "${TG_BOT_TOKEN:-}" ]; then
+            echo "Telegram notify skipped (TELEGRAM_BOT_TOKEN not set)."
             exit 0
           fi
 
@@ -101,28 +101,13 @@ jobs:
           if [ -n "${KC_DEMO_PREVIEW_URL:-}" ]; then
             PREVIEW_URL="${KC_DEMO_PREVIEW_URL}"
           else
-            PREVIEW_URL="preview URL not configured"
+            PREVIEW_URL="https://${KC_DEMO_AZURE_STORAGE_ACCOUNT}.z13.web.core.windows.net/"
           fi
 
-          export SHORT_SHA RUN_URL PREVIEW_URL
+          TEXT="[KC Games DEMO] ${JOB_STATUS} | ${SHORT_SHA}%0A%0A${PREVIEW_URL}%0A%0A${RUN_URL}"
 
-          python3 - <<'PY'
-          import json
-          import os
-
-          content = "\n".join([
-              f"[kc-games demo deploy] {os.environ['JOB_STATUS']} | {os.environ['SHORT_SHA']}",
-              f"branch: {os.environ['GITHUB_REF_NAME']}",
-              f"actor: {os.environ['GITHUB_ACTOR']}",
-              f"preview: {os.environ['PREVIEW_URL']}",
-              f"run: {os.environ['RUN_URL']}",
-          ])
-
-          with open('payload.json', 'w', encoding='utf-8') as f:
-              json.dump({"content": content}, f)
-          PY
-
-          curl -sS -X POST "https://discord.com/api/v10/channels/${DISCORD_THREAD_ID}/messages" \
-            -H "Authorization: Bot ${DISCORD_BOT_TOKEN}" \
-            -H "Content-Type: application/json" \
-            --data @payload.json
+          curl -sS -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${TG_CHAT_ID}" \
+            -d "message_thread_id=${TG_CHAT_GROUP_ID}" \
+            -d "text=${TEXT}" \
+            -d "disable_web_page_preview=true"

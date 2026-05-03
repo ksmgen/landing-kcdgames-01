@@ -1,6 +1,7 @@
 import { ArrowRight, Globe, Handshake, MapPin, Target, Truck, Users } from "lucide-react";
 import ContactWidget from "../components/ContactWidget";
 import Image from "next/image";
+import Link from "next/link";
 
 const services = [
   {
@@ -89,18 +90,16 @@ export default function Home() {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
+            <Link
               className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              href="https://betobee.co/sign-up/kc-games-sdn-bhd"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/retailer"
             >
               <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
               <span className="relative flex items-center gap-2 font-display tracking-wider">
                 Sign up as retailer
                 <ArrowRight className="h-5 w-5" aria-hidden />
               </span>
-            </a>
+            </Link>
             <a
               className="group inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               href="#contact-us"
@@ -243,10 +242,8 @@ export default function Home() {
                 <span className="font-display tracking-wide">📧 Email Us</span>
               </a>
 
-              <a
-                href="https://betobee.co/sign-up/kc-games-sdn-bhd"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/retailer"
                 className="group relative flex items-center justify-center gap-2 overflow-hidden rounded-lg bg-silver-100 px-6 py-4 text-base font-bold text-navy-950 shadow-lg transition-all hover:bg-white"
               >
                 <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
@@ -254,7 +251,7 @@ export default function Home() {
                   Sign up as retailer
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </span>
-              </a>
+              </Link>
             </div>
 
             <div className="text-center pt-4 border-t border-navy-700/50">
