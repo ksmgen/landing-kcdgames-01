@@ -1,4 +1,5 @@
 import { ArrowLeft, ArrowRight, BadgeCheck, Megaphone, PackageCheck, Store } from "lucide-react";
+import FacebookFooterLink from "../../components/FacebookFooterLink";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -227,6 +228,11 @@ export default function RetailerPage() {
               >
                 Back to KC Games home
               </Link>
+            </div>
+
+            <div className="flex items-center justify-center gap-3 border-t border-navy-700/50 pt-4 text-center">
+              <p className="text-sm text-navy-300">© 2026 KC Games Sdn Bhd. All rights reserved.</p>
+              <FacebookFooterLink className="text-silver-300 transition hover:text-white" />
             </div>
           </div>
         </section>
