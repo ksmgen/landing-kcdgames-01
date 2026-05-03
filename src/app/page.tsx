@@ -1,4 +1,4 @@
-import { ArrowRight, CalendarDays, Globe, Handshake, MapPin, Target, Truck, Users } from "lucide-react";
+import { ArrowRight, Globe, Handshake, MapPin, Target, Truck, Users } from "lucide-react";
 import ContactWidget from "../components/ContactWidget";
 import FacebookFooterLink from "../components/FacebookFooterLink";
 import Image from "next/image";
@@ -126,10 +126,19 @@ export default function Home() {
 
         <section className="relative overflow-hidden rounded-3xl border border-amber-400/20 bg-[linear-gradient(135deg,rgba(12,24,43,0.95),rgba(18,39,67,0.92))] shadow-2xl">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.28),transparent_38%)]" />
-          <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+          <div className="grid lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch">
+            <div className="relative order-first min-h-[260px] overflow-hidden border-b border-white/10 lg:order-last lg:min-h-full lg:border-b-0 lg:border-l">
+              <Image
+                src="/riftbound/riftbound-banner.jpg"
+                alt="Riftbound League of Legends Trading Card Game key art"
+                fill
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy-950/35 via-transparent to-transparent lg:bg-gradient-to-l" />
+            </div>
+
             <div className="relative z-10 space-y-6 p-8 sm:p-10 lg:p-12">
-              <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-amber-200">
-                <CalendarDays className="h-4 w-4" aria-hidden />
+              <div className="inline-flex rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-amber-200">
                 Official announcement
               </div>
 
@@ -138,26 +147,15 @@ export default function Home() {
                   Riftbound TCG
                 </p>
                 <h2 className="max-w-2xl font-display text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
-                  KC Games begins official Riftbound distribution at 10:00 AM MYT on 4 May 2026.
+                  KC Games is the official distributor for Riftbound Trading Card Game.
                 </h2>
                 <p className="max-w-2xl text-lg leading-relaxed text-navy-100">
-                  Starting tomorrow in Kuala Lumpur time, retailers can work with KC Games for Riftbound Trading Card
-                  Game distribution. We are opening the announcement on the landing page first so partners can move
-                  quickly into contact and retailer onboarding.
+                  Retail partners can now work with KC Games on Riftbound distribution, onboarding, and follow-up
+                  coordination. If you are planning retail availability, our team is ready to connect.
                 </p>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2 xl:max-w-2xl">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                  <p className="font-display text-xs font-bold uppercase tracking-[0.25em] text-amber-200">Launch time</p>
-                  <p className="mt-2 font-display text-2xl font-bold text-white">10:00 AM MYT</p>
-                  <p className="mt-1 text-sm text-navy-200">Monday, 4 May 2026</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                  <p className="font-display text-xs font-bold uppercase tracking-[0.25em] text-amber-200">Category</p>
-                  <p className="mt-2 font-display text-2xl font-bold text-white">Riftbound TCG</p>
-                  <p className="mt-1 text-sm text-navy-200">League of Legends Trading Card Game</p>
-                </div>
+                <p className="max-w-2xl text-sm uppercase tracking-[0.24em] text-amber-200/90">
+                  Publishing live at 10:00 AM Kuala Lumpur time.
+                </p>
               </div>
 
               <div className="flex flex-wrap items-center gap-4">
@@ -179,16 +177,6 @@ export default function Home() {
                   Contact KC Games
                 </a>
               </div>
-            </div>
-
-            <div className="relative h-full min-h-[320px] overflow-hidden border-t border-white/10 lg:border-l lg:border-t-0">
-              <Image
-                src="/riftbound/riftbound-banner.jpg"
-                alt="Riftbound League of Legends Trading Card Game key art"
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy-950/45 via-transparent to-transparent lg:bg-gradient-to-l" />
             </div>
           </div>
         </section>
