@@ -1,7 +1,6 @@
 import { ArrowRight, Globe, Handshake, MapPin, Target, Truck, Users } from "lucide-react";
 import ContactWidget from "../components/ContactWidget";
 import FacebookFooterLink from "../components/FacebookFooterLink";
-import HeroBanner from "../components/HeroBanner";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -33,6 +32,10 @@ const services = [
   },
 ];
 
+const stats = [
+  { label: "Location", value: "Kuala Lumpur" },
+];
+
 export default function Home() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-navy-950 selection:bg-silver-500/30 selection:text-white">
@@ -41,11 +44,87 @@ export default function Home() {
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150" />
 
       {/* Full Width Banner - Section 1: Hero */}
-      <HeroBanner />
+      <header className="relative w-full h-[80vh] min-h-[600px] shadow-2xl border-b border-navy-700/50">
+        <div className="absolute inset-0">
+          <div
+            className="absolute inset-0 bg-cover bg-no-repeat"
+            style={{
+              backgroundImage: 'url(/banner.jpg)',
+              backgroundPosition: 'calc(0% - 200px) center'
+            }}
+          />
+          <style dangerouslySetInnerHTML={{
+            __html: `
+            @media (min-width: 640px) {
+              header .absolute.inset-0 > div {
+                background-position: center center !important;
+              }
+            }
+          `}} />
+          {/* Stronger dark overlay for better text visibility */}
+          <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/50 to-transparent" />
+          <div className="absolute inset-0 bg-navy-950/30" />
+        </div>
+
+        <div className="relative z-10 flex h-full flex-col items-center justify-center gap-4 px-6 pb-6 text-center sm:px-10">
+          {/* Company Logo */}
+          <div className="relative w-48 h-48 sm:w-48 sm:h-48">
+            <Image
+              src="/logo.png"
+              alt="KC Games Logo"
+              fill
+              className="object-contain drop-shadow-2xl"
+              style={{ mixBlendMode: 'multiply' }}
+              priority
+            />
+          </div>
+
+          <div className="space-y-4 max-w-4xl">
+            <h1
+              className="font-display text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl"
+              style={{
+                textShadow: '0 2px 10px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.6), 2px 2px 4px rgba(0,0,0,0.9)'
+              }}
+            >
+              Game Distribution. Market Access. Growth.
+            </h1>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              href="/retailer.html"
+            >
+              <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
+              <span className="relative flex items-center gap-2 font-display tracking-wider">
+                Sign up as retailer
+                <ArrowRight className="h-5 w-5" aria-hidden />
+              </span>
+            </Link>
+            <a
+              className="group inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              href="#contact-us"
+            >
+              <span className="flex items-center gap-2 font-display tracking-wide">
+                Contact Us
+              </span>
+            </a>
+          </div>
+
+          <div className="mt-4 sm:mt-12 flex flex-wrap justify-center gap-6 sm:gap-8 border-t border-white/10 pt-4 sm:pt-8">
+            {stats.map((stat) => (
+              <div key={stat.label} className="flex flex-col items-center gap-1">
+                <p className="font-display text-xs font-bold uppercase tracking-widest text-silver-400">{stat.label}</p>
+                <p className="font-display text-xl sm:text-2xl font-bold text-silver-100 drop-shadow-sm">{stat.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </header>
 
       <div className="relative mx-auto flex max-w-6xl flex-col gap-16 px-6 py-16 sm:px-10 sm:py-20 lg:px-16 lg:py-24">
 
-        <section id="riftbound" className="relative overflow-hidden rounded-3xl border border-amber-400/20 bg-[linear-gradient(135deg,rgba(12,24,43,0.95),rgba(18,39,67,0.92))] shadow-2xl">
+        <section className="relative overflow-hidden rounded-3xl border border-amber-400/20 bg-[linear-gradient(135deg,rgba(12,24,43,0.95),rgba(18,39,67,0.92))] shadow-2xl">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.22),transparent_36%)]" />
 
           <div className="relative">
