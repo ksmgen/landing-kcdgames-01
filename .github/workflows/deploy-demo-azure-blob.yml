@@ -72,8 +72,25 @@ jobs:
 
       - name: Deployment summary
         if: always()
+        env:
+          KC_DEMO_PREVIEW_URL: ${{ secrets.KC_DEMO_PREVIEW_URL }}
+          KC_DEMO_AZURE_STORAGE_ACCOUNT: ${{ secrets.KC_DEMO_AZURE_STORAGE_ACCOUNT }}
         run: |
           echo "Demo deploy workflow finished with status: ${{ job.status }}"
+
+          if [ -n "${KC_DEMO_PREVIEW_URL:-}" ]; then
+            PREVIEW_URL="${KC_DEMO_PREVIEW_URL}"
+          else
+            PREVIEW_URL="https://${KC_DEMO_AZURE_STORAGE_ACCOUNT}.z13.web.core.windows.net/"
+          fi
+
+          echo "Demo preview URL: ${PREVIEW_URL}"
+          {
+            echo "## Demo Deployment"
+            echo
+            echo "- Status: ${{ job.status }}"
+            echo "- Preview URL: ${PREVIEW_URL}"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Notify Telegram topic
         if: always()

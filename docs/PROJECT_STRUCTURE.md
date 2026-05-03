@@ -26,4 +26,4 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 - `public/banner.jpg`: Hero background image.
 - `public/retailer/`: Signup-step and perk images mirrored from the Engkodok retailer page.
 - `.github/workflows/azure-static-web-apps-nice-wave-0858e1900.yml`: Production deploy for `main` via Azure Static Web Apps.
-- `.github/workflows/deploy-demo-azure-blob.yml`: Demo deploy for `demo` via Azure Blob Static Website plus Telegram notification.
+- `.github/workflows/deploy-demo-azure-blob.yml`: Demo deploy for `demo` via Azure Blob Static Website, logs the preview URL, and can notify Telegram.

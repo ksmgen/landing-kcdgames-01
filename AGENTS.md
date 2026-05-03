@@ -28,4 +28,4 @@ Update these files before every push if the codebase, content, or workflow chang
 - Static assets are served from `public/`.
 - Retailer flow images mirrored from Engkodok live in `public/retailer/`.
 - `main` deploys through Azure Static Web Apps.
-- `demo` deploys to Azure Blob Static Website through GitHub Actions and notifies Telegram on completion.
+- `demo` deploys to Azure Blob Static Website through GitHub Actions, logs the resolved preview URL, and can notify Telegram on completion.

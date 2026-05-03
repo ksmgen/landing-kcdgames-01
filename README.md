@@ -38,4 +38,4 @@ Refresh these files before each push when the codebase, structure, or workflow c
 ## Deployment
 
 - `main` deploys with Azure Static Web Apps
-- `demo` deploys to Azure Blob Static Website from GitHub Actions and can notify Telegram on completion
+- `demo` deploys to Azure Blob Static Website from GitHub Actions, logs the preview URL, and can notify Telegram on completion
