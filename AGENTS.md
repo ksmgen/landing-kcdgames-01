@@ -28,6 +28,6 @@ Update these files before every push if the codebase, content, or workflow chang
 - Shared footer social link UI lives in `src/components/FacebookFooterLink.tsx`.
 - Static assets are served from `public/`.
 - Retailer flow images mirrored from the source retailer page live in `public/retailer/`.
-- Riftbound announcement and hero assets live in `public/riftbound/`.
+- Riftbound announcement assets live in `public/riftbound/`.
 - `main` deploys through Azure Static Web Apps.
 - `demo` deploys to Azure Blob Static Website through GitHub Actions, logs the resolved preview URL, and can notify Telegram on completion.

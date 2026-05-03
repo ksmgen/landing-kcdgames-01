@@ -47,59 +47,17 @@ export default function Home() {
       <header className="relative w-full h-[80vh] min-h-[600px] shadow-2xl border-b border-navy-700/50">
         <div className="absolute inset-0">
           <div
-            className="hero-slide hero-slide-primary absolute inset-0 bg-cover bg-no-repeat"
+            className="absolute inset-0 bg-cover bg-no-repeat"
             style={{
               backgroundImage: 'url(/banner.jpg)',
               backgroundPosition: 'calc(0% - 200px) center'
             }}
           />
-          <div
-            className="hero-slide hero-slide-secondary absolute inset-0 bg-cover bg-no-repeat bg-center"
-            style={{
-              backgroundImage: 'url(/riftbound/riftbound-hero.png)',
-            }}
-          />
           <style dangerouslySetInnerHTML={{
             __html: `
-            .hero-slide {
-              opacity: 0;
-              animation: hero-fade 18s infinite;
-            }
-
-            .hero-slide-primary {
-              opacity: 1;
-              animation-delay: 0s;
-            }
-
-            .hero-slide-secondary {
-              animation-delay: 9s;
-            }
-
-            @keyframes hero-fade {
-              0% { opacity: 0; }
-              8% { opacity: 1; }
-              42% { opacity: 1; }
-              50% { opacity: 0; }
-              100% { opacity: 0; }
-            }
-
             @media (min-width: 640px) {
-              .hero-slide-primary {
+              header .absolute.inset-0 > div {
                 background-position: center center !important;
-              }
-            }
-
-            @media (prefers-reduced-motion: reduce) {
-              .hero-slide {
-                animation: none;
-              }
-
-              .hero-slide-primary {
-                opacity: 1;
-              }
-
-              .hero-slide-secondary {
-                opacity: 0;
               }
             }
           `}} />
