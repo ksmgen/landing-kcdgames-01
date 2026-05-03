@@ -61,7 +61,7 @@ export default function RetailerPage() {
             className="inline-flex items-center gap-2 rounded-full border border-silver-400/20 bg-navy-900/60 px-4 py-2 text-sm font-semibold text-silver-100 backdrop-blur-sm transition hover:border-silver-300/40 hover:bg-navy-800"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden />
-            Back to home
+            Home
           </Link>
 
           <div className="inline-flex items-center gap-2 rounded-full border border-silver-500/20 bg-silver-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-silver-200">
@@ -70,7 +70,7 @@ export default function RetailerPage() {
           </div>
         </div>
 
-        <section className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+        <section>
           <div className="space-y-6">
             <div className="space-y-4">
               <p className="font-display text-sm font-bold uppercase tracking-[0.4em] text-silver-400">
@@ -107,7 +107,7 @@ export default function RetailerPage() {
               >
                 <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
                 <span className="relative flex items-center gap-2 font-display tracking-wider">
-                  Continue to signup
+                  Sign Up as Retailer
                   <ArrowRight className="h-5 w-5" aria-hidden />
                 </span>
               </a>
@@ -121,24 +121,6 @@ export default function RetailerPage() {
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-3xl border border-navy-700/60 bg-card-gradient p-6 shadow-2xl">
-            <div className="absolute inset-0 bg-foil opacity-20" />
-            <div className="relative space-y-4">
-              <p className="font-display text-sm font-bold uppercase tracking-[0.35em] text-silver-300">Signup preview</p>
-              <div className="overflow-hidden rounded-2xl border border-silver-500/20 bg-white/5">
-                <Image
-                  src="/retailer/signup-cta.png"
-                  alt="KC Games retailer signup call to action"
-                  width={1200}
-                  height={675}
-                  className="h-auto w-full"
-                />
-              </div>
-              <p className="text-sm leading-relaxed text-navy-200">
-                Applications continue to the live retailer registration flow hosted on Betobee.
-              </p>
-            </div>
-          </div>
         </section>
 
         <section className="space-y-8">
@@ -217,25 +199,26 @@ export default function RetailerPage() {
               >
                 <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
                 <span className="relative flex items-center gap-2 font-display tracking-wider">
-                  Open live retailer signup
+                  Sign Up as Retailer
                   <ArrowRight className="h-5 w-5" aria-hidden />
                 </span>
               </a>
 
               <Link
                 href="/"
-                className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="inline-flex items-center gap-2 rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
-                Back to KC Games home
+                <ArrowLeft className="h-5 w-5" aria-hidden />
+                Home
               </Link>
-            </div>
-
-            <div className="flex items-center justify-center gap-3 border-t border-navy-700/50 pt-4 text-center">
-              <p className="text-sm text-navy-300">© 2026 KC Games Sdn Bhd. All rights reserved.</p>
-              <FacebookFooterLink className="text-silver-300 transition hover:text-white" />
             </div>
           </div>
         </section>
+
+        <footer className="flex flex-col items-center gap-4 text-center -mt-8 pb-4">
+          <FacebookFooterLink className="text-silver-400" />
+          <p className="text-sm text-navy-400">© 2026 KC Games Sdn Bhd. All rights reserved.</p>
+        </footer>
       </div>
     </main>
   );
