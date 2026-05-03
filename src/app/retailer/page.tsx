@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, BadgeCheck, Megaphone, PackageCheck, Store } from "lucide-react";
+import { ArrowRight, BadgeCheck, Home, Megaphone, PackageCheck, Store } from "lucide-react";
 import FacebookFooterLink from "../../components/FacebookFooterLink";
 import Image from "next/image";
 import Link from "next/link";
@@ -60,8 +60,7 @@ export default function RetailerPage() {
             href="/"
             className="inline-flex items-center gap-2 rounded-full border border-silver-400/20 bg-navy-900/60 px-4 py-2 text-sm font-semibold text-silver-100 backdrop-blur-sm transition hover:border-silver-300/40 hover:bg-navy-800"
           >
-            <ArrowLeft className="h-4 w-4" aria-hidden />
-            Home
+            <Home className="h-4 w-4" aria-hidden />
           </Link>
 
           <div className="inline-flex items-center gap-2 rounded-full border border-silver-500/20 bg-silver-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-silver-200">
@@ -206,10 +205,10 @@ export default function RetailerPage() {
 
               <Link
                 href="/"
-                className="inline-flex items-center gap-2 rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                aria-label="Home"
+                className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-5 py-4 text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
-                <ArrowLeft className="h-5 w-5" aria-hidden />
-                Home
+                <Home className="h-5 w-5" aria-hidden />
               </Link>
             </div>
           </div>
