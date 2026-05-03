@@ -112,9 +112,9 @@ export default function Home() {
               href="#riftbound"
               className="group flex flex-col items-center gap-1 transition-opacity hover:opacity-80"
             >
-              <p className="font-display text-xs font-bold uppercase tracking-widest text-silver-400">Latest News</p>
+              <p className="font-display text-xs font-bold uppercase tracking-widest text-silver-400">KC Games x Riftbound</p>
               <p className="font-display text-xl sm:text-2xl font-bold text-silver-100 drop-shadow-sm flex items-center gap-2">
-                Official Announcement
+                KC Games x Riftbound
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden />
               </p>
             </a>
