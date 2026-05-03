@@ -32,6 +32,10 @@ const services = [
   },
 ];
 
+const stats = [
+  { label: "Location", value: "Kuala Lumpur" },
+];
+
 export default function Home() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-navy-950 selection:bg-silver-500/30 selection:text-white">
@@ -40,112 +44,122 @@ export default function Home() {
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150" />
 
       {/* Full Width Banner - Section 1: Hero */}
-      <header className="relative border-b border-navy-700/50 shadow-2xl">
-        <div className="relative h-[62vh] min-h-[360px] sm:min-h-[460px] lg:h-[72vh]">
-          <div className="absolute inset-0">
-            <div
-              className="hero-slide hero-slide-primary absolute inset-0 bg-cover bg-no-repeat"
-              style={{
-                backgroundImage: 'url(/banner.jpg)',
-                backgroundPosition: 'calc(0% - 200px) center'
-              }}
-            />
-            <div
-              className="hero-slide hero-slide-secondary absolute inset-0 bg-cover bg-no-repeat bg-center"
-              style={{
-                backgroundImage: 'url(/riftbound/riftbound-hero.png)',
-              }}
-            />
-            <style dangerouslySetInnerHTML={{
-              __html: `
+      <header className="relative w-full h-[80vh] min-h-[600px] shadow-2xl border-b border-navy-700/50">
+        <div className="absolute inset-0">
+          <div
+            className="hero-slide hero-slide-primary absolute inset-0 bg-cover bg-no-repeat"
+            style={{
+              backgroundImage: 'url(/banner.jpg)',
+              backgroundPosition: 'calc(0% - 200px) center'
+            }}
+          />
+          <div
+            className="hero-slide hero-slide-secondary absolute inset-0 bg-cover bg-no-repeat bg-center"
+            style={{
+              backgroundImage: 'url(/riftbound/riftbound-hero.png)',
+            }}
+          />
+          <style dangerouslySetInnerHTML={{
+            __html: `
+            .hero-slide {
+              opacity: 0;
+              animation: hero-fade 18s infinite;
+            }
+
+            .hero-slide-primary {
+              opacity: 1;
+              animation-delay: 0s;
+            }
+
+            .hero-slide-secondary {
+              animation-delay: 9s;
+            }
+
+            @keyframes hero-fade {
+              0% { opacity: 0; }
+              8% { opacity: 1; }
+              42% { opacity: 1; }
+              50% { opacity: 0; }
+              100% { opacity: 0; }
+            }
+
+            @media (min-width: 640px) {
+              .hero-slide-primary {
+                background-position: center center !important;
+              }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
               .hero-slide {
-                opacity: 0;
-                animation: hero-fade 18s infinite;
+                animation: none;
               }
 
               .hero-slide-primary {
                 opacity: 1;
-                animation-delay: 0s;
               }
 
               .hero-slide-secondary {
-                animation-delay: 9s;
+                opacity: 0;
               }
-
-              @keyframes hero-fade {
-                0% { opacity: 0; }
-                8% { opacity: 1; }
-                42% { opacity: 1; }
-                50% { opacity: 0; }
-                100% { opacity: 0; }
-              }
-
-              @media (min-width: 640px) {
-                .hero-slide-primary {
-                  background-position: center center !important;
-                }
-              }
-
-              @media (prefers-reduced-motion: reduce) {
-                .hero-slide {
-                  animation: none;
-                }
-
-                .hero-slide-primary {
-                  opacity: 1;
-                }
-
-                .hero-slide-secondary {
-                  opacity: 0;
-                }
-              }
-            `}} />
-            <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-navy-950/15 to-transparent" />
-            <div className="absolute inset-0 bg-navy-950/15" />
-          </div>
+            }
+          `}} />
+          {/* Stronger dark overlay for better text visibility */}
+          <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/50 to-transparent" />
+          <div className="absolute inset-0 bg-navy-950/30" />
         </div>
 
-        <div className="relative z-10 border-t border-white/10 bg-[linear-gradient(180deg,rgba(8,18,33,0.96),rgba(12,24,43,0.96))] backdrop-blur-sm">
-          <div className="mx-auto grid max-w-6xl gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[0.8fr_1.2fr_1fr] lg:items-center lg:px-16 lg:py-10">
-            <div className="flex justify-center lg:justify-start">
-              <div className="relative h-24 w-32 sm:h-28 sm:w-40">
-                <Image
-                  src="/logo.png"
-                  alt="KC Games Logo"
-                  fill
-                  className="object-contain drop-shadow-2xl"
-                  style={{ mixBlendMode: 'multiply' }}
-                  priority
-                />
+        <div className="relative z-10 flex h-full flex-col items-center justify-center gap-4 px-6 pb-6 text-center sm:px-10">
+          {/* Company Logo */}
+          <div className="relative w-48 h-48 sm:w-48 sm:h-48">
+            <Image
+              src="/logo.png"
+              alt="KC Games Logo"
+              fill
+              className="object-contain drop-shadow-2xl"
+              style={{ mixBlendMode: 'multiply' }}
+              priority
+            />
+          </div>
+
+          <div className="space-y-4 max-w-4xl">
+            <h1
+              className="font-display text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl"
+              style={{
+                textShadow: '0 2px 10px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.6), 2px 2px 4px rgba(0,0,0,0.9)'
+              }}
+            >
+              Game Distribution. Market Access. Growth.
+            </h1>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              href="/retailer.html"
+            >
+              <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
+              <span className="relative flex items-center gap-2 font-display tracking-wider">
+                Sign up as retailer
+                <ArrowRight className="h-5 w-5" aria-hidden />
+              </span>
+            </Link>
+            <a
+              className="group inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              href="#contact-us"
+            >
+              <span className="flex items-center gap-2 font-display tracking-wide">
+                Contact Us
+              </span>
+            </a>
+          </div>
+
+          <div className="mt-4 sm:mt-12 flex flex-wrap justify-center gap-6 sm:gap-8 border-t border-white/10 pt-4 sm:pt-8">
+            {stats.map((stat) => (
+              <div key={stat.label} className="flex flex-col items-center gap-1">
+                <p className="font-display text-xs font-bold uppercase tracking-widest text-silver-400">{stat.label}</p>
+                <p className="font-display text-xl sm:text-2xl font-bold text-silver-100 drop-shadow-sm">{stat.value}</p>
               </div>
-            </div>
-
-            <div className="text-center lg:text-left">
-              <h1 className="font-display text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-[2.6rem]">
-                Game Distribution. Market Access. Growth.
-              </h1>
-            </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row sm:justify-center lg:flex-col lg:items-end">
-              <Link
-                className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                href="/retailer.html"
-              >
-                <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
-                <span className="relative flex items-center gap-2 font-display tracking-wider">
-                  Sign up as retailer
-                  <ArrowRight className="h-5 w-5" aria-hidden />
-                </span>
-              </Link>
-              <a
-                className="group inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                href="#contact-us"
-              >
-                <span className="flex items-center gap-2 font-display tracking-wide">
-                  Contact Us
-                </span>
-              </a>
-            </div>
+            ))}
           </div>
         </div>
       </header>
