@@ -125,37 +125,39 @@ export default function Home() {
       <div className="relative mx-auto flex max-w-6xl flex-col gap-16 px-6 py-16 sm:px-10 sm:py-20 lg:px-16 lg:py-24">
 
         <section className="relative overflow-hidden rounded-3xl border border-amber-400/20 bg-[linear-gradient(135deg,rgba(12,24,43,0.95),rgba(18,39,67,0.92))] shadow-2xl">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.28),transparent_38%)]" />
-          <div className="grid lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch">
-            <div className="relative order-first overflow-hidden border-b border-white/10 bg-[#0b1220] lg:order-last lg:min-h-full lg:border-b-0 lg:border-l">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.22),transparent_36%)]" />
+
+          <div className="relative">
+            <div className="relative overflow-hidden border-b border-white/10 bg-[#0b1220]">
               <Image
                 src="/riftbound/riftbound-banner.jpg"
                 alt="Riftbound League of Legends Trading Card Game key art"
                 width={1600}
                 height={900}
-                className="h-auto w-full object-contain"
+                className="h-auto w-full object-cover"
               />
+              <div className="absolute inset-x-0 top-0 flex justify-center p-5 sm:p-6 lg:justify-start lg:p-8">
+                <div className="inline-flex rounded-full border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.32em] text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:text-xs">
+                  Official announcement
+                </div>
+              </div>
             </div>
 
-            <div className="relative z-10 space-y-6 p-8 sm:p-10 lg:p-12">
-              <div className="inline-flex rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-amber-200">
-                Official announcement
-              </div>
-
+            <div className="relative z-10 flex flex-col items-center space-y-6 p-8 text-center sm:p-10 lg:p-12">
               <div className="space-y-4">
                 <p className="font-display text-sm font-bold uppercase tracking-[0.35em] text-silver-300">
                   Riftbound TCG
                 </p>
-                <h2 className="max-w-2xl font-display text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
+                <h2 className="mx-auto max-w-4xl font-display text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
                   KC Games is the official distributor for Riftbound Trading Card Game.
                 </h2>
-                <p className="max-w-2xl text-lg leading-relaxed text-navy-100">
+                <p className="mx-auto max-w-3xl text-lg leading-relaxed text-navy-100">
                   Retail partners can now work with KC Games on Riftbound distribution, onboarding, and follow-up
                   coordination. If you are planning retail availability, our team is ready to connect.
                 </p>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4">
+              <div className="flex flex-wrap items-center justify-center gap-4">
                 <Link
                   href="/retailer.html"
                   className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
