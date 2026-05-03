@@ -101,13 +101,23 @@ jobs:
           PY
           )"
 
+          PREVIEW_URL_B64="$(python3 - <<'PY'
+          import base64
+          import os
+
+          print(base64.b64encode(os.environ['PREVIEW_URL'].encode()).decode())
+          PY
+          )"
+
           echo "Demo preview URL (remove spaces around dots): ${PREVIEW_URL_SPACED}"
+          echo "Demo preview URL (base64): ${PREVIEW_URL_B64}"
           {
             echo "## Demo Deployment"
             echo
             echo "- Status: ${{ job.status }}"
             echo "- Preview URL: masked by GitHub secret redaction"
             echo "- Preview URL (remove spaces around dots): ${PREVIEW_URL_SPACED}"
+            echo "- Preview URL (base64): ${PREVIEW_URL_B64}"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Notify Telegram topic
