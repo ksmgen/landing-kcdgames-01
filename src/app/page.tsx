@@ -225,7 +225,7 @@ export default function Home() {
 
         <section className="grid gap-8 lg:grid-cols-2 lg:gap-10">
           <div className="space-y-4 text-center">
-            <h2 className="font-display text-3xl font-bold text-silver-100 sm:text-4xl">Brands</h2>
+            <h2 className="font-display text-3xl font-bold text-silver-100 sm:text-4xl">Partners</h2>
             <a
               href="https://uvsgames.com/"
               target="_blank"
@@ -246,7 +246,7 @@ export default function Home() {
           </div>
 
           <div className="space-y-4 text-center">
-            <h2 className="font-display text-3xl font-bold text-silver-100 sm:text-4xl">Partners</h2>
+            <h2 className="font-display text-3xl font-bold text-silver-100 sm:text-4xl">Brands</h2>
             <a
               href="https://riftbound.leagueoflegends.com/en-us/"
               target="_blank"
