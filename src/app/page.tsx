@@ -308,12 +308,13 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="flex items-center justify-center gap-3 border-t border-navy-700/50 pt-4 text-center">
-              <p className="text-sm text-navy-400">© 2026 KC Games Sdn Bhd. All rights reserved.</p>
-              <FacebookFooterLink className="text-silver-300 transition hover:text-white" />
-            </div>
           </div>
         </section>
+
+        <footer className="flex flex-col items-center gap-1 text-center pb-4">
+          <FacebookFooterLink className="text-silver-400 transition hover:text-white" />
+          <p className="text-sm text-navy-400">© 2026 KC Games Sdn Bhd. All rights reserved.</p>
+        </footer>
 
       </div>
     </main>
