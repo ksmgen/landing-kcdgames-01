@@ -79,8 +79,8 @@ export default function RetailerPage() {
                 Join the KC Games retailer network.
               </h1>
               <p className="max-w-2xl text-lg leading-relaxed text-navy-200">
-                This page mirrors the Engkodok retailer signup flow, but in the KC Games brand. Review the process,
-                see the retailer benefits, then continue to the live signup form.
+                Partner with KC Games to access our retailer programme, understand the onboarding steps, and move
+                directly into the live signup flow when you are ready.
               </p>
             </div>
 
@@ -171,8 +171,8 @@ export default function RetailerPage() {
           <div className="text-center space-y-4">
             <h2 className="font-display text-3xl font-bold text-silver-100 sm:text-4xl">Retailer Perks</h2>
             <p className="mx-auto max-w-3xl text-lg leading-relaxed text-navy-200">
-              The original Engkodok page uses image-led value props. Here they are translated into KC Games language while
-              keeping the same conversion intent.
+              Retail partners receive practical sales support, stronger launch visibility, and a smoother path for
+              pre-orders and upcoming releases.
             </p>
           </div>
 
