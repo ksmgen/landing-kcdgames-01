@@ -127,14 +127,14 @@ export default function Home() {
         <section className="relative overflow-hidden rounded-3xl border border-amber-400/20 bg-[linear-gradient(135deg,rgba(12,24,43,0.95),rgba(18,39,67,0.92))] shadow-2xl">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.28),transparent_38%)]" />
           <div className="grid lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch">
-            <div className="relative order-first min-h-[260px] overflow-hidden border-b border-white/10 lg:order-last lg:min-h-full lg:border-b-0 lg:border-l">
+            <div className="relative order-first overflow-hidden border-b border-white/10 bg-[#0b1220] lg:order-last lg:min-h-full lg:border-b-0 lg:border-l">
               <Image
                 src="/riftbound/riftbound-banner.jpg"
                 alt="Riftbound League of Legends Trading Card Game key art"
-                fill
-                className="object-cover object-center"
+                width={1600}
+                height={900}
+                className="h-auto w-full object-contain"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy-950/35 via-transparent to-transparent lg:bg-gradient-to-l" />
             </div>
 
             <div className="relative z-10 space-y-6 p-8 sm:p-10 lg:p-12">
@@ -152,9 +152,6 @@ export default function Home() {
                 <p className="max-w-2xl text-lg leading-relaxed text-navy-100">
                   Retail partners can now work with KC Games on Riftbound distribution, onboarding, and follow-up
                   coordination. If you are planning retail availability, our team is ready to connect.
-                </p>
-                <p className="max-w-2xl text-sm uppercase tracking-[0.24em] text-amber-200/90">
-                  Publishing live at 10:00 AM Kuala Lumpur time.
                 </p>
               </div>
 
