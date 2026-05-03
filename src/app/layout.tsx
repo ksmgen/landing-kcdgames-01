@@ -3,9 +3,31 @@ import React from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "KC Games | Launch your next hit",
+  title: "KC Games | Game Distribution and Riftbound TCG Retail Support",
   description:
-    "A modern landing page template for game studios to showcase their next hit with speed, style, and clarity.",
+    "KC Games Sdn Bhd is a Kuala Lumpur game distribution company supporting retail growth, market access, and Riftbound Trading Card Game distribution in the region.",
+  keywords: [
+    "KC Games",
+    "KC Games Sdn Bhd",
+    "game distribution",
+    "Riftbound",
+    "Riftbound TCG",
+    "trading card game distribution",
+    "retailer signup",
+    "Malaysia game distribution",
+  ],
+  openGraph: {
+    title: "KC Games | Game Distribution and Riftbound TCG Retail Support",
+    description:
+      "KC Games connects game publishers, retailers, and partners across the region, including Riftbound Trading Card Game retail support.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "KC Games | Game Distribution and Riftbound TCG Retail Support",
+    description:
+      "KC Games supports game distribution, market access, and Riftbound Trading Card Game retail partnerships.",
+  },
 };
 
 export default function RootLayout({

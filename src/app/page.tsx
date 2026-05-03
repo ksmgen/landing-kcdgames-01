@@ -180,7 +180,9 @@ export default function Home() {
         {/* Intro paragraph */}
         <section className="text-center">
           <p className="mx-auto max-w-3xl text-lg leading-relaxed text-navy-200">
-            KC Games Sdn Bhd is a newly established game distribution company based in Kuala Lumpur, Malaysia. We focus on bringing high-quality digital and physical games to the right markets, connecting game developers and publishers with retail partners, platforms, and players across the region.
+            KC Games Sdn Bhd is a game distribution company based in Kuala Lumpur, Malaysia. We focus on bringing
+            high-quality digital and physical games to the right markets, connecting game developers and publishers
+            with retail partners, platforms, and players across the region.
           </p>
         </section>
 
@@ -240,7 +242,7 @@ export default function Home() {
                   className="h-[120px] w-auto"
                 />
                 <p className="max-w-md text-base leading-relaxed text-navy-200">
-                  UVS Games is part of the brand portfolio KC Games is presenting to retailers and distribution partners.
+                  UVS Games is one of the key brands KC Games is presenting to retailers and distribution partners
                 </p>
               </div>
             </a>
@@ -264,7 +266,7 @@ export default function Home() {
                   className="h-[120px] w-auto"
                 />
                 <p className="max-w-md text-base leading-relaxed text-navy-200">
-                  Riftbound is a key partner property in the current KC Games retailer and launch communication flow.
+                  Riftbound is a key partner title in the current KC Games retailer and launch communication flow
                 </p>
               </div>
             </a>
