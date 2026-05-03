@@ -233,7 +233,7 @@ export default function Home() {
               className="group relative flex min-h-[280px] items-center justify-center overflow-hidden rounded-2xl border border-navy-700/50 bg-navy-900/40 p-8 shadow-card transition-all hover:-translate-y-1 hover:border-silver-500/40 hover:bg-navy-800/60 hover:shadow-card-hover"
             >
               <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100" />
-              <div className="relative flex flex-col items-center gap-6 text-center">
+              <div className="relative flex items-center justify-center">
                 <Image
                   src="/partners/uvs-games-logo.png"
                   alt="UVS Games"
@@ -241,9 +241,6 @@ export default function Home() {
                   height={120}
                   className="h-[120px] w-auto"
                 />
-                <p className="max-w-md text-base leading-relaxed text-navy-200">
-                  UVS Games is one of the key brands KC Games is presenting to retailers and distribution partners
-                </p>
               </div>
             </a>
           </div>
@@ -257,7 +254,7 @@ export default function Home() {
               className="group relative flex min-h-[280px] items-center justify-center overflow-hidden rounded-2xl border border-navy-700/50 bg-navy-900/40 p-8 shadow-card transition-all hover:-translate-y-1 hover:border-silver-500/40 hover:bg-navy-800/60 hover:shadow-card-hover"
             >
               <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100" />
-              <div className="relative flex flex-col items-center gap-6 text-center">
+              <div className="relative flex items-center justify-center">
                 <Image
                   src="/partners/riftbound-brand.png"
                   alt="Riftbound"
@@ -265,9 +262,6 @@ export default function Home() {
                   height={120}
                   className="h-[120px] w-auto"
                 />
-                <p className="max-w-md text-base leading-relaxed text-navy-200">
-                  Riftbound is a key partner title in the current KC Games retailer and launch communication flow
-                </p>
               </div>
             </a>
           </div>
