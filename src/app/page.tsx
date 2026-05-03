@@ -145,11 +145,8 @@ export default function Home() {
 
             <div className="relative z-10 flex flex-col items-center space-y-6 p-8 text-center sm:p-10 lg:p-12">
               <div className="space-y-4">
-                <p className="font-display text-sm font-bold uppercase tracking-[0.35em] text-silver-300">
-                  Riftbound TCG
-                </p>
-                <h2 className="mx-auto max-w-4xl font-display text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
-                  KC Games is the official distributor for Riftbound Trading Card Game.
+                <h2 className="mx-auto max-w-4xl font-display text-2xl font-bold leading-tight text-white sm:text-3xl lg:text-4xl">
+                  KC Games is the official distributor for Riftbound Trading Card Game
                 </h2>
                 <p className="mx-auto max-w-3xl text-lg leading-relaxed text-navy-100">
                   Retail partners can now work with KC Games on Riftbound distribution, onboarding, and follow-up
