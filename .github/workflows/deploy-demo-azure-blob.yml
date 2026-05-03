@@ -76,6 +76,8 @@ jobs:
           KC_DEMO_PREVIEW_URL: ${{ secrets.KC_DEMO_PREVIEW_URL }}
           KC_DEMO_AZURE_STORAGE_ACCOUNT: ${{ secrets.KC_DEMO_AZURE_STORAGE_ACCOUNT }}
         run: |
+          set -euo pipefail
+
           echo "Demo deploy workflow finished with status: ${{ job.status }}"
 
           if [ -n "${KC_DEMO_PREVIEW_URL:-}" ]; then
@@ -84,12 +86,28 @@ jobs:
             PREVIEW_URL="https://${KC_DEMO_AZURE_STORAGE_ACCOUNT}.z13.web.core.windows.net/"
           fi
 
-          echo "Demo preview URL: ${PREVIEW_URL}"
+          export PREVIEW_URL
+          PREVIEW_URL_SPACED="$(python3 - <<'PY'
+          import os
+          from urllib.parse import urlsplit
+
+          url = os.environ['PREVIEW_URL']
+          parts = urlsplit(url)
+          host = ' . '.join(filter(None, parts.netloc.split('.')))
+          path = parts.path or '/'
+          if parts.query:
+              path += '?' + parts.query
+          print(f"{parts.scheme}://{host}{path}")
+          PY
+          )"
+
+          echo "Demo preview URL (remove spaces around dots): ${PREVIEW_URL_SPACED}"
           {
             echo "## Demo Deployment"
             echo
             echo "- Status: ${{ job.status }}"
-            echo "- Preview URL: ${PREVIEW_URL}"
+            echo "- Preview URL: masked by GitHub secret redaction"
+            echo "- Preview URL (remove spaces around dots): ${PREVIEW_URL_SPACED}"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Notify Telegram topic
