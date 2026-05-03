@@ -92,7 +92,7 @@ export default function Home() {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              href="/retailer"
+              href="/retailer.html"
             >
               <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
               <span className="relative flex items-center gap-2 font-display tracking-wider">
@@ -243,7 +243,7 @@ export default function Home() {
               </a>
 
               <Link
-                href="/retailer"
+                href="/retailer.html"
                 className="group relative flex items-center justify-center gap-2 overflow-hidden rounded-lg bg-silver-100 px-6 py-4 text-base font-bold text-navy-950 shadow-lg transition-all hover:bg-white"
               >
                 <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />

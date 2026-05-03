@@ -24,6 +24,6 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 - `src/components/ContactWidget.tsx`: Phone display and WhatsApp CTA with a simple math gate.
 - `public/logo.png`: KC Games logo used in the hero section.
 - `public/banner.jpg`: Hero background image.
-- `public/retailer/`: Signup-step and perk images mirrored from the Engkodok retailer page.
+- `public/retailer/`: Signup-step and perk images mirrored from the source retailer page.
 - `.github/workflows/azure-static-web-apps-nice-wave-0858e1900.yml`: Production deploy for `main` via Azure Static Web Apps.
 - `.github/workflows/deploy-demo-azure-blob.yml`: Demo deploy for `demo` via Azure Blob Static Website, logs the preview URL, and can notify Telegram.
