@@ -131,7 +131,7 @@ export default function Home() {
             <div className="border-b border-white/10 bg-[#0b1220]">
               <div className="flex justify-center px-5 pb-4 pt-5 sm:hidden">
                 <div className="inline-flex rounded-full border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.32em] text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm">
-                  KC Games x Riftbound
+                  Official Announcement
                 </div>
               </div>
 
@@ -155,7 +155,7 @@ export default function Home() {
                 />
                 <div className="absolute inset-x-0 top-0 flex justify-center p-5 sm:p-6 lg:justify-start lg:p-8">
                   <div className="inline-flex rounded-full border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.32em] text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:text-xs">
-                    KC Games x Riftbound
+                    Official Announcement
                   </div>
                 </div>
               </div>
@@ -167,7 +167,7 @@ export default function Home() {
                   KC Games is the official distributor for Riftbound Trading Card Game
                 </h2>
                 <p className="mx-auto max-w-3xl text-lg leading-relaxed text-navy-100">
-                  Retail partners can now work with KC Games on Riftbound distribution, onboarding, and follow-up
+                  Retail partners can now work with KC Games on Riftbound retail, onboarding, and follow-up
                   coordination. If you are planning retail availability, our team is ready to connect.
                 </p>
               </div>
