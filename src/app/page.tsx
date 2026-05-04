@@ -1,6 +1,8 @@
 import { ArrowRight, Globe, Handshake, MapPin, Target, Truck, Users } from "lucide-react";
 import ContactWidget from "../components/ContactWidget";
+import FacebookFooterLink from "../components/FacebookFooterLink";
 import Image from "next/image";
+import Link from "next/link";
 
 const services = [
   {
@@ -28,10 +30,6 @@ const services = [
     description: "Distribution coordination",
     icon: <Target className="h-5 w-5 text-silver-300" aria-hidden />,
   },
-];
-
-const stats = [
-  { label: "Location", value: "Kuala Lumpur" },
 ];
 
 export default function Home() {
@@ -89,18 +87,16 @@ export default function Home() {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
+            <Link
               className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              href="https://betobee.co/sign-up/kc-games-sdn-bhd"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/retailer.html"
             >
               <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
               <span className="relative flex items-center gap-2 font-display tracking-wider">
                 Sign up as retailer
                 <ArrowRight className="h-5 w-5" aria-hidden />
               </span>
-            </a>
+            </Link>
             <a
               className="group inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               href="#contact-us"
@@ -112,22 +108,99 @@ export default function Home() {
           </div>
 
           <div className="mt-4 sm:mt-12 flex flex-wrap justify-center gap-6 sm:gap-8 border-t border-white/10 pt-4 sm:pt-8">
-            {stats.map((stat) => (
-              <div key={stat.label} className="flex flex-col items-center gap-1">
-                <p className="font-display text-xs font-bold uppercase tracking-widest text-silver-400">{stat.label}</p>
-                <p className="font-display text-xl sm:text-2xl font-bold text-silver-100 drop-shadow-sm">{stat.value}</p>
-              </div>
-            ))}
+            <a
+              href="#riftbound"
+              className="group flex flex-col items-center gap-1 transition-opacity hover:opacity-80"
+            >
+              <p className="font-display text-xs font-bold uppercase tracking-widest text-silver-400">Latest News</p>
+              <p className="font-display text-xl sm:text-2xl font-bold text-silver-100 drop-shadow-sm flex items-center gap-2">
+                KC Games x Riftbound
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden />
+              </p>
+            </a>
           </div>
         </div>
       </header>
 
       <div className="relative mx-auto flex max-w-6xl flex-col gap-16 px-6 py-16 sm:px-10 sm:py-20 lg:px-16 lg:py-24">
 
+        <section id="riftbound" className="relative overflow-hidden rounded-3xl border border-amber-400/20 bg-[linear-gradient(135deg,rgba(12,24,43,0.95),rgba(18,39,67,0.92))] shadow-2xl">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.22),transparent_36%)]" />
+
+          <div className="relative">
+            <div className="border-b border-white/10 bg-[#0b1220]">
+              <div className="flex justify-center px-5 pb-4 pt-5 sm:hidden">
+                <div className="inline-flex rounded-full border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.32em] text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm">
+                  Official Announcement
+                </div>
+              </div>
+
+              <div className="relative overflow-hidden sm:hidden">
+                <Image
+                  src="/riftbound/riftbound-mobile-full.png"
+                  alt="Riftbound League of Legends Trading Card Game key art"
+                  width={1179}
+                  height={2556}
+                  className="h-auto w-full"
+                />
+              </div>
+
+              <div className="relative hidden overflow-hidden sm:block">
+                <Image
+                  src="/riftbound/riftbound-banner.jpg"
+                  alt="Riftbound League of Legends Trading Card Game key art"
+                  width={1600}
+                  height={900}
+                  className="h-auto w-full object-cover"
+                />
+                <div className="absolute inset-x-0 top-0 flex justify-center p-5 sm:p-6 lg:justify-start lg:p-8">
+                  <div className="inline-flex rounded-full border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.32em] text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:text-xs">
+                    Official Announcement
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center space-y-6 p-8 text-center sm:p-10 lg:p-12">
+              <div className="space-y-4">
+                <h2 className="mx-auto max-w-4xl font-display text-2xl font-bold leading-tight text-white sm:text-3xl lg:text-4xl">
+                  KC Games is the official distributor for Riftbound Trading Card Game
+                </h2>
+                <p className="mx-auto max-w-3xl text-lg leading-relaxed text-navy-100">
+                  Retail partners can now work with KC Games on Riftbound retail, onboarding, and follow-up
+                  coordination. If you are planning retail availability, our team is ready to connect.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <Link
+                  href="/retailer.html"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
+                  <span className="relative flex items-center gap-2 font-display tracking-wider">
+                    Sign Up as Retailer
+                    <ArrowRight className="h-5 w-5" aria-hidden />
+                  </span>
+                </Link>
+
+                <a
+                  href="#contact-us"
+                  className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  Contact Us
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Intro paragraph */}
         <section className="text-center">
           <p className="mx-auto max-w-3xl text-lg leading-relaxed text-navy-200">
-            KC Games Sdn Bhd is a newly established game distribution company based in Kuala Lumpur, Malaysia. We focus on bringing high-quality digital and physical games to the right markets, connecting game developers and publishers with retail partners, platforms, and players across the region.
+            KC Games Sdn Bhd is a game distribution company based in Kuala Lumpur, Malaysia. We focus on bringing
+            high-quality digital and physical games to the right markets, connecting game developers and publishers
+            with retail partners, platforms, and players across the region.
           </p>
         </section>
 
@@ -166,6 +239,50 @@ export default function Home() {
           <p className="text-navy-200 leading-relaxed">
             We work closely with developers, publishers, and partners to ensure games reach their target audiences efficiently and commercially successfully.
           </p>
+        </section>
+
+        <section className="grid gap-8 lg:grid-cols-2 lg:gap-10">
+          <div className="space-y-4 text-center">
+            <h2 className="font-display text-3xl font-bold text-silver-100 sm:text-4xl">Partners</h2>
+            <a
+              href="https://uvsgames.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex min-h-[280px] items-center justify-center overflow-hidden rounded-2xl border border-navy-700/50 bg-navy-900/40 p-8 shadow-card transition-all hover:-translate-y-1 hover:border-silver-500/40 hover:bg-navy-800/60 hover:shadow-card-hover"
+            >
+              <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100" />
+              <div className="relative flex items-center justify-center">
+                <Image
+                  src="/partners/uvs-games-logo.png"
+                  alt="UVS Games"
+                  width={220}
+                  height={120}
+                  className="h-[120px] w-auto"
+                />
+              </div>
+            </a>
+          </div>
+
+          <div className="space-y-4 text-center">
+            <h2 className="font-display text-3xl font-bold text-silver-100 sm:text-4xl">Brands</h2>
+            <a
+              href="https://riftbound.leagueoflegends.com/en-us/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex min-h-[280px] items-center justify-center overflow-hidden rounded-2xl border border-navy-700/50 bg-navy-900/40 p-8 shadow-card transition-all hover:-translate-y-1 hover:border-silver-500/40 hover:bg-navy-800/60 hover:shadow-card-hover"
+            >
+              <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100" />
+              <div className="relative flex items-center justify-center">
+                <Image
+                  src="/partners/riftbound-brand.png"
+                  alt="Riftbound"
+                  width={320}
+                  height={120}
+                  className="h-[120px] w-auto"
+                />
+              </div>
+            </a>
+          </div>
         </section>
 
         {/* Section 3: Our Mission */}
@@ -243,10 +360,8 @@ export default function Home() {
                 <span className="font-display tracking-wide">📧 Email Us</span>
               </a>
 
-              <a
-                href="https://betobee.co/sign-up/kc-games-sdn-bhd"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/retailer.html"
                 className="group relative flex items-center justify-center gap-2 overflow-hidden rounded-lg bg-silver-100 px-6 py-4 text-base font-bold text-navy-950 shadow-lg transition-all hover:bg-white"
               >
                 <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
@@ -254,14 +369,16 @@ export default function Home() {
                   Sign up as retailer
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </span>
-              </a>
+              </Link>
             </div>
 
-            <div className="text-center pt-4 border-t border-navy-700/50">
-              <p className="text-sm text-navy-400">© 2025 KC Games Sdn Bhd. All rights reserved.</p>
-            </div>
           </div>
         </section>
+
+        <footer className="flex flex-col items-center gap-4 text-center -mt-8 pb-4">
+          <FacebookFooterLink className="text-silver-400" />
+          <p className="text-sm text-navy-400">© 2026 KC Games Sdn Bhd. All rights reserved.</p>
+        </footer>
 
       </div>
     </main>
