@@ -112,7 +112,7 @@ export default function Home() {
               href="#riftbound"
               className="group flex flex-col items-center gap-1 transition-opacity hover:opacity-80"
             >
-              <p className="font-display text-xs font-bold uppercase tracking-widest text-silver-400">KC Games x Riftbound</p>
+              <p className="font-display text-xs font-bold uppercase tracking-widest text-silver-400">Latest News</p>
               <p className="font-display text-xl sm:text-2xl font-bold text-silver-100 drop-shadow-sm flex items-center gap-2">
                 KC Games x Riftbound
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden />
@@ -128,17 +128,35 @@ export default function Home() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.22),transparent_36%)]" />
 
           <div className="relative">
-            <div className="relative overflow-hidden border-b border-white/10 bg-[#0b1220]">
-              <Image
-                src="/riftbound/riftbound-banner.jpg"
-                alt="Riftbound League of Legends Trading Card Game key art"
-                width={1600}
-                height={900}
-                className="h-auto w-full object-cover"
-              />
-              <div className="absolute inset-x-0 top-0 flex justify-center p-5 sm:p-6 lg:justify-start lg:p-8">
-                <div className="inline-flex rounded-full border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.32em] text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:text-xs">
-                  Official announcement
+            <div className="border-b border-white/10 bg-[#0b1220]">
+              <div className="flex justify-center px-5 pb-4 pt-5 sm:hidden">
+                <div className="inline-flex rounded-full border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.32em] text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm">
+                  KC Games x Riftbound
+                </div>
+              </div>
+
+              <div className="relative overflow-hidden sm:hidden">
+                <Image
+                  src="/riftbound/riftbound-mobile-full.png"
+                  alt="Riftbound League of Legends Trading Card Game key art"
+                  width={1179}
+                  height={2556}
+                  className="h-auto w-full"
+                />
+              </div>
+
+              <div className="relative hidden overflow-hidden sm:block">
+                <Image
+                  src="/riftbound/riftbound-banner.jpg"
+                  alt="Riftbound League of Legends Trading Card Game key art"
+                  width={1600}
+                  height={900}
+                  className="h-auto w-full object-cover"
+                />
+                <div className="absolute inset-x-0 top-0 flex justify-center p-5 sm:p-6 lg:justify-start lg:p-8">
+                  <div className="inline-flex rounded-full border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.32em] text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:text-xs">
+                    KC Games x Riftbound
+                  </div>
                 </div>
               </div>
             </div>
