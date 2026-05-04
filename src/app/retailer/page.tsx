@@ -48,6 +48,21 @@ const perks = [
   },
 ];
 
+const retailerRequirements = [
+  "Must be a business registered with SSM",
+  "Must be a physical store with dedicated retail space and a playing area",
+  "Must be open a minimum of 5 days a week",
+  "Full business registration documents and owner ID documents are required",
+];
+
+const businessTerms = [
+  "Prepayment before delivery",
+  "Minimum order RM500",
+  "Free shipping for orders above RM1500 to Peninsula Malaysia only",
+  "We do not offer any terms or credit",
+  "Shipping terms are Ex Works",
+];
+
 export default function RetailerPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-navy-950 selection:bg-silver-500/30 selection:text-white">
@@ -123,6 +138,34 @@ export default function RetailerPage() {
         </section>
 
         <section className="space-y-8">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <article className="rounded-2xl border border-navy-700/50 bg-navy-900/40 p-6 shadow-card sm:p-8">
+              <div className="space-y-4 text-center lg:text-left">
+                <h2 className="font-display text-2xl font-bold text-silver-100 sm:text-3xl">Retailer Registration Requirements</h2>
+                <ul className="space-y-3 text-sm leading-relaxed text-navy-200 sm:text-base">
+                  {retailerRequirements.map((item) => (
+                    <li key={item} className="rounded-xl border border-navy-700/40 bg-navy-950/40 px-4 py-3">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+
+            <article className="rounded-2xl border border-navy-700/50 bg-navy-900/40 p-6 shadow-card sm:p-8">
+              <div className="space-y-4 text-center lg:text-left">
+                <h2 className="font-display text-2xl font-bold text-silver-100 sm:text-3xl">Basic Business Terms</h2>
+                <ul className="space-y-3 text-sm leading-relaxed text-navy-200 sm:text-base">
+                  {businessTerms.map((item) => (
+                    <li key={item} className="rounded-xl border border-navy-700/40 bg-navy-950/40 px-4 py-3">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          </div>
+
           <div className="text-center space-y-4">
             <h2 className="font-display text-3xl font-bold text-silver-100 sm:text-4xl">Signup Process</h2>
             <p className="mx-auto max-w-3xl text-lg leading-relaxed text-navy-200">
