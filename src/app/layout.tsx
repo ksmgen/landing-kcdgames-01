@@ -3,9 +3,15 @@ import React from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.kc-games.com"),
   title: "KC Games | Game Distribution and Riftbound TCG Retail Support",
   description:
     "KC Games Sdn Bhd is a Kuala Lumpur game distribution company supporting retail growth, market access, and Riftbound Trading Card Game distribution in the region.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
   keywords: [
     "KC Games",
     "KC Games Sdn Bhd",
