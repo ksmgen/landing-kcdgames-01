@@ -15,10 +15,63 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
           lfs: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build static export
+        run: npm run build
+
+      - name: Stamp release metadata
+        run: |
+          set -euo pipefail
+
+          export RELEASE_EPOCH="$(date +%s)"
+          export COMMIT_SHORT="${GITHUB_SHA::7}"
+          export INDEX_FILE="out/index.html"
+          export RELEASE_PLACEHOLDER="__KC_GAMES_RELEASE_EPOCH__"
+          export VERSION_PLACEHOLDER="__KC_GAMES_COMMIT_SHORT__"
+
+          if [ ! -f "${INDEX_FILE}" ]; then
+            echo "${INDEX_FILE} not found" >&2
+            exit 1
+          fi
+
+          if ! grep -q "${RELEASE_PLACEHOLDER}" "${INDEX_FILE}"; then
+            echo "Release placeholder not found in ${INDEX_FILE}" >&2
+            exit 1
+          fi
+
+          if ! grep -q "${VERSION_PLACEHOLDER}" "${INDEX_FILE}"; then
+            echo "Version placeholder not found in ${INDEX_FILE}" >&2
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import os
+
+          path = Path(os.environ.get("INDEX_FILE", "out/index.html"))
+          release_placeholder = os.environ.get("RELEASE_PLACEHOLDER", "__KC_GAMES_RELEASE_EPOCH__")
+          version_placeholder = os.environ.get("VERSION_PLACEHOLDER", "__KC_GAMES_COMMIT_SHORT__")
+          release_epoch = os.environ["RELEASE_EPOCH"]
+          commit_short = os.environ["COMMIT_SHORT"]
+          text = path.read_text()
+          text = text.replace(release_placeholder, release_epoch)
+          text = text.replace(version_placeholder, commit_short)
+          path.write_text(text)
+          PY
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -28,9 +81,10 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/" # App source code path
+          app_location: "out" # Prebuilt static export path
           api_location: "" # Api source code path - optional
-          output_location: "out" # Built app content directory - optional
+          output_location: "" # Already built by npm run build
+          skip_app_build: true
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
