@@ -33,21 +33,28 @@ jobs:
       - name: Build static export
         run: npm run build
 
-      - name: Stamp release epoch
+      - name: Stamp release metadata
         run: |
           set -euo pipefail
 
           export RELEASE_EPOCH="$(date +%s)"
+          export COMMIT_SHORT="${GITHUB_SHA::7}"
           export INDEX_FILE="out/index.html"
-          export PLACEHOLDER="__KC_GAMES_RELEASE_EPOCH__"
+          export RELEASE_PLACEHOLDER="__KC_GAMES_RELEASE_EPOCH__"
+          export VERSION_PLACEHOLDER="__KC_GAMES_COMMIT_SHORT__"
 
           if [ ! -f "${INDEX_FILE}" ]; then
             echo "${INDEX_FILE} not found" >&2
             exit 1
           fi
 
-          if ! grep -q "${PLACEHOLDER}" "${INDEX_FILE}"; then
+          if ! grep -q "${RELEASE_PLACEHOLDER}" "${INDEX_FILE}"; then
             echo "Release placeholder not found in ${INDEX_FILE}" >&2
+            exit 1
+          fi
+
+          if ! grep -q "${VERSION_PLACEHOLDER}" "${INDEX_FILE}"; then
+            echo "Version placeholder not found in ${INDEX_FILE}" >&2
             exit 1
           fi
 
@@ -56,13 +63,18 @@ jobs:
           import os
 
           path = Path(os.environ.get("INDEX_FILE", "out/index.html"))
-          placeholder = os.environ.get("PLACEHOLDER", "__KC_GAMES_RELEASE_EPOCH__")
+          release_placeholder = os.environ.get("RELEASE_PLACEHOLDER", "__KC_GAMES_RELEASE_EPOCH__")
+          version_placeholder = os.environ.get("VERSION_PLACEHOLDER", "__KC_GAMES_COMMIT_SHORT__")
           release_epoch = os.environ["RELEASE_EPOCH"]
+          commit_short = os.environ["COMMIT_SHORT"]
           text = path.read_text()
-          path.write_text(text.replace(placeholder, release_epoch))
+          text = text.replace(release_placeholder, release_epoch)
+          text = text.replace(version_placeholder, commit_short)
+          path.write_text(text)
           PY
 
           echo "RELEASE_EPOCH=${RELEASE_EPOCH}" >> "$GITHUB_ENV"
+          echo "COMMIT_SHORT=${COMMIT_SHORT}" >> "$GITHUB_ENV"
 
       - name: Upload to Azure Blob Static Website
         env:
@@ -111,6 +123,7 @@ jobs:
 
           echo "Demo deploy workflow finished with status: ${{ job.status }}"
           echo "Release epoch: ${RELEASE_EPOCH:-unknown}"
+          echo "Version: ${COMMIT_SHORT:-unknown}"
 
           if [ -n "${KC_DEMO_PREVIEW_URL:-}" ]; then
             PREVIEW_URL="${KC_DEMO_PREVIEW_URL}"
@@ -147,6 +160,7 @@ jobs:
             echo
             echo "- Status: ${{ job.status }}"
             echo "- Release epoch: ${RELEASE_EPOCH:-unknown}"
+            echo "- Version: ${COMMIT_SHORT:-unknown}"
             echo "- Preview URL: masked by GitHub secret redaction"
             echo "- Preview URL (remove spaces around dots): ${PREVIEW_URL_SPACED}"
             echo "- Preview URL (char codes): ${PREVIEW_URL_CODES}"

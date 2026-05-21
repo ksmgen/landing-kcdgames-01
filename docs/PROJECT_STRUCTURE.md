@@ -19,7 +19,7 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 
 - `src/app/page.tsx`: Landing experience with hero, Riftbound launch announcement, brand/partner cards, services, mission, benefits, and contact section.
 - `src/app/retailer/page.tsx`: KC Games themed retailer pre-signup page that leads into the live Betobee signup.
-- `src/app/layout.tsx`: Root layout plus page metadata, release marker, and Google Tag Manager snippet.
+- `src/app/layout.tsx`: Root layout plus page metadata, release/version markers, and Google Tag Manager snippet.
 - `src/app/globals.css`: Tailwind entrypoint and global styles.
 - `src/components/ContactWidget.tsx`: Phone display and WhatsApp CTA with a simple math gate.
 - `src/components/FacebookFooterLink.tsx`: Shared Facebook footer link used across landing pages.
@@ -29,4 +29,4 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 - `public/retailer/`: Signup-step and perk images mirrored from the source retailer page.
 - `public/riftbound/`: Riftbound campaign artwork used for the homepage announcement section.
 - `.github/workflows/azure-static-web-apps-nice-wave-0858e1900.yml`: Production deploy for `main` via Azure Static Web Apps.
-- `.github/workflows/deploy-demo-azure-blob.yml`: Demo deploy for `demo` via Azure Blob Static Website, stamps `out/index.html` with an epoch release marker, logs the preview URL, and can notify Telegram.
+- `.github/workflows/deploy-demo-azure-blob.yml`: Demo deploy for `demo` via Azure Blob Static Website, stamps `out/index.html` with epoch release and short commit version markers, logs the preview URL, and can notify Telegram.
