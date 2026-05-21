@@ -47,6 +47,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="x-release" content="__KC_GAMES_RELEASE_EPOCH__" />
+        <meta name="x-version" content="__KC_GAMES_COMMIT_SHORT__" />
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
