@@ -25,7 +25,7 @@ Update these files before every push if the codebase, content, or workflow chang
 
 - Main landing page lives in `src/app/page.tsx`.
 - Retailer landing flow lives in `src/app/retailer/page.tsx`.
-- Global metadata and Google Tag Manager are configured in `src/app/layout.tsx`.
+- Global metadata, release marker, and Google Tag Manager are configured in `src/app/layout.tsx`.
 - Shared contact UI lives in `src/components/ContactWidget.tsx`.
 - Shared footer social link UI lives in `src/components/FacebookFooterLink.tsx`.
 - Static assets are served from `public/`.
@@ -33,4 +33,4 @@ Update these files before every push if the codebase, content, or workflow chang
 - Retailer flow images mirrored from the source retailer page live in `public/retailer/`.
 - Riftbound announcement assets live in `public/riftbound/`.
 - `main` deploys through Azure Static Web Apps.
-- `demo` deploys to Azure Blob Static Website through GitHub Actions, logs the resolved preview URL, and can notify Telegram on completion.
+- `demo` deploys to Azure Blob Static Website through GitHub Actions, stamps `out/index.html` with an epoch release marker, logs the resolved preview URL, and can notify Telegram on completion.
