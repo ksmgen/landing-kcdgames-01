@@ -7,6 +7,8 @@ This repository contains the KC Games marketing site built with Next.js 14, Type
 ## Working Rules
 
 - Keep changes small and targeted.
+- Do not run local builds unless explicitly instructed; GitHub Actions owns build and deploy verification.
+- Deliver clean, focused, working code changes; do not trigger build/deploy unless instructed.
 - Preserve the current App Router structure under `src/app`.
 - Prefer updating existing sections and components instead of introducing new abstractions unless reuse is clear.
 - Keep business copy aligned with `CONTENT.MD` when marketing content changes.
