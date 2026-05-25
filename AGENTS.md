@@ -32,5 +32,5 @@ Update these files before every push if the codebase, content, or workflow chang
 - Brand and partner logos live in `public/partners/`.
 - Retailer flow images mirrored from the source retailer page live in `public/retailer/`.
 - Riftbound announcement assets live in `public/riftbound/`.
-- `main` deploys through Azure Static Web Apps after GitHub Actions builds `out/` and stamps epoch release and short commit version markers.
-- `demo` deploys to Azure Blob Static Website through GitHub Actions, stamps `out/index.html` with epoch release and short commit version markers, logs the resolved preview URL, and can notify Telegram on completion.
+- `main` deploys through Azure Static Web Apps after GitHub Actions builds `out/` and stamps epoch release and short commit version markers across exported HTML pages.
+- `demo` deploys to Azure Blob Static Website through GitHub Actions, stamps exported HTML pages with epoch release and short commit version markers, logs the resolved preview URL, and can notify Telegram on completion.

@@ -37,5 +37,5 @@ Refresh these files before each push when the codebase, structure, or workflow c
 
 ## Deployment
 
-- `main` deploys with Azure Static Web Apps after GitHub Actions builds `out/` and stamps epoch release and short commit version markers
-- `demo` deploys to Azure Blob Static Website from GitHub Actions, stamps `out/index.html` with epoch release and short commit version markers, logs the preview URL, and can notify Telegram on completion
+- `main` deploys with Azure Static Web Apps after GitHub Actions builds `out/` and stamps epoch release and short commit version markers across exported HTML pages
+- `demo` deploys to Azure Blob Static Website from GitHub Actions, stamps exported HTML pages with epoch release and short commit version markers, logs the preview URL, and can notify Telegram on completion

@@ -28,5 +28,5 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 - `public/partners/`: Click-through brand and partner logos for the homepage brand section.
 - `public/retailer/`: Signup-step and perk images mirrored from the source retailer page.
 - `public/riftbound/`: Riftbound campaign artwork used for the homepage announcement section.
-- `.github/workflows/azure-static-web-apps-nice-wave-0858e1900.yml`: Production deploy for `main` via Azure Static Web Apps after building `out/` and stamping epoch release and short commit version markers.
-- `.github/workflows/deploy-demo-azure-blob.yml`: Demo deploy for `demo` via Azure Blob Static Website, stamps `out/index.html` with epoch release and short commit version markers, logs the preview URL, and can notify Telegram.
+- `.github/workflows/azure-static-web-apps-nice-wave-0858e1900.yml`: Production deploy for `main` via Azure Static Web Apps after building `out/` and stamping epoch release and short commit version markers across exported HTML pages.
+- `.github/workflows/deploy-demo-azure-blob.yml`: Demo deploy for `demo` via Azure Blob Static Website, stamps exported HTML pages with epoch release and short commit version markers, logs the preview URL, and can notify Telegram.

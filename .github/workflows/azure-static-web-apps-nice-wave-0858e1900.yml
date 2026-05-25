@@ -38,22 +38,22 @@ jobs:
 
           export RELEASE_EPOCH="$(date +%s)"
           export COMMIT_SHORT="${GITHUB_SHA::7}"
-          export INDEX_FILE="out/index.html"
+          export OUT_DIR="out"
           export RELEASE_PLACEHOLDER="__KC_GAMES_RELEASE_EPOCH__"
           export VERSION_PLACEHOLDER="__KC_GAMES_COMMIT_SHORT__"
 
-          if [ ! -f "${INDEX_FILE}" ]; then
-            echo "${INDEX_FILE} not found" >&2
+          if [ ! -d "${OUT_DIR}" ]; then
+            echo "${OUT_DIR}/ not found" >&2
             exit 1
           fi
 
-          if ! grep -q "${RELEASE_PLACEHOLDER}" "${INDEX_FILE}"; then
-            echo "Release placeholder not found in ${INDEX_FILE}" >&2
+          if ! grep -R -q "${RELEASE_PLACEHOLDER}" "${OUT_DIR}" --include='*.html'; then
+            echo "Release placeholder not found in ${OUT_DIR}/*.html" >&2
             exit 1
           fi
 
-          if ! grep -q "${VERSION_PLACEHOLDER}" "${INDEX_FILE}"; then
-            echo "Version placeholder not found in ${INDEX_FILE}" >&2
+          if ! grep -R -q "${VERSION_PLACEHOLDER}" "${OUT_DIR}" --include='*.html'; then
+            echo "Version placeholder not found in ${OUT_DIR}/*.html" >&2
             exit 1
           fi
 
@@ -61,15 +61,16 @@ jobs:
           from pathlib import Path
           import os
 
-          path = Path(os.environ.get("INDEX_FILE", "out/index.html"))
+          out_dir = Path(os.environ.get("OUT_DIR", "out"))
           release_placeholder = os.environ.get("RELEASE_PLACEHOLDER", "__KC_GAMES_RELEASE_EPOCH__")
           version_placeholder = os.environ.get("VERSION_PLACEHOLDER", "__KC_GAMES_COMMIT_SHORT__")
           release_epoch = os.environ["RELEASE_EPOCH"]
           commit_short = os.environ["COMMIT_SHORT"]
-          text = path.read_text()
-          text = text.replace(release_placeholder, release_epoch)
-          text = text.replace(version_placeholder, commit_short)
-          path.write_text(text)
+          for path in out_dir.rglob("*.html"):
+              text = path.read_text()
+              text = text.replace(release_placeholder, release_epoch)
+              text = text.replace(version_placeholder, commit_short)
+              path.write_text(text)
           PY
 
       - name: Build And Deploy
