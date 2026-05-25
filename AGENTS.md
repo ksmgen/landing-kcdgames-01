@@ -23,8 +23,8 @@ Update these files before every push if the codebase, content, or workflow chang
 
 ## Current App Notes
 
-- Main landing page lives in `src/app/page.tsx`.
-- Retailer landing flow lives in `src/app/retailer/page.tsx`.
+- Main landing page lives in `src/app/page.tsx` and declares homepage canonical metadata.
+- Retailer landing flow lives in `src/app/retailer/page.tsx` and declares retailer canonical metadata.
 - Global metadata, release/version markers, and Google Tag Manager are configured in `src/app/layout.tsx`.
 - Shared contact UI lives in `src/components/ContactWidget.tsx`.
 - Shared footer social link UI lives in `src/components/FacebookFooterLink.tsx`.

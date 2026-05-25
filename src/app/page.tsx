@@ -3,6 +3,16 @@ import ContactWidget from "../components/ContactWidget";
 import FacebookFooterLink from "../components/FacebookFooterLink";
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    url: "/",
+  },
+};
 
 const services = [
   {

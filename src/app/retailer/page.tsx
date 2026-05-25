@@ -2,6 +2,16 @@ import { ArrowRight, BadgeCheck, Home, Megaphone, PackageCheck, Store } from "lu
 import FacebookFooterLink from "../../components/FacebookFooterLink";
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/retailer",
+  },
+  openGraph: {
+    url: "/retailer",
+  },
+};
 
 const signupSteps = [
   {

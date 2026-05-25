@@ -17,8 +17,8 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 
 ## Current Files
 
-- `src/app/page.tsx`: Landing experience with hero, Riftbound launch announcement, brand/partner cards, services, mission, benefits, and contact section.
-- `src/app/retailer/page.tsx`: KC Games themed retailer pre-signup page that leads into the live Betobee signup.
+- `src/app/page.tsx`: Landing experience with hero, Riftbound launch announcement, brand/partner cards, services, mission, benefits, contact section, and homepage canonical metadata.
+- `src/app/retailer/page.tsx`: KC Games themed retailer pre-signup page that leads into the live Betobee signup and declares retailer canonical metadata.
 - `src/app/layout.tsx`: Root layout plus page metadata, release/version markers, and Google Tag Manager snippet.
 - `src/app/globals.css`: Tailwind entrypoint and global styles.
 - `src/components/ContactWidget.tsx`: Phone display and WhatsApp CTA with a simple math gate.
