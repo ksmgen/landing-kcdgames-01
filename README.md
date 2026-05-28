@@ -5,7 +5,7 @@ KC Games landing page built with **Next.js 14**, **TypeScript**, and **Tailwind 
 ## What is in this repo
 
 - A single-page marketing site in `src/app/page.tsx`
-- A KC Games themed retailer pre-signup page in `src/app/retailer/page.tsx`
+- A KC Games themed retailer pre-signup page in `src/app/retailer/page.tsx` for Malaysia & Brunei
 - Shared contact UI in `src/components/ContactWidget.tsx`
 - KC Games brand assets, mirrored retailer images, partner logos, and campaign banners in `public/`
 - Deployment workflows in `.github/workflows/`
