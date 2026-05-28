@@ -106,6 +106,9 @@ export default function Home() {
             >
               Game Distribution. Market Access. Growth.
             </h1>
+            <p className="mx-auto max-w-2xl text-sm font-medium uppercase tracking-[0.28em] text-silver-200/90 sm:text-base">
+              Serving retailers across Malaysia and Brunei.
+            </p>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">

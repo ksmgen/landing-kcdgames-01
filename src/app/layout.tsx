@@ -6,9 +6,9 @@ const SITE_URL = process.env.SITE_URL ?? "https://www.kc-games.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "KC Games | Game Distribution and Riftbound TCG Retail Support",
+  title: "KC Games | Game Distribution in Malaysia & Brunei",
   description:
-    "KC Games Sdn Bhd is a Kuala Lumpur game distribution company supporting retail growth, market access, and Riftbound Trading Card Game distribution across Malaysia and Brunei.",
+    "KC Games Sdn Bhd is a Kuala Lumpur game distribution company serving Malaysia and Brunei. We support retail growth, market access, and Riftbound Trading Card Game distribution.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "KC Games | Game Distribution and Riftbound TCG Retail Support",
+    title: "KC Games | Game Distribution in Malaysia & Brunei",
     description:
       "KC Games connects game publishers, retailers, and partners across Malaysia and Brunei, including Riftbound Trading Card Game retail support.",
     type: "website",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "KC Games | Game Distribution and Riftbound TCG Retail Support",
+    title: "KC Games | Game Distribution in Malaysia & Brunei",
     description:
       "KC Games supports game distribution, market access, and Riftbound Trading Card Game retail partnerships across Malaysia and Brunei.",
   },
