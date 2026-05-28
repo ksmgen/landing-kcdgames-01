@@ -23,9 +23,11 @@ Update these files before every push if the codebase, content, or workflow chang
 
 ## Current App Notes
 
-- Main landing page lives in `src/app/page.tsx` and declares homepage canonical metadata.
-- Retailer landing flow lives in `src/app/retailer/page.tsx` and declares retailer canonical metadata.
-- Global metadata, release/version markers, and Google Tag Manager are configured in `src/app/layout.tsx`.
+- Main landing page lives in `src/app/page.tsx`, declares homepage canonical metadata, and targets Malaysia & Brunei in the intro copy.
+- Retailer landing flow lives in `src/app/retailer/page.tsx`, declares retailer canonical metadata, and serves Malaysia & Brunei.
+- Global metadata, release/version markers, robots directives, and Google Tag Manager are configured in `src/app/layout.tsx`.
+- SEO routes live in `src/app/robots.ts` and `src/app/sitemap.ts`.
+- Homepage structured data is emitted as JSON-LD from `src/app/page.tsx`.
 - Shared contact UI lives in `src/components/ContactWidget.tsx`.
 - Shared footer social link UI lives in `src/components/FacebookFooterLink.tsx`.
 - Static assets are served from `public/`.

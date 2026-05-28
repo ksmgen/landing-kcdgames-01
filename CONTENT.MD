@@ -2,7 +2,7 @@ KC Games Sdn Bhd
 
 Game Distribution. Market Access. Growth.
 
-KC Games Sdn Bhd is a newly established game distribution company based in Kuala Lumpur, Malaysia. We focus on bringing high-quality digital and physical games to the right markets, connecting game developers and publishers with retail partners, platforms, and players across the region.
+KC Games Sdn Bhd is a newly established game distribution company based in Kuala Lumpur, Malaysia. We focus on bringing high-quality digital and physical games to the right markets, connecting game developers and publishers with retail partners, platforms, and players across Malaysia and Brunei.
 
 ⸻
 

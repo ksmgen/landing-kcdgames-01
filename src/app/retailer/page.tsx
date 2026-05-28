@@ -6,10 +6,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   alternates: {
-    canonical: "/retailer",
+    canonical: "/retailer.html",
   },
   openGraph: {
-    url: "/retailer",
+    url: "/retailer.html",
   },
 };
 
@@ -112,7 +112,7 @@ export default function RetailerPage() {
             <div className="grid gap-4 sm:grid-cols-3">
               {[
                 { label: "Flow", value: "3 steps" },
-                { label: "Location", value: "Malaysia" },
+                { label: "Location", value: "Malaysia & Brunei" },
                 { label: "Signup", value: "Betobee" },
               ].map((item) => (
                 <div key={item.label} className="rounded-2xl border border-navy-700/50 bg-navy-900/50 p-4 shadow-card">

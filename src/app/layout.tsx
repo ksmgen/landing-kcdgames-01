@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import React from "react";
 import "./globals.css";
 
+const SITE_URL = process.env.SITE_URL ?? "https://www.kc-games.com";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.kc-games.com"),
-  title: "KC Games | Game Distribution and Riftbound TCG Retail Support",
+  metadataBase: new URL(SITE_URL),
+  title: "KC Games | Game Distribution in Malaysia & Brunei",
   description:
-    "KC Games Sdn Bhd is a Kuala Lumpur game distribution company supporting retail growth, market access, and Riftbound Trading Card Game distribution in the region.",
+    "KC Games Sdn Bhd is a Kuala Lumpur game distribution company serving Malaysia and Brunei. We support retail growth, market access, and Riftbound Trading Card Game distribution.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -24,18 +26,36 @@ export const metadata: Metadata = {
     "trading card game distribution",
     "retailer signup",
     "Malaysia game distribution",
+    "Brunei game distribution",
+    "Malaysia and Brunei retail partners",
   ],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "KC Games | Game Distribution and Riftbound TCG Retail Support",
+    title: "KC Games | Game Distribution in Malaysia & Brunei",
     description:
-      "KC Games connects game publishers, retailers, and partners across the region, including Riftbound Trading Card Game retail support.",
+      "KC Games connects game publishers, retailers, and partners across Malaysia and Brunei, including Riftbound Trading Card Game retail support.",
     type: "website",
+    url: "/",
+    siteName: "KC Games",
   },
   twitter: {
     card: "summary_large_image",
-    title: "KC Games | Game Distribution and Riftbound TCG Retail Support",
+    title: "KC Games | Game Distribution in Malaysia & Brunei",
     description:
-      "KC Games supports game distribution, market access, and Riftbound Trading Card Game retail partnerships.",
+      "KC Games supports game distribution, market access, and Riftbound Trading Card Game retail partnerships across Malaysia and Brunei.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
