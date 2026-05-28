@@ -32,9 +32,31 @@ const services = [
   },
 ];
 
+const SITE_URL = process.env.SITE_URL ?? "https://www.kc-games.com";
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "KC Games Sdn Bhd",
+  url: SITE_URL,
+  description:
+    "KC Games Sdn Bhd is a game distribution company based in Kuala Lumpur, Malaysia, serving retail partners across Malaysia and Brunei.",
+  areaServed: ["Malaysia", "Brunei"],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Kuala Lumpur",
+    addressCountry: "MY",
+  },
+  serviceType: ["Game distribution", "Market entry", "Channel management", "Sales & logistics"],
+};
+
 export default function Home() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-navy-950 selection:bg-silver-500/30 selection:text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
       {/* Background Elements */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-navy-800 via-navy-950 to-navy-950 opacity-80" />
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150" />

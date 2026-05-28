@@ -19,7 +19,10 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 
 - `src/app/page.tsx`: Landing experience with hero, Riftbound launch announcement, brand/partner cards, services, mission, benefits, and contact section; intro copy targets Malaysia & Brunei.
 - `src/app/retailer/page.tsx`: KC Games themed retailer pre-signup page for Malaysia & Brunei that leads into the live Betobee signup.
-- `src/app/layout.tsx`: Root layout plus page metadata, release/version markers, and Google Tag Manager snippet.
+- `src/app/layout.tsx`: Root layout plus page metadata, robots directives, release/version markers, and Google Tag Manager snippet.
+- `src/app/robots.ts`: Static robots.txt metadata route with sitemap pointer.
+- `src/app/sitemap.ts`: Static sitemap metadata route for the homepage and retailer page.
+- `src/app/page.tsx`: Homepage content plus JSON-LD organization schema for Malaysia and Brunei SEO.
 - `src/app/globals.css`: Tailwind entrypoint and global styles.
 - `src/components/ContactWidget.tsx`: Phone display and WhatsApp CTA with a simple math gate.
 - `src/components/FacebookFooterLink.tsx`: Shared Facebook footer link used across landing pages.

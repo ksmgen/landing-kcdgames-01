@@ -8,6 +8,7 @@ KC Games landing page built with **Next.js 14**, **TypeScript**, and **Tailwind 
 - A KC Games themed retailer pre-signup page in `src/app/retailer/page.tsx` for Malaysia & Brunei
 - Shared contact UI in `src/components/ContactWidget.tsx`
 - KC Games brand assets, mirrored retailer images, partner logos, and campaign banners in `public/`
+- SEO helpers in `src/app/robots.ts`, `src/app/sitemap.ts`, and homepage JSON-LD
 - Deployment workflows in `.github/workflows/`
 - Source marketing copy in `CONTENT.MD`, including the homepage region copy for Malaysia & Brunei
 

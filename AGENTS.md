@@ -25,7 +25,9 @@ Update these files before every push if the codebase, content, or workflow chang
 
 - Main landing page lives in `src/app/page.tsx` and the intro copy targets Malaysia & Brunei.
 - Retailer landing flow lives in `src/app/retailer/page.tsx` and serves Malaysia & Brunei.
-- Global metadata, release/version markers, and Google Tag Manager are configured in `src/app/layout.tsx`.
+- Global metadata, release/version markers, robots directives, and Google Tag Manager are configured in `src/app/layout.tsx`.
+- SEO routes live in `src/app/robots.ts` and `src/app/sitemap.ts`.
+- Homepage structured data is emitted as JSON-LD from `src/app/page.tsx`.
 - Shared contact UI lives in `src/components/ContactWidget.tsx`.
 - Shared footer social link UI lives in `src/components/FacebookFooterLink.tsx`.
 - Static assets are served from `public/`.

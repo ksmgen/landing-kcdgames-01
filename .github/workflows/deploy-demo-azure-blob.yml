@@ -16,6 +16,8 @@ concurrency:
 jobs:
   build-and-upload:
     runs-on: ubuntu-latest
+    env:
+      SITE_URL: https://demolandingkcgames.z48.web.core.windows.net
 
     steps:
       - name: Checkout
