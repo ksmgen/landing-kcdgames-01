@@ -200,7 +200,7 @@ export default function Home() {
           <p className="mx-auto max-w-3xl text-lg leading-relaxed text-navy-200">
             KC Games Sdn Bhd is a game distribution company based in Kuala Lumpur, Malaysia. We focus on bringing
             high-quality digital and physical games to the right markets, connecting game developers and publishers
-            with retail partners, platforms, and players across the region.
+            with retail partners, platforms, and players across Malaysia and Brunei.
           </p>
         </section>
 

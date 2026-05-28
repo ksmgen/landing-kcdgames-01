@@ -23,7 +23,7 @@ Update these files before every push if the codebase, content, or workflow chang
 
 ## Current App Notes
 
-- Main landing page lives in `src/app/page.tsx`.
+- Main landing page lives in `src/app/page.tsx` and the intro copy targets Malaysia & Brunei.
 - Retailer landing flow lives in `src/app/retailer/page.tsx` and serves Malaysia & Brunei.
 - Global metadata, release/version markers, and Google Tag Manager are configured in `src/app/layout.tsx`.
 - Shared contact UI lives in `src/components/ContactWidget.tsx`.

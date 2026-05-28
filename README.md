@@ -9,7 +9,7 @@ KC Games landing page built with **Next.js 14**, **TypeScript**, and **Tailwind 
 - Shared contact UI in `src/components/ContactWidget.tsx`
 - KC Games brand assets, mirrored retailer images, partner logos, and campaign banners in `public/`
 - Deployment workflows in `.github/workflows/`
-- Source marketing copy in `CONTENT.MD`
+- Source marketing copy in `CONTENT.MD`, including the homepage region copy for Malaysia & Brunei
 
 ## Getting started
 

@@ -17,7 +17,7 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 
 ## Current Files
 
-- `src/app/page.tsx`: Landing experience with hero, Riftbound launch announcement, brand/partner cards, services, mission, benefits, and contact section.
+- `src/app/page.tsx`: Landing experience with hero, Riftbound launch announcement, brand/partner cards, services, mission, benefits, and contact section; intro copy targets Malaysia & Brunei.
 - `src/app/retailer/page.tsx`: KC Games themed retailer pre-signup page for Malaysia & Brunei that leads into the live Betobee signup.
 - `src/app/layout.tsx`: Root layout plus page metadata, release/version markers, and Google Tag Manager snippet.
 - `src/app/globals.css`: Tailwind entrypoint and global styles.
