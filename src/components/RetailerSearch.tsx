@@ -14,31 +14,52 @@ type RetailerSearchProps = {
   retailers: Retailer[];
 };
 
-const REGION_ORDER = [
-  "BRUNEI",
-  "JOHOR",
-  "KUALA LUMPUR",
-  "MELAKA",
-  "NEGERI SEMBILAN",
-  "PENANG",
-  "KEDAH",
-  "PERAK",
-  "SABAH",
-  "SARAWAK",
-  "SELANGOR",
-  "PAHANG",
+type RegionDef = { key: string; label: string };
+
+type SuperGroup = {
+  name: string;
+  regions: RegionDef[];
+  isCountry?: boolean;
+};
+
+const SUPER_GROUPS: SuperGroup[] = [
+  {
+    name: "Peninsular Malaysia",
+    regions: [
+      { key: "JOHOR", label: "Johor" },
+      { key: "KEDAH", label: "Kedah" },
+      { key: "KELANTAN", label: "Kelantan" },
+      { key: "MELAKA", label: "Melaka" },
+      { key: "NEGERI SEMBILAN", label: "Negeri Sembilan" },
+      { key: "PAHANG", label: "Pahang" },
+      { key: "PERAK", label: "Perak" },
+      { key: "PERLIS", label: "Perlis" },
+      { key: "PENANG", label: "Pulau Pinang" },
+      { key: "SELANGOR", label: "Selangor" },
+      { key: "TERENGGANU", label: "Terengganu" },
+      { key: "KUALA LUMPUR", label: "Kuala Lumpur" },
+      { key: "PUTRAJAYA", label: "Putrajaya" },
+    ],
+  },
+  {
+    name: "East Malaysia",
+    regions: [
+      { key: "SABAH", label: "Sabah" },
+      { key: "SARAWAK", label: "Sarawak" },
+      { key: "LABUAN", label: "Labuan" },
+    ],
+  },
+  {
+    name: "Brunei",
+    isCountry: true,
+    regions: [{ key: "BRUNEI", label: "Brunei" }],
+  },
 ];
 
-function titleCaseRegion(region: string) {
-  return region
-    .toLowerCase()
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
+const ALL_REGIONS = SUPER_GROUPS.flatMap((g) => g.regions);
 
-function regionAnchor(region: string) {
-  return region.toLowerCase().replace(/\s+/g, "-");
+function regionAnchor(key: string) {
+  return key.toLowerCase().replace(/\s+/g, "-");
 }
 
 function mapsUrl(name: string, address: string) {
@@ -56,8 +77,8 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollToRegion = (region: string) => {
-    const el = document.getElementById(regionAnchor(region));
+  const scrollToRegion = (key: string) => {
+    const el = document.getElementById(regionAnchor(key));
     if (el) {
       const y = el.getBoundingClientRect().top + window.scrollY - 24;
       window.scrollTo({ top: y, behavior: "smooth" });
@@ -72,27 +93,36 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
     const q = query.trim().toLowerCase();
     if (!q) return retailers;
     return retailers.filter((r) =>
-      [r.name, r.address, r.region].some((field) =>
-        field.toLowerCase().includes(q)
-      )
+      [r.name, r.address, r.region].some((field) => field.toLowerCase().includes(q))
     );
   }, [query, retailers]);
 
-  const grouped = useMemo(() => {
-    const regionMap = new Map<string, Retailer[]>();
+  const regionMap = useMemo(() => {
+    const map = new Map<string, Retailer[]>();
     filtered.forEach((r) => {
-      if (!regionMap.has(r.region)) regionMap.set(r.region, []);
-      regionMap.get(r.region)!.push(r);
+      if (!map.has(r.region)) map.set(r.region, []);
+      map.get(r.region)!.push(r);
     });
-    return REGION_ORDER.filter((region) => regionMap.has(region)).map((region) => ({
-      region,
-      retailers: regionMap.get(region)!,
-    }));
+    return map;
   }, [filtered]);
 
+  const grouped = useMemo(
+    () =>
+      SUPER_GROUPS.map((group) => ({
+        ...group,
+        regions: group.regions
+          .filter((region) => regionMap.has(region.key))
+          .map((region) => ({
+            ...region,
+            retailers: regionMap.get(region.key)!,
+          })),
+      })).filter((group) => group.regions.length > 0),
+    [regionMap]
+  );
+
   const availableRegions = useMemo(
-    () => grouped.map(({ region }) => region),
-    [grouped]
+    () => ALL_REGIONS.filter((region) => regionMap.has(region.key)),
+    [regionMap]
   );
 
   const countLabel = `${filtered.length} location${filtered.length === 1 ? "" : "s"}`;
@@ -130,12 +160,12 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
         <div className="mb-8 flex flex-wrap gap-2">
           {availableRegions.map((region) => (
             <button
-              key={region}
+              key={region.key}
               type="button"
-              onClick={() => scrollToRegion(region)}
+              onClick={() => scrollToRegion(region.key)}
               className="rounded-full border border-navy-700/50 bg-navy-900/60 px-3 py-1.5 text-xs font-semibold text-silver-300 transition-all hover:border-silver-500/40 hover:bg-navy-800 hover:text-white"
             >
-              {titleCaseRegion(region)}
+              {region.label}
             </button>
           ))}
         </div>
@@ -157,87 +187,110 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
           </button>
         </div>
       ) : (
-        <div className="space-y-10">
-          {grouped.map(({ region, retailers }) => (
-            <section key={region} id={regionAnchor(region)}>
-              <h3 className="mb-4 font-display text-xl font-semibold text-silver-100 sm:text-2xl">
-                {titleCaseRegion(region)}
-              </h3>
-
-              <div className="hidden overflow-hidden rounded-3xl border border-navy-700/50 bg-navy-900/40 shadow-2xl md:block">
-                <div className="grid grid-cols-[1.2fr_2fr] auto-rows-fr bg-navy-900/60 text-xs font-bold uppercase tracking-[0.2em] text-silver-400">
-                  <div className="border-b border-navy-700/50 px-6 py-4">Retailer</div>
-                  <div className="border-b border-navy-700/50 px-6 py-4">Address</div>
-
-                  {retailers.map((retailer, index) => {
-                    const isLast = index === retailers.length - 1;
-                    const borderClass = isLast ? "" : "border-b border-navy-700/50";
-                    return (
-                      <div key={retailer.id} className="contents">
-                        <div className={`group flex items-start gap-4 px-6 py-5 transition-colors hover:bg-navy-800/50 ${borderClass}`}>
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 transition-all group-hover:ring-silver-500/50">
-                            <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
-                          </div>
-                          <div className="min-w-0">
-                            <h4 className="font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
-                              {retailer.name}
-                            </h4>
-                          </div>
-                        </div>
-
-                        <a
-                          href={mapsUrl(retailer.name, retailer.address)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`Open ${retailer.name} address in Google Maps`}
-                          className={`group/addr flex items-start gap-2 px-6 py-5 text-sm text-navy-300 transition-colors hover:bg-navy-800/50 hover:text-silver-200 ${borderClass}`}
-                        >
-                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400 transition-colors group-hover/addr:text-silver-300" aria-hidden />
-                          <address className="not-italic leading-relaxed">
-                            {retailer.address}
-                          </address>
-                          <MapIcon className="ml-auto mt-0.5 h-4 w-4 shrink-0 text-navy-500 transition-colors group-hover/addr:text-silver-300" aria-hidden />
-                        </a>
-                      </div>
-                    );
-                  })}
-                </div>
+        <div className="space-y-16">
+          {grouped.map((group, groupIndex) => (
+            <div
+              key={group.name}
+              className={group.isCountry ? "rounded-3xl border border-amber-400/20 bg-amber-400/5 p-6 sm:p-8" : ""}
+            >
+              <div className="mb-6 flex items-center gap-3">
+                <div className={`h-px flex-1 ${group.isCountry ? "bg-amber-400/30" : "bg-navy-700/50"}`} />
+                <h2 className="font-display text-2xl font-bold text-silver-100 sm:text-3xl">{group.name}</h2>
+                <div className={`h-px flex-1 ${group.isCountry ? "bg-amber-400/30" : "bg-navy-700/50"}`} />
               </div>
 
-              <div className="grid gap-4 md:hidden">
-                {retailers.map((retailer) => (
-                  <article
-                    key={retailer.id}
-                    className="group relative flex flex-col overflow-hidden rounded-2xl border border-navy-700/50 bg-navy-900/60 p-5 transition-all hover:border-silver-500/40 hover:bg-navy-800/80"
-                  >
-                    <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none rounded-2xl" />
-                    <div className="relative flex items-start gap-3">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 group-hover:ring-silver-500/50">
-                        <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <h4 className="font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
-                          {retailer.name}
-                        </h4>
-                        <a
-                          href={mapsUrl(retailer.name, retailer.address)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`Open ${retailer.name} address in Google Maps`}
-                          className="group/addr mt-2 flex items-start gap-2 text-sm text-navy-300 transition-colors hover:text-silver-200"
-                        >
-                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400 transition-colors group-hover/addr:text-silver-300" aria-hidden />
-                          <address className="not-italic leading-relaxed">
-                            {retailer.address}
-                          </address>
-                          <MapIcon className="ml-auto mt-0.5 h-4 w-4 shrink-0 text-navy-500 transition-colors group-hover/addr:text-silver-300" aria-hidden />
-                        </a>
+              <div className="space-y-10">
+                {group.regions.map(({ key, label, retailers }) => (
+                  <section key={key} id={regionAnchor(key)}>
+                    <h3 className="mb-4 font-display text-xl font-semibold text-silver-100 sm:text-2xl">{label}</h3>
+
+                    <div className="hidden overflow-hidden rounded-3xl border border-navy-700/50 bg-navy-900/40 shadow-2xl md:block">
+                      <div className="grid grid-cols-[1.2fr_2fr] auto-rows-fr bg-navy-900/60 text-xs font-bold uppercase tracking-[0.2em] text-silver-400">
+                        <div className="border-b border-navy-700/50 px-6 py-4">Retailer</div>
+                        <div className="border-b border-navy-700/50 px-6 py-4">Address</div>
+
+                        {retailers.map((retailer, index) => {
+                          const isLast = index === retailers.length - 1;
+                          const borderClass = isLast ? "" : "border-b border-navy-700/50";
+                          return (
+                            <div key={retailer.id} className="contents">
+                              <div
+                                className={`group flex items-start gap-4 px-6 py-5 transition-colors hover:bg-navy-800/50 ${borderClass}`}
+                              >
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 transition-all group-hover:ring-silver-500/50">
+                                  <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
+                                </div>
+                                <div className="min-w-0">
+                                  <h4 className="font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
+                                    {retailer.name}
+                                  </h4>
+                                </div>
+                              </div>
+
+                              <a
+                                href={mapsUrl(retailer.name, retailer.address)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`Open ${retailer.name} address in Google Maps`}
+                                className={`group/addr flex items-start gap-2 px-6 py-5 text-sm text-navy-300 transition-colors hover:bg-navy-800/50 hover:text-silver-200 ${borderClass}`}
+                              >
+                                <MapPin
+                                  className="mt-0.5 h-4 w-4 shrink-0 text-navy-400 transition-colors group-hover/addr:text-silver-300"
+                                  aria-hidden
+                                />
+                                <address className="not-italic leading-relaxed">{retailer.address}</address>
+                                <MapIcon
+                                  className="ml-auto mt-0.5 h-4 w-4 shrink-0 text-navy-500 transition-colors group-hover/addr:text-silver-300"
+                                  aria-hidden
+                                />
+                              </a>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
-                  </article>
+
+                    <div className="grid gap-4 md:hidden">
+                      {retailers.map((retailer) => (
+                        <article
+                          key={retailer.id}
+                          className="group relative flex flex-col overflow-hidden rounded-2xl border border-navy-700/50 bg-navy-900/60 p-5 transition-all hover:border-silver-500/40 hover:bg-navy-800/80"
+                        >
+                          <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none rounded-2xl" />
+                          <div className="relative flex items-start gap-3">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 group-hover:ring-silver-500/50">
+                              <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <h4 className="font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
+                                {retailer.name}
+                              </h4>
+                              <a
+                                href={mapsUrl(retailer.name, retailer.address)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`Open ${retailer.name} address in Google Maps`}
+                                className="group/addr mt-2 flex items-start gap-2 text-sm text-navy-300 transition-colors hover:text-silver-200"
+                              >
+                                <MapPin
+                                  className="mt-0.5 h-4 w-4 shrink-0 text-navy-400 transition-colors group-hover/addr:text-silver-300"
+                                  aria-hidden
+                                />
+                                <address className="not-italic leading-relaxed">{retailer.address}</address>
+                                <MapIcon
+                                  className="ml-auto mt-0.5 h-4 w-4 shrink-0 text-navy-500 transition-colors group-hover/addr:text-silver-300"
+                                  aria-hidden
+                                />
+                              </a>
+                            </div>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  </section>
                 ))}
               </div>
-            </section>
+            </div>
           ))}
         </div>
       )}
