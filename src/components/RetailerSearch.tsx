@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, Search, Store, X } from "lucide-react";
+import { Map as MapIcon, MapPin, Search, Store, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
 type Retailer = {
@@ -37,6 +37,10 @@ function titleCaseRegion(region: string) {
     .join(" ");
 }
 
+function mapsUrl(address: string) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+}
+
 export default function RetailerSearch({ retailers }: RetailerSearchProps) {
   const [query, setQuery] = useState("");
 
@@ -51,14 +55,14 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
   }, [query, retailers]);
 
   const grouped = useMemo(() => {
-    const map = new Map<string, Retailer[]>();
+    const regionMap = new Map<string, Retailer[]>();
     filtered.forEach((r) => {
-      if (!map.has(r.region)) map.set(r.region, []);
-      map.get(r.region)!.push(r);
+      if (!regionMap.has(r.region)) regionMap.set(r.region, []);
+      regionMap.get(r.region)!.push(r);
     });
-    return REGION_ORDER.filter((region) => map.has(region)).map((region) => ({
+    return REGION_ORDER.filter((region) => regionMap.has(region)).map((region) => ({
       region,
-      retailers: map.get(region)!,
+      retailers: regionMap.get(region)!,
     }));
   }, [filtered]);
 
@@ -137,12 +141,19 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
                           </div>
                         </div>
 
-                        <div className={`flex items-start gap-2 px-6 py-5 text-sm text-navy-300 transition-colors hover:bg-navy-800/50 ${borderClass}`}>
-                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" aria-hidden />
+                        <a
+                          href={mapsUrl(retailer.address)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Open ${retailer.name} address in Google Maps`}
+                          className={`group/addr flex items-start gap-2 px-6 py-5 text-sm text-navy-300 transition-colors hover:bg-navy-800/50 hover:text-silver-200 ${borderClass}`}
+                        >
+                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400 transition-colors group-hover/addr:text-silver-300" aria-hidden />
                           <address className="not-italic leading-relaxed">
                             {retailer.address}
                           </address>
-                        </div>
+                          <MapIcon className="ml-auto mt-0.5 h-4 w-4 shrink-0 text-navy-500 transition-colors group-hover/addr:text-silver-300" aria-hidden />
+                        </a>
                       </div>
                     );
                   })}
@@ -164,12 +175,19 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
                         <h4 className="font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
                           {retailer.name}
                         </h4>
-                        <div className="mt-2 flex items-start gap-2 text-sm text-navy-300">
-                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" aria-hidden />
+                        <a
+                          href={mapsUrl(retailer.address)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Open ${retailer.name} address in Google Maps`}
+                          className="group/addr mt-2 flex items-start gap-2 text-sm text-navy-300 transition-colors hover:text-silver-200"
+                        >
+                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400 transition-colors group-hover/addr:text-silver-300" aria-hidden />
                           <address className="not-italic leading-relaxed">
                             {retailer.address}
                           </address>
-                        </div>
+                          <MapIcon className="ml-auto mt-0.5 h-4 w-4 shrink-0 text-navy-500 transition-colors group-hover/addr:text-silver-300" aria-hidden />
+                        </a>
                       </div>
                     </div>
                   </article>
