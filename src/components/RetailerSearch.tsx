@@ -37,8 +37,8 @@ function titleCaseRegion(region: string) {
     .join(" ");
 }
 
-function mapsUrl(address: string) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+function mapsUrl(name: string, address: string) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name}, ${address}`)}`;
 }
 
 export default function RetailerSearch({ retailers }: RetailerSearchProps) {
@@ -142,7 +142,7 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
                         </div>
 
                         <a
-                          href={mapsUrl(retailer.address)}
+                          href={mapsUrl(retailer.name, retailer.address)}
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`Open ${retailer.name} address in Google Maps`}
@@ -176,7 +176,7 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
                           {retailer.name}
                         </h4>
                         <a
-                          href={mapsUrl(retailer.address)}
+                          href={mapsUrl(retailer.name, retailer.address)}
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`Open ${retailer.name} address in Google Maps`}
