@@ -1,13 +1,15 @@
 "use client";
 
-import { ArrowUp, Map as MapIcon, MapPin, Search, Store, X } from "lucide-react";
+import { ArrowUp, Check, Map as MapIcon, MapPin, Search, Store, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-type Retailer = {
+export type Retailer = {
   id: number;
   name: string;
   address: string;
   region: string;
+  country: "Malaysia" | "Brunei";
+  playing: boolean;
 };
 
 type RetailerSearchProps = {
@@ -56,8 +58,6 @@ const SUPER_GROUPS: SuperGroup[] = [
   },
 ];
 
-const ALL_REGIONS = SUPER_GROUPS.flatMap((g) => g.regions);
-
 function regionAnchor(key: string) {
   return key.toLowerCase().replace(/\s+/g, "-");
 }
@@ -69,6 +69,7 @@ function mapsUrl(name: string, address: string) {
 export default function RetailerSearch({ retailers }: RetailerSearchProps) {
   const [query, setQuery] = useState("");
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [filterMode, setFilterMode] = useState<"all" | "playing">("all");
 
   useEffect(() => {
     const onScroll = () => setShowScrollTop(window.scrollY > 400);
@@ -91,11 +92,17 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return retailers;
-    return retailers.filter((r) =>
-      [r.name, r.address, r.region].some((field) => field.toLowerCase().includes(q))
+    let list = retailers;
+
+    if (filterMode === "playing") {
+      list = list.filter((r) => r.playing === true);
+    }
+
+    if (!q) return list;
+    return list.filter((r) =>
+      [r.name, r.address, r.region, r.country].some((field) => field.toLowerCase().includes(q))
     );
-  }, [query, retailers]);
+  }, [filterMode, query, retailers]);
 
   const regionMap = useMemo(() => {
     const map = new Map<string, Retailer[]>();
@@ -117,11 +124,6 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
             retailers: regionMap.get(region.key)!,
           })),
       })).filter((group) => group.regions.length > 0),
-    [regionMap]
-  );
-
-  const availableRegions = useMemo(
-    () => ALL_REGIONS.filter((region) => regionMap.has(region.key)),
     [regionMap]
   );
 
@@ -156,20 +158,80 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
         <p className="text-sm font-medium text-navy-300">{countLabel}</p>
       </div>
 
-      {availableRegions.length > 0 && (
-        <div className="mb-8 flex flex-wrap gap-2">
-          {availableRegions.map((region) => (
-            <button
-              key={region.key}
-              type="button"
-              onClick={() => scrollToRegion(region.key)}
-              className="rounded-full border border-navy-700/50 bg-navy-900/60 px-3 py-1.5 text-xs font-semibold text-silver-300 transition-all hover:border-silver-500/40 hover:bg-navy-800 hover:text-white"
+      <div className="mb-8 space-y-4">
+        {SUPER_GROUPS.map((group) => {
+          const groupHasResults = group.regions.some((r) => regionMap.has(r.key));
+
+          return (
+            <div
+              key={group.name}
+              aria-disabled={!groupHasResults}
+              className={`flex flex-wrap items-center gap-3 rounded-2xl border p-3 transition-opacity sm:p-4 ${
+                group.isCountry
+                  ? "border-amber-400/20 bg-amber-400/10"
+                  : "border-white/15 bg-white/5"
+              } ${groupHasResults ? "" : "opacity-40"}`}
             >
-              {region.label}
-            </button>
-          ))}
+              <span
+                className={`shrink-0 text-xs font-bold uppercase tracking-[0.2em] ${
+                  group.isCountry ? "text-amber-300" : "text-silver-300"
+                }`}
+              >
+                {group.name}
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {group.regions.map((region) => {
+                  const hasResults = regionMap.has(region.key);
+
+                  return (
+                    <button
+                      key={region.key}
+                      type="button"
+                      onClick={() => scrollToRegion(region.key)}
+                      disabled={!hasResults}
+                      className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-all disabled:cursor-not-allowed disabled:bg-navy-950/60 disabled:text-navy-600 ${
+                        group.isCountry
+                          ? "bg-amber-400/15 text-amber-200 hover:bg-amber-400/25 hover:text-white disabled:bg-amber-950/20 disabled:text-amber-900/70"
+                          : "bg-navy-900/60 text-silver-300 hover:bg-navy-800 hover:text-white"
+                      }`}
+                    >
+                      {region.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+
+        <div className="flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={() => setFilterMode("all")}
+            aria-pressed={filterMode === "all"}
+            className={`inline-flex items-center gap-3 rounded-2xl border px-4 py-3 text-xs font-bold uppercase tracking-[0.2em] transition-all ${
+              filterMode === "all"
+                ? "border-silver-400/40 bg-silver-400/15 text-silver-100"
+                : "border-silver-400/20 bg-navy-950/60 text-navy-400 hover:text-silver-200"
+            }`}
+          >
+            All
+          </button>
+          <button
+            type="button"
+            onClick={() => setFilterMode("playing")}
+            aria-pressed={filterMode === "playing"}
+            className={`inline-flex items-center gap-3 rounded-2xl border px-4 py-3 text-xs font-bold uppercase tracking-[0.2em] transition-all ${
+              filterMode === "playing"
+                ? "border-emerald-500/40 bg-emerald-500/20 text-emerald-200"
+                : "border-emerald-500/20 bg-navy-950/60 text-navy-400 hover:text-emerald-300"
+            }`}
+          >
+            {filterMode === "playing" && <Check className="h-3.5 w-3.5" aria-hidden />}
+            Playing Locations
+          </button>
         </div>
-      )}
+      </div>
 
       {filtered.length === 0 ? (
         <div className="rounded-3xl border border-navy-700/50 bg-navy-900/40 p-12 text-center shadow-2xl">
@@ -205,9 +267,9 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
                     <h3 className="mb-4 font-display text-xl font-semibold text-silver-100 sm:text-2xl">{label}</h3>
 
                     <div className="hidden overflow-hidden rounded-3xl border border-navy-700/50 bg-navy-900/40 shadow-2xl md:block">
-                      <div className="grid grid-cols-[1.2fr_2fr] auto-rows-fr bg-navy-900/60 text-xs font-bold uppercase tracking-[0.2em] text-silver-400">
-                        <div className="border-b border-navy-700/50 px-6 py-4">Retailer</div>
-                        <div className="border-b border-navy-700/50 px-6 py-4">Address</div>
+                      <div className="grid grid-cols-[1.2fr_2fr] bg-navy-900/60 text-xs font-bold uppercase tracking-[0.2em] text-silver-400">
+                        <div className="border-b border-navy-700/50 px-6 py-3">Retailer</div>
+                        <div className="border-b border-navy-700/50 px-6 py-3">Address</div>
 
                         {retailers.map((retailer, index) => {
                           const isLast = index === retailers.length - 1;
@@ -224,6 +286,12 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
                                   <h4 className="font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
                                     {retailer.name}
                                   </h4>
+                                  {retailer.playing && (
+                                    <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-400">
+                                      <Check className="h-3 w-3" aria-hidden />
+                                      Playing location
+                                    </span>
+                                  )}
                                 </div>
                               </div>
 
@@ -251,41 +319,49 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
                     </div>
 
                     <div className="grid gap-4 md:hidden">
-                      {retailers.map((retailer) => (
-                        <article
-                          key={retailer.id}
-                          className="group relative flex flex-col overflow-hidden rounded-2xl border border-navy-700/50 bg-navy-900/60 p-5 transition-all hover:border-silver-500/40 hover:bg-navy-800/80"
-                        >
-                          <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none rounded-2xl" />
-                          <div className="relative flex items-start gap-3">
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 group-hover:ring-silver-500/50">
-                              <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
+                      {retailers.map((retailer) => {
+                        return (
+                          <article
+                            key={retailer.id}
+                            className="group relative flex flex-col overflow-hidden rounded-2xl border border-navy-700/50 bg-navy-900/60 p-5 transition-all hover:border-silver-500/40 hover:bg-navy-800/80"
+                          >
+                            <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none rounded-2xl" />
+                            <div className="relative flex items-start gap-3">
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 group-hover:ring-silver-500/50">
+                                <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <h4 className="font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
+                                  {retailer.name}
+                                </h4>
+                                {retailer.playing && (
+                                  <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-400">
+                                    <Check className="h-3 w-3" aria-hidden />
+                                    Playing location
+                                  </span>
+                                )}
+                                <a
+                                  href={mapsUrl(retailer.name, retailer.address)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  aria-label={`Open ${retailer.name} address in Google Maps`}
+                                  className="group/addr mt-2 flex items-start gap-2 text-sm text-navy-300 transition-colors hover:text-silver-200"
+                                >
+                                  <MapPin
+                                    className="mt-0.5 h-4 w-4 shrink-0 text-navy-400 transition-colors group-hover/addr:text-silver-300"
+                                    aria-hidden
+                                  />
+                                  <address className="not-italic leading-relaxed">{retailer.address}</address>
+                                  <MapIcon
+                                    className="ml-auto mt-0.5 h-4 w-4 shrink-0 text-navy-500 transition-colors group-hover/addr:text-silver-300"
+                                    aria-hidden
+                                  />
+                                </a>
+                              </div>
                             </div>
-                            <div className="min-w-0 flex-1">
-                              <h4 className="font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
-                                {retailer.name}
-                              </h4>
-                              <a
-                                href={mapsUrl(retailer.name, retailer.address)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label={`Open ${retailer.name} address in Google Maps`}
-                                className="group/addr mt-2 flex items-start gap-2 text-sm text-navy-300 transition-colors hover:text-silver-200"
-                              >
-                                <MapPin
-                                  className="mt-0.5 h-4 w-4 shrink-0 text-navy-400 transition-colors group-hover/addr:text-silver-300"
-                                  aria-hidden
-                                />
-                                <address className="not-italic leading-relaxed">{retailer.address}</address>
-                                <MapIcon
-                                  className="ml-auto mt-0.5 h-4 w-4 shrink-0 text-navy-500 transition-colors group-hover/addr:text-silver-300"
-                                  aria-hidden
-                                />
-                              </a>
-                            </div>
-                          </div>
-                        </article>
-                      ))}
+                          </article>
+                        );
+                      })}
                     </div>
                   </section>
                 ))}

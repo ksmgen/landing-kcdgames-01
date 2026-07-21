@@ -25,10 +25,12 @@ Update these files before every push if the codebase, content, or workflow chang
 
 - Main landing page lives in `src/app/page.tsx`, declares homepage canonical metadata, and targets Malaysia & Brunei in the intro copy.
 - Retailer landing flow lives in `src/app/retailer/page.tsx`, declares retailer canonical metadata, and serves Malaysia & Brunei.
+- Retailer directory data lives in `src/data/retailers.json`; update this JSON when adding/removing retailers or changing country/playing-location flags.
 - Global metadata, release/version markers, robots directives, and Google Tag Manager are configured in `src/app/layout.tsx`.
 - SEO routes live in `src/app/robots.ts` and `src/app/sitemap.ts`.
 - Homepage structured data is emitted as JSON-LD from `src/app/page.tsx`.
 - Shared contact UI lives in `src/components/ContactWidget.tsx`.
+- Search/filter UI for the retailer directory lives in `src/components/RetailerSearch.tsx`.
 - Shared footer social link UI lives in `src/components/FacebookFooterLink.tsx`.
 - Static assets are served from `public/`.
 - Brand and partner logos live in `public/partners/`.
