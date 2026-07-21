@@ -134,6 +134,14 @@ export default function Home() {
             </Link>
             <a
               className="group inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              href="/retailers.html"
+            >
+              <span className="flex items-center gap-2 font-display tracking-wide">
+                Riftbound Official Retail Shops
+              </span>
+            </a>
+            <a
+              className="group inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               href="#contact-us"
             >
               <span className="flex items-center gap-2 font-display tracking-wide">
