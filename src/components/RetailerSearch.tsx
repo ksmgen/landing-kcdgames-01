@@ -1,15 +1,13 @@
 "use client";
 
-import { MapPin, Phone, Search, Store, X } from "lucide-react";
+import { MapPin, Search, Store, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
 type Retailer = {
   id: number;
   name: string;
   address: string;
-  city: string;
   region: string;
-  phone: string;
 };
 
 type RetailerSearchProps = {
@@ -23,7 +21,7 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
     const q = query.trim().toLowerCase();
     if (!q) return retailers;
     return retailers.filter((r) =>
-      [r.name, r.address, r.city, r.region, r.phone].some((field) =>
+      [r.name, r.address, r.region].some((field) =>
         field.toLowerCase().includes(q)
       )
     );
@@ -78,10 +76,9 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
       ) : (
         <>
           <div className="hidden overflow-hidden rounded-3xl border border-navy-700/50 bg-navy-900/40 shadow-2xl md:block">
-            <div className="grid grid-cols-[1.2fr_2fr_auto] auto-rows-fr bg-navy-900/60 text-xs font-bold uppercase tracking-[0.2em] text-silver-400">
+            <div className="grid grid-cols-[1.2fr_2fr] auto-rows-fr bg-navy-900/60 text-xs font-bold uppercase tracking-[0.2em] text-silver-400">
               <div className="border-b border-navy-700/50 px-6 py-4">Retailer</div>
               <div className="border-b border-navy-700/50 px-6 py-4">Address</div>
-              <div className="border-b border-navy-700/50 px-6 py-4 text-right">Contact</div>
 
               {filtered.map((retailer, index) => {
                 const isLast = index === filtered.length - 1;
@@ -106,19 +103,7 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
                       <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" aria-hidden />
                       <address className="not-italic leading-relaxed">
                         {retailer.address}
-                        <br />
-                        <span className="text-silver-300">{retailer.city}, {retailer.region}</span>
                       </address>
-                    </div>
-
-                    <div className={`flex items-end justify-end px-6 py-5 transition-colors hover:bg-navy-800/50 ${borderClass}`}>
-                      <a
-                        href={`tel:${retailer.phone.replace(/\s/g, "")}`}
-                        className="inline-flex items-center justify-center gap-2 rounded-lg border border-silver-400/30 bg-navy-900/60 px-4 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                      >
-                        <Phone className="h-4 w-4" aria-hidden />
-                        <span>{retailer.phone}</span>
-                      </a>
                     </div>
                   </div>
                 );
@@ -148,20 +133,9 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
                       <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" aria-hidden />
                       <address className="not-italic leading-relaxed">
                         {retailer.address}
-                        <br />
-                        <span className="text-silver-300">{retailer.city}, {retailer.region}</span>
                       </address>
                     </div>
                   </div>
-                </div>
-                <div className="relative mt-4 border-t border-navy-700/50 pt-4">
-                  <a
-                    href={`tel:${retailer.phone.replace(/\s/g, "")}`}
-                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-silver-400/30 bg-navy-900/60 px-4 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  >
-                    <Phone className="h-4 w-4" aria-hidden />
-                    <span>{retailer.phone}</span>
-                  </a>
                 </div>
               </article>
             ))}
