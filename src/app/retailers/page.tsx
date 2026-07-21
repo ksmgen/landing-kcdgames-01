@@ -1,6 +1,7 @@
 import { MapPin, Store, ChevronRight, Phone, MapPinned } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
+import React from "react";
 import FacebookFooterLink from "../../components/FacebookFooterLink";
 
 export const metadata: Metadata = {
@@ -181,52 +182,52 @@ export default function RetailersPage() {
           </div>
 
           <div className="hidden overflow-hidden rounded-3xl border border-navy-700/50 bg-navy-900/40 shadow-2xl md:block">
-            <div className="grid grid-cols-[1.2fr_2fr_auto] auto-rows-fr border-b border-navy-700/50 bg-navy-900/60 text-xs font-bold uppercase tracking-[0.2em] text-silver-400">
-              <div className="px-6 py-4">Retailer</div>
-              <div className="px-6 py-4">Address</div>
-              <div className="px-6 py-4 text-right">Contact</div>
+            <div className="grid grid-cols-[1.2fr_2fr_auto] auto-rows-fr bg-navy-900/60 text-xs font-bold uppercase tracking-[0.2em] text-silver-400">
+              <div className="border-b border-navy-700/50 px-6 py-4">Retailer</div>
+              <div className="border-b border-navy-700/50 px-6 py-4">Address</div>
+              <div className="border-b border-navy-700/50 px-6 py-4 text-right">Contact</div>
+
+              {retailers.map((retailer, index) => {
+                const isLast = index === retailers.length - 1;
+                const borderClass = isLast ? "" : "border-b border-navy-700/50";
+                return (
+                  <React.Fragment key={retailer.id}>
+                    <div className={`group flex items-start gap-4 px-6 py-5 transition-colors hover:bg-navy-800/50 ${borderClass}`}>
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 transition-all group-hover:ring-silver-500/50">
+                        <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="inline-block rounded-full border border-navy-600/50 bg-navy-950/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-silver-400">
+                          {retailer.region}
+                        </span>
+                        <h3 className="mt-1 font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
+                          {retailer.name}
+                        </h3>
+                      </div>
+                    </div>
+
+                    <div className={`flex items-start gap-2 px-6 py-5 text-sm text-navy-300 transition-colors hover:bg-navy-800/50 ${borderClass}`}>
+                      <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" aria-hidden />
+                      <address className="not-italic leading-relaxed">
+                        {retailer.address}
+                        <br />
+                        <span className="text-silver-300">{retailer.city}, {retailer.region}</span>
+                      </address>
+                    </div>
+
+                    <div className={`flex items-end justify-end px-6 py-5 transition-colors hover:bg-navy-800/50 ${borderClass}`}>
+                      <a
+                        href={`tel:${retailer.phone.replace(/\s/g, "")}`}
+                        className="inline-flex items-center justify-center gap-2 rounded-lg border border-silver-400/30 bg-navy-900/60 px-4 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                      >
+                        <Phone className="h-4 w-4" aria-hidden />
+                        <span>{retailer.phone}</span>
+                      </a>
+                    </div>
+                  </React.Fragment>
+                );
+              })}
             </div>
-
-            {retailers.map((retailer, index) => {
-              const isLast = index === retailers.length - 1;
-              const rowBorder = isLast ? "" : "border-b border-navy-700/50";
-              return (
-                <div key={retailer.id} className={`grid grid-cols-[1.2fr_2fr_auto] auto-rows-fr ${rowBorder} transition-colors hover:bg-navy-800/50`}>
-                  <div className="group flex items-start gap-4 px-6 py-5">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 transition-all group-hover:ring-silver-500/50">
-                      <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
-                    </div>
-                    <div className="min-w-0">
-                      <span className="inline-block rounded-full border border-navy-600/50 bg-navy-950/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-silver-400">
-                        {retailer.region}
-                      </span>
-                      <h3 className="mt-1 font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
-                        {retailer.name}
-                      </h3>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-2 px-6 py-5 text-sm text-navy-300">
-                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" aria-hidden />
-                    <address className="not-italic leading-relaxed">
-                      {retailer.address}
-                      <br />
-                      <span className="text-silver-300">{retailer.city}, {retailer.region}</span>
-                    </address>
-                  </div>
-
-                  <div className="flex items-end justify-end px-6 py-5">
-                    <a
-                      href={`tel:${retailer.phone.replace(/\s/g, "")}`}
-                      className="inline-flex items-center justify-center gap-2 rounded-lg border border-silver-400/30 bg-navy-900/60 px-4 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                    >
-                      <Phone className="h-4 w-4" aria-hidden />
-                      <span>{retailer.phone}</span>
-                    </a>
-                  </div>
-                </div>
-              );
-            })}
           </div>
 
           <div className="grid gap-4 md:hidden">
