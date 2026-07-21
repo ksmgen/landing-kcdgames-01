@@ -128,12 +128,8 @@ export default function RetailersPage() {
               KC Games
             </Link>
             <nav className="hidden items-center gap-6 text-sm font-semibold text-silver-300 md:flex">
-              <Link href="/" className="transition-colors hover:text-white">
-                Home
-              </Link>
-              <Link href="/retailer.html" className="transition-colors hover:text-white">
-                Sign Up as Retailer
-              </Link>
+              <Link href="/" className="transition-colors hover:text-white">Home</Link>
+              <Link href="/retailer.html" className="transition-colors hover:text-white">Sign Up as Retailer</Link>
             </nav>
           </div>
         </header>
@@ -184,47 +180,59 @@ export default function RetailersPage() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-navy-700/50 bg-navy-900/40 shadow-2xl">
-            {retailers.map((retailer, index) => (
-              <article
-                key={retailer.id}
-                className={`group relative flex flex-col items-start gap-5 p-6 transition-colors hover:bg-navy-800/50 sm:flex-row sm:items-center lg:gap-8 ${index !== retailers.length - 1 ? "border-b border-navy-700/50" : ""}`}
-              >
-                <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none rounded-none first:rounded-t-3xl last:rounded-b-3xl" />
-                <div className="relative flex items-center gap-4 sm:w-64 lg:w-72">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 group-hover:ring-silver-500/50">
-                    <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
-                  </div>
-                  <div className="min-w-0">
-                    <span className="inline-block rounded-full border border-navy-600/50 bg-navy-950/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-silver-400">
-                      {retailer.region}
-                    </span>
-                    <h3 className="mt-1 font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
-                      {retailer.name}
-                    </h3>
-                  </div>
-                </div>
-
-                <div className="relative flex flex-1 items-start gap-2 text-sm text-navy-300 sm:px-2 lg:px-4">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" aria-hidden />
-                  <address className="not-italic leading-relaxed">
-                    {retailer.address}
-                    <br />
-                    <span className="text-silver-300">
-                      {retailer.city}, {retailer.region}
-                    </span>
-                  </address>
-                </div>
-
-                <a
-                  href={`tel:${retailer.phone.replace(/\s/g, "")}`}
-                  className="relative inline-flex w-full items-center justify-center gap-2 rounded-lg border border-silver-400/30 bg-navy-900/60 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:w-auto sm:shrink-0"
-                >
-                  <Phone className="h-4 w-4" aria-hidden />
-                  <span>{retailer.phone}</span>
-                </a>
-              </article>
-            ))}
+          <div className="overflow-hidden rounded-3xl border border-navy-700/50 bg-navy-900/40 shadow-2xl">
+            <table className="w-full border-collapse text-left">
+              <thead>
+                <tr className="border-b border-navy-700/50 bg-navy-900/60 text-xs font-bold uppercase tracking-[0.2em] text-silver-400">
+                  <th className="px-6 py-4">Retailer</th>
+                  <th className="px-6 py-4">Address</th>
+                  <th className="px-6 py-4 text-right">Contact</th>
+                </tr>
+              </thead>
+              <tbody>
+                {retailers.map((retailer) => (
+                  <tr
+                    key={retailer.id}
+                    className="group border-b border-navy-700/50 transition-colors last:border-b-0 hover:bg-navy-800/50"
+                  >
+                    <td className="px-6 py-5 align-bottom">
+                      <div className="flex items-center gap-4">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 transition-all group-hover:ring-silver-500/50">
+                          <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
+                        </div>
+                        <div className="min-w-0">
+                          <span className="inline-block rounded-full border border-navy-600/50 bg-navy-950/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-silver-400">
+                            {retailer.region}
+                          </span>
+                          <h3 className="mt-1 font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
+                            {retailer.name}
+                          </h3>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 align-bottom">
+                      <div className="flex items-start gap-2 text-sm text-navy-300">
+                        <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" aria-hidden />
+                        <address className="not-italic leading-relaxed">
+                          {retailer.address}
+                          <br />
+                          <span className="text-silver-300">{retailer.city}, {retailer.region}</span>
+                        </address>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 align-bottom text-right">
+                      <a
+                        href={`tel:${retailer.phone.replace(/\s/g, "")}`}
+                        className="inline-flex items-center justify-center gap-2 rounded-lg border border-silver-400/30 bg-navy-900/60 px-4 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                      >
+                        <Phone className="h-4 w-4" aria-hidden />
+                        <span>{retailer.phone}</span>
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
 
           <div className="mt-16 rounded-3xl border border-navy-700/50 bg-card-gradient p-8 text-center shadow-2xl sm:p-12">
