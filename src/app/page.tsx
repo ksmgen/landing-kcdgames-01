@@ -219,12 +219,12 @@ export default function Home() {
                   </span>
                 </Link>
 
-                <a
-                  href="#contact-us"
+                <Link
+                  href="/retailers.html"
                   className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
-                  Contact Us
-                </a>
+                  Retailer List
+                </Link>
               </div>
             </div>
           </div>
