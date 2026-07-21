@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, House } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 import FacebookFooterLink from "../../components/FacebookFooterLink";
@@ -889,46 +889,31 @@ export default function RetailersPage() {
           </div>
         </header>
 
-        <section className="relative mx-4 mt-6 overflow-hidden rounded-3xl border border-amber-400/20 bg-[linear-gradient(135deg,rgba(12,24,43,0.95),rgba(18,39,67,0.92))] shadow-2xl sm:mx-10 lg:mx-16">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.22),transparent_36%)]" />
-          <div className="relative px-6 py-12 text-center sm:px-10 sm:py-16 lg:px-16 lg:py-20">
-            <div className="inline-flex rounded-full border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.32em] text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:text-xs">
-              Official Retailers
-            </div>
-            <h1 className="mx-auto mt-6 max-w-4xl font-display text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
-              Official Riftbound Retailers
-            </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-navy-100">
-              Find your nearest KC Games authorised retailer for Riftbound Trading Card Game products, organised play,
-              and community events across Malaysia and Brunei.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              <Link
-                href="/retailer.html"
-                className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
-                <span className="relative flex items-center gap-2 font-display tracking-wider">
-                  Sign Up as Retailer
-                  <ChevronRight className="h-5 w-5" aria-hidden />
-                </span>
-              </Link>
-              <Link
-                href="/"
-                className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                Back to Home
-              </Link>
+        <div className="relative mx-auto max-w-6xl px-6 pt-10 sm:px-10 lg:px-16">
+          <div className="flex items-center justify-between gap-4">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 rounded-full border border-silver-400/20 bg-navy-900/60 px-4 py-2 text-sm font-semibold text-silver-100 backdrop-blur-sm transition hover:border-silver-300/40 hover:bg-navy-800"
+              aria-label="Home"
+            >
+              <House className="h-4 w-4" aria-hidden />
+            </Link>
+            <div className="inline-flex items-center gap-2 rounded-full border border-silver-500/20 bg-silver-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-silver-200">
+              Retailers
             </div>
           </div>
-        </section>
+
+          <div className="mt-8 space-y-4">
+            <h1 className="font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
+              Our Retail Network
+            </h1>
+            <p className="max-w-2xl text-lg leading-relaxed text-navy-200">
+              Find your nearest KC Games authorised retailer for Riftbound Trading Card Game products across Malaysia and Brunei.
+            </p>
+          </div>
+        </div>
 
         <section className="mx-auto max-w-6xl px-6 py-12 sm:px-10 lg:px-16 lg:py-16">
-          <div className="mb-6">
-            <h2 className="font-display text-2xl font-bold text-silver-100 sm:text-3xl">Our Retail Network</h2>
-            <p className="mt-2 text-navy-200">Find a retailer by name, city, or state.</p>
-          </div>
-
           <RetailerSearch retailers={retailers} />
 
           <div className="mt-16 rounded-3xl border border-navy-700/50 bg-card-gradient p-8 text-center shadow-2xl sm:p-12">
@@ -949,9 +934,10 @@ export default function RetailersPage() {
               </Link>
               <Link
                 href="/"
-                className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="inline-flex items-center gap-2 rounded-full border border-silver-400/20 bg-navy-900/60 px-4 py-2 text-sm font-semibold text-silver-100 backdrop-blur-sm transition hover:border-silver-300/40 hover:bg-navy-800"
+                aria-label="Home"
               >
-                Back to Home
+                <House className="h-4 w-4" aria-hidden />
               </Link>
             </div>
           </div>

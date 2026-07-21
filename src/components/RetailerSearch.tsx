@@ -14,6 +14,29 @@ type RetailerSearchProps = {
   retailers: Retailer[];
 };
 
+const REGION_ORDER = [
+  "BRUNEI",
+  "JOHOR",
+  "KUALA LUMPUR",
+  "MELAKA",
+  "NEGERI SEMBILAN",
+  "PENANG",
+  "KEDAH",
+  "PERAK",
+  "SABAH",
+  "SARAWAK",
+  "SELANGOR",
+  "PAHANG",
+];
+
+function titleCaseRegion(region: string) {
+  return region
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export default function RetailerSearch({ retailers }: RetailerSearchProps) {
   const [query, setQuery] = useState("");
 
@@ -26,6 +49,18 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
       )
     );
   }, [query, retailers]);
+
+  const grouped = useMemo(() => {
+    const map = new Map<string, Retailer[]>();
+    filtered.forEach((r) => {
+      if (!map.has(r.region)) map.set(r.region, []);
+      map.get(r.region)!.push(r);
+    });
+    return REGION_ORDER.filter((region) => map.has(region)).map((region) => ({
+      region,
+      retailers: map.get(region)!,
+    }));
+  }, [filtered]);
 
   const countLabel = `${filtered.length} location${filtered.length === 1 ? "" : "s"}`;
 
@@ -74,73 +109,75 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
           </button>
         </div>
       ) : (
-        <>
-          <div className="hidden overflow-hidden rounded-3xl border border-navy-700/50 bg-navy-900/40 shadow-2xl md:block">
-            <div className="grid grid-cols-[1.2fr_2fr] auto-rows-fr bg-navy-900/60 text-xs font-bold uppercase tracking-[0.2em] text-silver-400">
-              <div className="border-b border-navy-700/50 px-6 py-4">Retailer</div>
-              <div className="border-b border-navy-700/50 px-6 py-4">Address</div>
+        <div className="space-y-10">
+          {grouped.map(({ region, retailers }) => (
+            <section key={region}>
+              <h3 className="mb-4 font-display text-xl font-semibold text-silver-100 sm:text-2xl">
+                {titleCaseRegion(region)}
+              </h3>
 
-              {filtered.map((retailer, index) => {
-                const isLast = index === filtered.length - 1;
-                const borderClass = isLast ? "" : "border-b border-navy-700/50";
-                return (
-                  <div key={retailer.id} className={`contents`}>
-                    <div className={`group flex items-start gap-4 px-6 py-5 transition-colors hover:bg-navy-800/50 ${borderClass}`}>
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 transition-all group-hover:ring-silver-500/50">
+              <div className="hidden overflow-hidden rounded-3xl border border-navy-700/50 bg-navy-900/40 shadow-2xl md:block">
+                <div className="grid grid-cols-[1.2fr_2fr] auto-rows-fr bg-navy-900/60 text-xs font-bold uppercase tracking-[0.2em] text-silver-400">
+                  <div className="border-b border-navy-700/50 px-6 py-4">Retailer</div>
+                  <div className="border-b border-navy-700/50 px-6 py-4">Address</div>
+
+                  {retailers.map((retailer, index) => {
+                    const isLast = index === retailers.length - 1;
+                    const borderClass = isLast ? "" : "border-b border-navy-700/50";
+                    return (
+                      <div key={retailer.id} className="contents">
+                        <div className={`group flex items-start gap-4 px-6 py-5 transition-colors hover:bg-navy-800/50 ${borderClass}`}>
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 transition-all group-hover:ring-silver-500/50">
+                            <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
+                          </div>
+                          <div className="min-w-0">
+                            <h4 className="font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
+                              {retailer.name}
+                            </h4>
+                          </div>
+                        </div>
+
+                        <div className={`flex items-start gap-2 px-6 py-5 text-sm text-navy-300 transition-colors hover:bg-navy-800/50 ${borderClass}`}>
+                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" aria-hidden />
+                          <address className="not-italic leading-relaxed">
+                            {retailer.address}
+                          </address>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="grid gap-4 md:hidden">
+                {retailers.map((retailer) => (
+                  <article
+                    key={retailer.id}
+                    className="group relative flex flex-col overflow-hidden rounded-2xl border border-navy-700/50 bg-navy-900/60 p-5 transition-all hover:border-silver-500/40 hover:bg-navy-800/80"
+                  >
+                    <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none rounded-2xl" />
+                    <div className="relative flex items-start gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 group-hover:ring-silver-500/50">
                         <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
                       </div>
-                      <div className="min-w-0">
-                        <span className="inline-block rounded-full border border-navy-600/50 bg-navy-950/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-silver-400">
-                          {retailer.region}
-                        </span>
-                        <h3 className="mt-1 font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
+                      <div className="min-w-0 flex-1">
+                        <h4 className="font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
                           {retailer.name}
-                        </h3>
+                        </h4>
+                        <div className="mt-2 flex items-start gap-2 text-sm text-navy-300">
+                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" aria-hidden />
+                          <address className="not-italic leading-relaxed">
+                            {retailer.address}
+                          </address>
+                        </div>
                       </div>
                     </div>
-
-                    <div className={`flex items-start gap-2 px-6 py-5 text-sm text-navy-300 transition-colors hover:bg-navy-800/50 ${borderClass}`}>
-                      <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" aria-hidden />
-                      <address className="not-italic leading-relaxed">
-                        {retailer.address}
-                      </address>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:hidden">
-            {filtered.map((retailer) => (
-              <article
-                key={retailer.id}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border border-navy-700/50 bg-navy-900/60 p-5 transition-all hover:border-silver-500/40 hover:bg-navy-800/80"
-              >
-                <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none rounded-2xl" />
-                <div className="relative flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 group-hover:ring-silver-500/50">
-                    <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <span className="inline-block rounded-full border border-navy-600/50 bg-navy-950/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-silver-400">
-                      {retailer.region}
-                    </span>
-                    <h3 className="mt-1 font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
-                      {retailer.name}
-                    </h3>
-                    <div className="mt-2 flex items-start gap-2 text-sm text-navy-300">
-                      <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" aria-hidden />
-                      <address className="not-italic leading-relaxed">
-                        {retailer.address}
-                      </address>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
       )}
     </>
   );
