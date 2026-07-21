@@ -1,7 +1,7 @@
 "use client";
 
-import { Map as MapIcon, MapPin, Search, Store, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ArrowUp, Map as MapIcon, MapPin, Search, Store, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 type Retailer = {
   id: number;
@@ -37,12 +37,36 @@ function titleCaseRegion(region: string) {
     .join(" ");
 }
 
+function regionAnchor(region: string) {
+  return region.toLowerCase().replace(/\s+/g, "-");
+}
+
 function mapsUrl(name: string, address: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name}, ${address}`)}`;
 }
 
 export default function RetailerSearch({ retailers }: RetailerSearchProps) {
   const [query, setQuery] = useState("");
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShowScrollTop(window.scrollY > 400);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollToRegion = (region: string) => {
+    const el = document.getElementById(regionAnchor(region));
+    if (el) {
+      const y = el.getBoundingClientRect().top + window.scrollY - 24;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -66,11 +90,16 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
     }));
   }, [filtered]);
 
+  const availableRegions = useMemo(
+    () => grouped.map(({ region }) => region),
+    [grouped]
+  );
+
   const countLabel = `${filtered.length} location${filtered.length === 1 ? "" : "s"}`;
 
   return (
     <>
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative w-full max-w-md">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
             <Search className="h-4 w-4 text-navy-400" aria-hidden />
@@ -97,6 +126,21 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
         <p className="text-sm font-medium text-navy-300">{countLabel}</p>
       </div>
 
+      {availableRegions.length > 0 && (
+        <div className="mb-8 flex flex-wrap gap-2">
+          {availableRegions.map((region) => (
+            <button
+              key={region}
+              type="button"
+              onClick={() => scrollToRegion(region)}
+              className="rounded-full border border-navy-700/50 bg-navy-900/60 px-3 py-1.5 text-xs font-semibold text-silver-300 transition-all hover:border-silver-500/40 hover:bg-navy-800 hover:text-white"
+            >
+              {titleCaseRegion(region)}
+            </button>
+          ))}
+        </div>
+      )}
+
       {filtered.length === 0 ? (
         <div className="rounded-3xl border border-navy-700/50 bg-navy-900/40 p-12 text-center shadow-2xl">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-navy-800/60">
@@ -115,7 +159,7 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
       ) : (
         <div className="space-y-10">
           {grouped.map(({ region, retailers }) => (
-            <section key={region}>
+            <section key={region} id={regionAnchor(region)}>
               <h3 className="mb-4 font-display text-xl font-semibold text-silver-100 sm:text-2xl">
                 {titleCaseRegion(region)}
               </h3>
@@ -197,6 +241,17 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
           ))}
         </div>
       )}
+
+      <button
+        type="button"
+        onClick={scrollToTop}
+        className={`fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-navy-700/50 bg-navy-900/80 text-silver-200 shadow-lg backdrop-blur-sm transition-all hover:border-silver-500/50 hover:bg-navy-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-silver-500/40 ${
+          showScrollTop ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0 pointer-events-none"
+        }`}
+        aria-label="Scroll to top"
+      >
+        <ArrowUp className="h-5 w-5" aria-hidden />
+      </button>
     </>
   );
 }
