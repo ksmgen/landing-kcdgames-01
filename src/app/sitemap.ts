@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 const SITE_URL = process.env.SITE_URL ?? "https://www.kc-games.com";
 
-const routes = ["/", "/retailer.html"];
+const routes = ["/", "/retailer.html", "/retailers.html"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();

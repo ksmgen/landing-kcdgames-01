@@ -5,27 +5,46 @@ import FacebookFooterLink from "../../components/FacebookFooterLink";
 import RetailerSearch from "../../components/RetailerSearch";
 
 export const metadata: Metadata = {
-  title: "Retailer List — KC Games Sdn Bhd",
-  description: "Official KC Games Riftbound Trading Card Game retailers across Malaysia and Brunei. Find your nearest stockist.",
+  title: "Authorised Riftbound Retailers in Malaysia & Brunei | KC Games",
+  description:
+    "Find 139+ authorised KC Games Riftbound TCG retailers across Malaysia and Brunei. Search by state — Johor, Kuala Lumpur, Selangor, Penang, Sabah, Sarawak and more — and get directions to your nearest stockist.",
   alternates: {
-    canonical: "https://www.kc-games.com/retailers.html",
+    canonical: "/retailers.html",
   },
   openGraph: {
-    title: "Retailer List — KC Games Sdn Bhd",
-    description: "Official KC Games Riftbound Trading Card Game retailers across Malaysia and Brunei. Find your nearest stockist.",
-    type: "website",
-    url: "https://www.kc-games.com/retailers.html",
+    title: "Authorised Riftbound Retailers in Malaysia & Brunei | KC Games",
+    description:
+      "Find 139+ authorised KC Games Riftbound TCG retailers across Malaysia and Brunei. Search by state and get directions to your nearest stockist.",
+    type: "article",
+    url: "/retailers.html",
     siteName: "KC Games",
     locale: "en_MY",
+    images: [
+      {
+        url: "/riftbound/riftbound-banner.jpg",
+        width: 1600,
+        height: 900,
+        alt: "Riftbound Trading Card Game by KC Games",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Retailer List — KC Games Sdn Bhd",
-    description: "Official KC Games Riftbound Trading Card Game retailers across Malaysia and Brunei.",
+    title: "Authorised Riftbound Retailers in Malaysia & Brunei | KC Games",
+    description:
+      "Find 139+ authorised KC Games Riftbound TCG retailers across Malaysia and Brunei. Search by state and get directions to your nearest stockist.",
+    images: ["/riftbound/riftbound-banner.jpg"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -866,9 +885,39 @@ const retailers = [
   },
 ];
 
+const retailersSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "KC Games Authorised Retailers",
+  description:
+    "Authorised KC Games Riftbound Trading Card Game retailers across Malaysia and Brunei.",
+  url: "https://www.kc-games.com/retailers.html",
+  itemListElement: retailers.map((retailer, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "Store",
+      name: retailer.name,
+      description: `Authorised KC Games Riftbound TCG retailer in ${retailer.region}`,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: retailer.address,
+        addressCountry: retailer.region === "BRUNEI" ? "BN" : "MY",
+      },
+      url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${retailer.name}, ${retailer.address}`)}`,
+    },
+  })),
+};
+
 export default function RetailersPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-navy-950 text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(retailersSchema),
+        }}
+      />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(36,59,83,0.85),_transparent_55%)]" />
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-15" />
 
