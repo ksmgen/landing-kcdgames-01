@@ -127,14 +127,18 @@ export default function RetailersPage() {
             >
               KC Games
             </Link>
-            <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-silver-300">
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
-              <Link href="/retailer.html" className="hover:text-white transition-colors">Sign Up as Retailer</Link>
+            <nav className="hidden items-center gap-6 text-sm font-semibold text-silver-300 md:flex">
+              <Link href="/" className="transition-colors hover:text-white">
+                Home
+              </Link>
+              <Link href="/retailer.html" className="transition-colors hover:text-white">
+                Sign Up as Retailer
+              </Link>
             </nav>
           </div>
         </header>
 
-        <section className="relative overflow-hidden rounded-3xl border border-amber-400/20 bg-[linear-gradient(135deg,rgba(12,24,43,0.95),rgba(18,39,67,0.92))] shadow-2xl mx-4 mt-6 sm:mx-10 lg:mx-16">
+        <section className="relative mx-4 mt-6 overflow-hidden rounded-3xl border border-amber-400/20 bg-[linear-gradient(135deg,rgba(12,24,43,0.95),rgba(18,39,67,0.92))] shadow-2xl sm:mx-10 lg:mx-16">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.22),transparent_36%)]" />
           <div className="relative px-6 py-12 text-center sm:px-10 sm:py-16 lg:px-16 lg:py-20">
             <div className="inline-flex rounded-full border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.32em] text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:text-xs">
@@ -144,8 +148,8 @@ export default function RetailersPage() {
               Official Riftbound Retailers
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-navy-100">
-              Find your nearest KC Games authorised retailer for Riftbound Trading Card Game products,
-              organised play, and community events across Malaysia and Brunei.
+              Find your nearest KC Games authorised retailer for Riftbound Trading Card Game products, organised play,
+              and community events across Malaysia and Brunei.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
@@ -169,58 +173,56 @@ export default function RetailersPage() {
         </section>
 
         <section className="mx-auto max-w-6xl px-6 py-12 sm:px-10 lg:px-16 lg:py-16">
-          <div className="flex items-center justify-between gap-4 mb-10">
+          <div className="mb-10 flex items-center justify-between gap-4">
             <div>
               <h2 className="font-display text-2xl font-bold text-silver-100 sm:text-3xl">Our Retail Network</h2>
-              <p className="mt-2 text-navy-200">
-                {retailers.length} authorised retailers across Malaysia and Brunei.
-              </p>
+              <p className="mt-2 text-navy-200">{retailers.length} authorised retailers across Malaysia and Brunei.</p>
             </div>
-            <div className="hidden sm:flex items-center gap-2 rounded-full border border-navy-700/50 bg-navy-900/60 px-4 py-2 text-xs font-semibold text-silver-300">
+            <div className="hidden items-center gap-2 rounded-full border border-navy-700/50 bg-navy-900/60 px-4 py-2 text-xs font-semibold text-silver-300 sm:flex">
               <MapPinned className="h-4 w-4" aria-hidden />
               <span>{retailers.length} locations</span>
             </div>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {retailers.map((retailer) => (
+          <div className="rounded-3xl border border-navy-700/50 bg-navy-900/40 shadow-2xl">
+            {retailers.map((retailer, index) => (
               <article
                 key={retailer.id}
-                className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-navy-700/50 bg-navy-900/60 transition-all hover:-translate-y-1 hover:border-silver-500/40 hover:bg-navy-800/80 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
+                className={`group relative flex flex-col items-start gap-5 p-6 transition-colors hover:bg-navy-800/50 sm:flex-row sm:items-center lg:gap-8 ${index !== retailers.length - 1 ? "border-b border-navy-700/50" : ""}`}
               >
-                <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none rounded-2xl" />
-
-                <div className="relative flex flex-1 flex-col p-6">
-                  <div className="flex items-start gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 group-hover:ring-silver-500/50">
-                      <Store className="h-5 w-5 text-silver-200 group-hover:text-white transition-colors" aria-hidden />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <span className="inline-block rounded-full border border-navy-600/50 bg-navy-950/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-silver-400">
-                        {retailer.region}
-                      </span>
-                      <h3 className="mt-1 font-display font-semibold text-silver-100 group-hover:text-white">{retailer.name}</h3>
-                    </div>
+                <div className="absolute inset-0 bg-foil opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none rounded-none first:rounded-t-3xl last:rounded-b-3xl" />
+                <div className="relative flex items-center gap-4 sm:w-64 lg:w-72">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-navy-800 to-navy-900 shadow-inner ring-1 ring-silver-500/20 group-hover:ring-silver-500/50">
+                    <Store className="h-5 w-5 text-silver-200 transition-colors group-hover:text-white" aria-hidden />
                   </div>
-
-                  <div className="mt-4 flex items-start gap-2 text-sm text-navy-300">
-                    <MapPin className="h-4 w-4 shrink-0 mt-0.5 text-navy-400" aria-hidden />
-                    <address className="not-italic leading-relaxed">
-                      {retailer.address}<br />
-                      <span className="text-silver-300">{retailer.city}, {retailer.region}</span>
-                    </address>
+                  <div className="min-w-0">
+                    <span className="inline-block rounded-full border border-navy-600/50 bg-navy-950/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-silver-400">
+                      {retailer.region}
+                    </span>
+                    <h3 className="mt-1 font-display font-semibold text-silver-100 transition-colors group-hover:text-white">
+                      {retailer.name}
+                    </h3>
                   </div>
                 </div>
 
-                <div className="relative border-t border-navy-700/50 p-6 pt-4">
-                  <a
-                    href={`tel:${retailer.phone.replace(/\s/g, "")}`}
-                    className="flex items-center justify-center gap-2 w-full rounded-lg border border-silver-400/30 bg-navy-900/60 px-4 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  >
-                    <Phone className="h-4 w-4" aria-hidden />
-                    <span>{retailer.phone}</span>
-                  </a>
+                <div className="relative flex flex-1 items-start gap-2 text-sm text-navy-300 sm:px-2 lg:px-4">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" aria-hidden />
+                  <address className="not-italic leading-relaxed">
+                    {retailer.address}
+                    <br />
+                    <span className="text-silver-300">
+                      {retailer.city}, {retailer.region}
+                    </span>
+                  </address>
                 </div>
+
+                <a
+                  href={`tel:${retailer.phone.replace(/\s/g, "")}`}
+                  className="relative inline-flex w-full items-center justify-center gap-2 rounded-lg border border-silver-400/30 bg-navy-900/60 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:w-auto sm:shrink-0"
+                >
+                  <Phone className="h-4 w-4" aria-hidden />
+                  <span>{retailer.phone}</span>
+                </a>
               </article>
             ))}
           </div>
