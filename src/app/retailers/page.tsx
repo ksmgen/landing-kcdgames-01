@@ -84,7 +84,13 @@ export default function RetailersPage() {
         }}
       />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(36,59,83,0.85),_transparent_55%)]" />
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-15" />
+      <div
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.18) 1px, transparent 0)",
+          backgroundSize: "24px 24px",
+        }}
+      />
 
       <div className="relative">
         <header className="sticky top-0 z-50 border-b border-white/10 bg-navy-950/80 backdrop-blur-sm">

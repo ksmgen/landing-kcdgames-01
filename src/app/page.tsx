@@ -68,7 +68,13 @@ export default function Home() {
       />
       {/* Background Elements */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-navy-800 via-navy-950 to-navy-950 opacity-80" />
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150" />
+      <div
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.18) 1px, transparent 0)",
+          backgroundSize: "24px 24px",
+        }}
+      />
 
       {/* Full Width Banner - Section 1: Hero */}
       <header className="relative w-full h-[80vh] min-h-[600px] shadow-2xl border-b border-navy-700/50">

@@ -76,7 +76,13 @@ export default function RetailerPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-navy-950 selection:bg-silver-500/30 selection:text-white">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(36,59,83,0.85),_transparent_55%)]" />
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-15" />
+      <div
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.18) 1px, transparent 0)",
+          backgroundSize: "24px 24px",
+        }}
+      />
 
       <div className="relative mx-auto flex max-w-6xl flex-col gap-16 px-6 py-10 sm:px-10 sm:py-14 lg:px-16 lg:py-16">
         <div className="flex items-center justify-between gap-4">
