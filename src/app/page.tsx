@@ -232,9 +232,9 @@ export default function Home() {
 
                 <a
                   href="/retailers.html"
-                  className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  className="inline-flex items-center justify-center rounded-lg border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-8 py-4 text-base font-semibold text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm transition-all hover:border-amber-300 hover:bg-[rgba(50,42,28,0.85)] hover:text-amber-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
                 >
-                  Retailer List
+                  Riftbound Official Stores
                 </a>
               </div>
             </div>
