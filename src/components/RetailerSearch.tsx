@@ -70,7 +70,7 @@ function mapsUrl(name: string, address: string) {
 export default function RetailerSearch({ retailers }: RetailerSearchProps) {
   const [query, setQuery] = useState("");
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [filterMode, setFilterMode] = useState<"all" | "hobby" | "retail">("all");
+  const [filterMode, setFilterMode] = useState<"all" | "playing" | "hobby" | "retail">("all");
 
   useEffect(() => {
     const onScroll = () => setShowScrollTop(window.scrollY > 400);
@@ -95,7 +95,9 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
     const q = query.trim().toLowerCase();
     let list = retailers;
 
-    if (filterMode !== "all") {
+    if (filterMode === "playing") {
+      list = list.filter((r) => r.playing === true);
+    } else if (filterMode !== "all") {
       list = list.filter((r) => r.storeType === filterMode);
     }
 
@@ -231,6 +233,19 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
           >
             {filterMode === "hobby" && <Check className="h-3.5 w-3.5" aria-hidden />}
             Hobby Gaming Stores
+          </button>
+          <button
+            type="button"
+            onClick={() => setFilterMode("playing")}
+            aria-pressed={filterMode === "playing"}
+            className={`inline-flex items-center gap-3 rounded-2xl border px-4 py-3 text-xs font-bold uppercase tracking-[0.2em] transition-all ${
+              filterMode === "playing"
+                ? "border-cyan-500/40 bg-cyan-500/20 text-cyan-200"
+                : "border-cyan-500/20 bg-navy-950/60 text-navy-400 hover:text-cyan-300"
+            }`}
+          >
+            {filterMode === "playing" && <Check className="h-3.5 w-3.5" aria-hidden />}
+            Playing Locations
           </button>
           <button
             type="button"
