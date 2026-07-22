@@ -234,7 +234,7 @@ export default function Home() {
                   href="/retailers.html"
                   className="inline-flex items-center justify-center rounded-lg border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-8 py-4 text-base font-semibold text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm transition-all hover:border-amber-300 hover:bg-[rgba(50,42,28,0.85)] hover:text-amber-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
                 >
-                  <span className="font-display tracking-wider">Riftbound Official Stores</span>
+                  <span className="font-display font-bold tracking-wider">Riftbound Official Stores</span>
                 </a>
               </div>
             </div>
