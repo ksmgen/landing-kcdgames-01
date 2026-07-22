@@ -6,7 +6,7 @@
     "region": "JOHOR",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 2,
@@ -15,7 +15,7 @@
     "region": "JOHOR",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 3,
@@ -24,7 +24,7 @@
     "region": "JOHOR",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 4,
@@ -33,7 +33,7 @@
     "region": "JOHOR",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 5,
@@ -60,7 +60,7 @@
     "region": "JOHOR",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 8,
@@ -69,7 +69,7 @@
     "region": "JOHOR",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 9,
@@ -78,7 +78,7 @@
     "region": "JOHOR",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 10,
@@ -87,7 +87,7 @@
     "region": "JOHOR",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 11,
@@ -267,7 +267,7 @@
     "region": "KUALA LUMPUR",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 31,
@@ -276,7 +276,7 @@
     "region": "KUALA LUMPUR",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 32,
@@ -285,7 +285,7 @@
     "region": "KUALA LUMPUR",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 33,
@@ -303,7 +303,7 @@
     "region": "KUALA LUMPUR",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 35,
@@ -483,7 +483,7 @@
     "region": "MELAKA",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 55,
