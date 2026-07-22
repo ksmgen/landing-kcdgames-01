@@ -10,6 +10,7 @@ export type Retailer = {
   region: string;
   country: "Malaysia" | "Brunei";
   playing: boolean;
+  storeType: "hobby" | "retail";
 };
 
 type RetailerSearchProps = {
@@ -31,16 +32,16 @@ const SUPER_GROUPS: SuperGroup[] = [
       { key: "JOHOR", label: "Johor" },
       { key: "KEDAH", label: "Kedah" },
       { key: "KELANTAN", label: "Kelantan" },
+      { key: "KUALA LUMPUR", label: "Kuala Lumpur" },
       { key: "MELAKA", label: "Melaka" },
       { key: "NEGERI SEMBILAN", label: "Negeri Sembilan" },
       { key: "PAHANG", label: "Pahang" },
+      { key: "PENANG", label: "Pulau Pinang" },
       { key: "PERAK", label: "Perak" },
       { key: "PERLIS", label: "Perlis" },
-      { key: "PENANG", label: "Pulau Pinang" },
+      { key: "PUTRAJAYA", label: "Putrajaya" },
       { key: "SELANGOR", label: "Selangor" },
       { key: "TERENGGANU", label: "Terengganu" },
-      { key: "KUALA LUMPUR", label: "Kuala Lumpur" },
-      { key: "PUTRAJAYA", label: "Putrajaya" },
     ],
   },
   {
@@ -69,7 +70,7 @@ function mapsUrl(name: string, address: string) {
 export default function RetailerSearch({ retailers }: RetailerSearchProps) {
   const [query, setQuery] = useState("");
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [filterMode, setFilterMode] = useState<"all" | "playing">("all");
+  const [filterMode, setFilterMode] = useState<"all" | "hobby" | "retail">("all");
 
   useEffect(() => {
     const onScroll = () => setShowScrollTop(window.scrollY > 400);
@@ -94,8 +95,8 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
     const q = query.trim().toLowerCase();
     let list = retailers;
 
-    if (filterMode === "playing") {
-      list = list.filter((r) => r.playing === true);
+    if (filterMode !== "all") {
+      list = list.filter((r) => r.storeType === filterMode);
     }
 
     if (!q) return list;
@@ -110,6 +111,7 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
       if (!map.has(r.region)) map.set(r.region, []);
       map.get(r.region)!.push(r);
     });
+    map.forEach((items) => items.sort((a, b) => a.name.localeCompare(b.name, "en-MY", { sensitivity: "base" })));
     return map;
   }, [filtered]);
 
@@ -219,16 +221,29 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
           </button>
           <button
             type="button"
-            onClick={() => setFilterMode("playing")}
-            aria-pressed={filterMode === "playing"}
+            onClick={() => setFilterMode("hobby")}
+            aria-pressed={filterMode === "hobby"}
             className={`inline-flex items-center gap-3 rounded-2xl border px-4 py-3 text-xs font-bold uppercase tracking-[0.2em] transition-all ${
-              filterMode === "playing"
+              filterMode === "hobby"
                 ? "border-emerald-500/40 bg-emerald-500/20 text-emerald-200"
                 : "border-emerald-500/20 bg-navy-950/60 text-navy-400 hover:text-emerald-300"
             }`}
           >
-            {filterMode === "playing" && <Check className="h-3.5 w-3.5" aria-hidden />}
-            Playing Locations
+            {filterMode === "hobby" && <Check className="h-3.5 w-3.5" aria-hidden />}
+            Hobby Gaming Stores
+          </button>
+          <button
+            type="button"
+            onClick={() => setFilterMode("retail")}
+            aria-pressed={filterMode === "retail"}
+            className={`inline-flex items-center gap-3 rounded-2xl border px-4 py-3 text-xs font-bold uppercase tracking-[0.2em] transition-all ${
+              filterMode === "retail"
+                ? "border-amber-500/40 bg-amber-500/20 text-amber-200"
+                : "border-amber-500/20 bg-navy-950/60 text-navy-400 hover:text-amber-300"
+            }`}
+          >
+            {filterMode === "retail" && <Check className="h-3.5 w-3.5" aria-hidden />}
+            Retail Only Stores
           </button>
         </div>
       </div>

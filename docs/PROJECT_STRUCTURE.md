@@ -27,8 +27,8 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 - `src/app/globals.css`: Tailwind entrypoint and global styles.
 - `src/components/ContactWidget.tsx`: Phone display and WhatsApp CTA with a simple math gate.
 - `src/components/FacebookFooterLink.tsx`: Shared Facebook footer link used across landing pages.
-- `src/components/RetailerSearch.tsx`: Retailer directory search, All/Playing Locations filters, and dynamic region navigation chips.
-- `src/data/retailers.json`: Retailer records with region, country, and playing-location flags.
+- `src/components/RetailerSearch.tsx`: Retailer directory search, All/Hobby Gaming Stores/Retail Only Stores filters, dynamic region navigation chips, and playing-location badges.
+- `src/data/retailers.json`: Retailer records with region, country, store-type, and playing-location flags.
 - `public/logo.png`: KC Games logo used in the hero section.
 - `public/banner.jpg`: Hero background image.
 - `public/partners/`: Click-through brand and partner logos for the homepage brand section.

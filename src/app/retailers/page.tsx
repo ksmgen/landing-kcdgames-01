@@ -8,14 +8,14 @@ import retailersData from "../../data/retailers.json";
 export const metadata: Metadata = {
   title: "Authorised Riftbound Retailers in Malaysia & Brunei | KC Games",
   description:
-    "Find 141 authorised KC Games Riftbound TCG retailers across Malaysia and Brunei. Search by state — Johor, Kuala Lumpur, Selangor, Penang, Sabah, Sarawak and more — and get directions to your nearest stockist.",
+    "Find 172 authorised KC Games Riftbound TCG retailers across Malaysia and Brunei. Filter by store type — all stores, hobby gaming stores, or retail only stores — and get directions to your nearest stockist.",
   alternates: {
     canonical: "/retailers.html",
   },
   openGraph: {
     title: "Authorised Riftbound Retailers in Malaysia & Brunei | KC Games",
     description:
-      "Find 141 authorised KC Games Riftbound TCG retailers across Malaysia and Brunei. Search by state and get directions to your nearest stockist.",
+      "Find 172 authorised KC Games Riftbound TCG retailers across Malaysia and Brunei. Search by state, filter by store type, and get directions to your nearest stockist.",
     type: "article",
     url: "/retailers.html",
     siteName: "KC Games",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Authorised Riftbound Retailers in Malaysia & Brunei | KC Games",
     description:
-      "Find 141 authorised KC Games Riftbound TCG retailers across Malaysia and Brunei. Search by state and get directions to your nearest stockist.",
+      "Find 172 authorised KC Games Riftbound TCG retailers across Malaysia and Brunei. Search by state, filter by store type, and get directions to your nearest stockist.",
     images: ["/riftbound/riftbound-banner.jpg"],
   },
   robots: {
