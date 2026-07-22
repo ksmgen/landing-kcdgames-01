@@ -1,7 +1,6 @@
 import { ArrowRight, BadgeCheck, Home, Megaphone, PackageCheck, Store } from "lucide-react";
 import FacebookFooterLink from "../../components/FacebookFooterLink";
 import Image from "next/image";
-import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -81,12 +80,12 @@ export default function RetailerPage() {
 
       <div className="relative mx-auto flex max-w-6xl flex-col gap-16 px-6 py-10 sm:px-10 sm:py-14 lg:px-16 lg:py-16">
         <div className="flex items-center justify-between gap-4">
-          <Link
+          <a
             href="/"
             className="inline-flex items-center gap-2 rounded-full border border-silver-400/20 bg-navy-900/60 px-4 py-2 text-sm font-semibold text-silver-100 backdrop-blur-sm transition hover:border-silver-300/40 hover:bg-navy-800"
           >
             <Home className="h-4 w-4" aria-hidden />
-          </Link>
+          </a>
 
           <div className="inline-flex items-center gap-2 rounded-full border border-silver-500/20 bg-silver-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-silver-200">
             <BadgeCheck className="h-4 w-4" aria-hidden />
@@ -136,12 +135,12 @@ export default function RetailerPage() {
                 </span>
               </a>
 
-              <Link
+              <a
                 href="/#contact-us"
                 className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 Contact first
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -256,13 +255,13 @@ export default function RetailerPage() {
                 </span>
               </a>
 
-              <Link
+              <a
                 href="/"
                 aria-label="Home"
                 className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-5 py-4 text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 <Home className="h-5 w-5" aria-hidden />
-              </Link>
+              </a>
             </div>
           </div>
         </section>
