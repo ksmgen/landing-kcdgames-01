@@ -5,7 +5,7 @@
     "address": "2nd Floor S50, Bukit Indah, 79100 Iskandar Puteri, Johor",
     "region": "JOHOR",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -14,7 +14,7 @@
     "address": "S138, S139, S140 2nd Floor, Aeon Tebrau City, 1, Jalan Desa Tebrau, Taman Desa Tebrau, 81100 Johor Bahru, Johor Darul Ta'zim",
     "region": "JOHOR",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -23,7 +23,7 @@
     "address": "108, JK4-03, Jalan Wong Ah Fook, Bandar Johor Bahru, 80000 Johor Bahru, Johor",
     "region": "JOHOR",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -32,7 +32,7 @@
     "address": "LG Lot TC-19 KSL City, 33, Jalan Seladang, Taman Abad, 80250 Johor Bahru, Johor Darul Ta'zim",
     "region": "JOHOR",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -59,7 +59,7 @@
     "address": "Paradigm Mall, Lot 4F-15, 4th Floor, Lbh Skudai, 81200 Johor Bahru, Johor Darul Ta'zim",
     "region": "JOHOR",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -68,7 +68,7 @@
     "address": "Lot GL-10A, Terminal Ground Floor, Senai International Airport",
     "region": "JOHOR",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -77,7 +77,7 @@
     "address": "G642-646, Sutera Mall, 1, Jalan Sutera Tanjung 8/4, Taman Sutera Utama, 81300 Skudai, Johor",
     "region": "JOHOR",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -86,7 +86,7 @@
     "address": "L2 75 & 76, Toppen Shopping Centre, 33A, Jalan Desa Harmonium, Taman Desa Tebrau, 81100, Johor Bahru, Johor",
     "region": "JOHOR",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -104,7 +104,7 @@
     "address": "LGK-18, Lower Ground Floor, South Court, Persiaran Southkey 1, Southkey, 80150 Johor Bahru, Johor Darul Ta'zim",
     "region": "JOHOR",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -136,11 +136,11 @@
   },
   {
     "id": 16,
-    "name": "Impulse Gaming (Johor)",
-    "address": "55, Jalan Serampang, Taman Sri Tebrau, 80050 Johor Bahru, Johor Darul Ta'zim",
+    "name": "Johor Bahru Headquarters (HQ)",
+    "address": "55, Jalan Serampang, Taman Sri Tebrau, 80050 Johor Bahru, Johor. 11.00AM - 10.00PM. 018-9623633",
     "region": "JOHOR",
     "country": "Malaysia",
-    "playing": false,
+    "playing": true,
     "storeType": "hobby"
   },
   {
@@ -266,7 +266,7 @@
     "address": "FK-112 1st Floor, 1 Utama Shopping Centre, Bandar Utama, 47800 Petaling Jaya, Selangor",
     "region": "KUALA LUMPUR",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -275,7 +275,7 @@
     "address": "Lot L3-221 Third Floor, IOI City Mall, Lbh IRC, 43000 Putrajaya, Selangor",
     "region": "KUALA LUMPUR",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -284,7 +284,7 @@
     "address": "LGC-19 Mid Valley Megamall, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur",
     "region": "KUALA LUMPUR",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -302,7 +302,7 @@
     "address": "L3-K-02 MyTown, 6, Jalan Cochrane, Seksyen 90, 55100 Kuala Lumpur, 55100 Cheras, Wilayah Persekutuan Kuala Lumpur",
     "region": "KUALA LUMPUR",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -379,11 +379,11 @@
   },
   {
     "id": 43,
-    "name": "Impluse Gaming (Sungai Besi)",
-    "address": "Lot 4, Jln Sungai Besi, Chan Sow Lin, 57100 Sungai Besi, Wilayah Persekutuan Kuala Lumpur",
+    "name": "Kuala Lumpur Flagship Store (S.Besi)",
+    "address": "Lot 4, Jln Sungai Besi, Chan Sow Lin, 57100 Sungai Besi, Wilayah Persekutuan Kuala Lumpur. 11.00AM - 10.00PM. 019-7660633",
     "region": "KUALA LUMPUR",
     "country": "Malaysia",
-    "playing": false,
+    "playing": true,
     "storeType": "hobby"
   },
   {
@@ -482,7 +482,7 @@
     "address": "Lot S41 & S42 of AEON Mall Bandaraya Melaka",
     "region": "MELAKA",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -644,7 +644,7 @@
     "address": "2F-16 (Second Floor) of Sunway Carnival Mall",
     "region": "PENANG",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -734,7 +734,7 @@
     "address": "KT03, 3rd Floor of Ipoh Parade Mall",
     "region": "PERAK",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
@@ -743,7 +743,7 @@
     "address": "Lot F47 AEON Ipoh Station 18 No.2, Susunan Stesen 18, Station 18, 31650 Ipoh, Perak, Malaysia",
     "region": "PERAK",
     "country": "Malaysia",
-    "playing": true,
+    "playing": false,
     "storeType": "hobby"
   },
   {
