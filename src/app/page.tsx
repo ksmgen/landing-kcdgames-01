@@ -126,31 +126,28 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex w-full max-w-4xl flex-wrap items-stretch justify-center gap-4">
             <a
-              className="order-2 sm:order-none group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="order-2 sm:order-none group relative inline-flex min-h-16 w-full items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:w-auto sm:min-w-[240px]"
               href="/retailer.html"
             >
               <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
-              <span className="relative flex items-center gap-2 font-display tracking-wider">
+              <span className="relative flex items-center gap-2 text-center font-display tracking-wider">
                 Sign up as retailer
                 <ArrowRight className="h-5 w-5" aria-hidden />
               </span>
             </a>
             <a
-              className="order-1 sm:order-none group inline-flex items-center justify-center rounded-lg border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-8 py-4 text-base font-semibold text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm transition-all hover:border-amber-300 hover:bg-[rgba(50,42,28,0.85)] hover:text-amber-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+              className="order-1 sm:order-none group inline-flex min-h-16 w-full items-center justify-center rounded-lg border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-8 py-4 text-base font-semibold text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm transition-all hover:border-amber-300 hover:bg-[rgba(50,42,28,0.85)] hover:text-amber-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 sm:w-auto sm:min-w-[240px]"
               href="/retailers.html"
             >
-              <span className="flex flex-col items-center text-center font-display tracking-wide leading-tight">
-                <span>Riftbound official</span>
-                <span>retail shop</span>
-              </span>
+              <span className="text-center font-display tracking-wide leading-tight">Riftbound Official Stores</span>
             </a>
             <a
-              className="order-3 sm:order-none group inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="order-3 sm:order-none group inline-flex min-h-16 w-full items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:w-auto sm:min-w-[240px]"
               href="#contact-us"
             >
-              <span className="flex items-center gap-2 font-display tracking-wide">
+              <span className="flex items-center gap-2 text-center font-display tracking-wide">
                 Contact Us
               </span>
             </a>
