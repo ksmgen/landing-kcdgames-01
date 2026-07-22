@@ -100,12 +100,12 @@
   },
   {
     "id": 12,
-    "name": "Box Hunt Midvalley Southkey",
+    "name": "Box Hunt - Midvalley Southkey",
     "address": "LGK-18, Lower Ground Floor, South Court, Persiaran Southkey 1, Southkey, 80150 Johor Bahru, Johor Darul Ta'zim",
     "region": "JOHOR",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 13,
@@ -640,12 +640,12 @@
   },
   {
     "id": 72,
-    "name": "Box Hunt Sunway Carnival Mall",
+    "name": "Box Hunt - Sunway Carnival Mall",
     "address": "2F-16 (Second Floor) of Sunway Carnival Mall",
     "region": "PENANG",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 73,
@@ -730,21 +730,21 @@
   },
   {
     "id": 82,
-    "name": "Box Hunt Ipoh Parade Mall",
+    "name": "Box Hunt - Ipoh Parade Mall",
     "address": "KT03, 3rd Floor of Ipoh Parade Mall",
     "region": "PERAK",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 83,
-    "name": "Box Hunt Ipoh Station 18",
+    "name": "Box Hunt - Ipoh Station 18",
     "address": "Lot F47 AEON Ipoh Station 18 No.2, Susunan Stesen 18, Station 18, 31650 Ipoh, Perak, Malaysia",
     "region": "PERAK",
     "country": "Malaysia",
     "playing": false,
-    "storeType": "hobby"
+    "storeType": "retail"
   },
   {
     "id": 84,
