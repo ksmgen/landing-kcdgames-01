@@ -280,21 +280,22 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
         </div>
       ) : (
         <div className="space-y-16">
-          {grouped.map((group, groupIndex) => (
-            <div
-              key={group.name}
-              className={group.isCountry ? "rounded-3xl border border-amber-400/20 bg-amber-400/5 p-6 sm:p-8" : ""}
-            >
+          {grouped.map((group) => (
+            <div key={group.name}>
               <div className="mb-6 flex items-center gap-3">
-                <div className={`h-px flex-1 ${group.isCountry ? "bg-amber-400/30" : "bg-navy-700/50"}`} />
-                <h2 className="font-display text-2xl font-bold text-silver-100 sm:text-3xl">{group.name}</h2>
-                <div className={`h-px flex-1 ${group.isCountry ? "bg-amber-400/30" : "bg-navy-700/50"}`} />
+                <div className="h-px flex-1 bg-navy-700/50" />
+                <h2 className="font-display text-2xl font-bold text-silver-100 sm:text-3xl">
+                  {group.isCountry ? `- ${group.name} -` : group.name}
+                </h2>
+                <div className="h-px flex-1 bg-navy-700/50" />
               </div>
 
               <div className="space-y-10">
                 {group.regions.map(({ key, label, retailers }) => (
                   <section key={key} id={regionAnchor(key)}>
-                    <h3 className="mb-4 font-display text-xl font-semibold text-silver-100 sm:text-2xl">{label}</h3>
+                    {!group.isCountry && (
+                      <h3 className="mb-4 font-display text-xl font-semibold text-silver-100 sm:text-2xl">{label}</h3>
+                    )}
 
                     <div className="hidden overflow-hidden rounded-3xl border border-navy-700/50 bg-navy-900/40 shadow-2xl md:block">
                       <div className="grid grid-cols-[1.2fr_2fr] bg-navy-900/60 text-xs font-bold uppercase tracking-[0.2em] text-silver-400">
