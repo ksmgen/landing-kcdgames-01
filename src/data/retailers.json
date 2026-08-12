@@ -1566,73 +1566,10 @@
     "storeType": "hobby"
   },
   {
-    "id": 175,
-    "name": "Game Town Entertainment Studio",
-    "address": "No.4-1 Jalan Rahmat 4, Taman Malim Jaya, 75250, Melaka, Melaka, Malaysia",
-    "region": "MELAKA",
-    "country": "Malaysia",
-    "playing": false,
-    "storeType": "hobby"
-  },
-  {
-    "id": 176,
-    "name": "LF COLLECTIBLES TRADING",
-    "address": "3A-01, Dataran Pelangi Utama, Jalan Masjid, PJU 6A, Bandar Utama, 47400, PJ, Selangor, Malaysia",
-    "region": "SELANGOR",
-    "country": "Malaysia",
-    "playing": false,
-    "storeType": "hobby"
-  },
-  {
-    "id": 177,
-    "name": "Brick & Block - Hobby Store",
-    "address": "36-1, Jalan Eco Majestic 10/1D, Eco Majestic, 43500, Semenyih, Selangor, Malaysia",
-    "region": "SELANGOR",
-    "country": "Malaysia",
-    "playing": false,
-    "storeType": "hobby"
-  },
-  {
-    "id": 178,
-    "name": "WIP SMART ENTEREPRISE",
-    "address": "Shuffle by Snacks & Ladders, 337m-2, Jalan Perak, 11600, Jelutong, Penang, Malaysia",
-    "region": "PENANG",
-    "country": "Malaysia",
-    "playing": false,
-    "storeType": "hobby"
-  },
-  {
-    "id": 179,
-    "name": "CARD BROS",
-    "address": "45-1, Lorong Batu Nilam 3A, Bandar Bukit Tinggi, 41200, Klang, Selangor, Malaysia",
-    "region": "SELANGOR",
-    "country": "Malaysia",
-    "playing": false,
-    "storeType": "hobby"
-  },
-  {
     "id": 180,
     "name": "Ping Ooi Card Game Trading",
     "address": "32 (orange gate), Lebuh Bakau, 11600, Jelutong, Penang, Malaysia",
     "region": "PENANG",
-    "country": "Malaysia",
-    "playing": false,
-    "storeType": "hobby"
-  },
-  {
-    "id": 181,
-    "name": "JHK TRADING",
-    "address": "2A-B JALAN BAYU TINGGI 5 TAMAN BAYU TINGGI KLANG SELANGOR 41200 KLANG SELANGOR, Malaysia",
-    "region": "SELANGOR",
-    "country": "Malaysia",
-    "playing": false,
-    "storeType": "hobby"
-  },
-  {
-    "id": 182,
-    "name": "Axes and Hexes",
-    "address": "2-1-42A Wisma Rampai, Jalan 34/26 Taman Sri Rampai, 53300, Setapak, Kuala Lumpur, Malaysia",
-    "region": "KUALA LUMPUR",
     "country": "Malaysia",
     "playing": false,
     "storeType": "hobby"
