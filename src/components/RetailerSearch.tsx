@@ -68,6 +68,7 @@ function normalizeAddress(address: string) {
     .replace(/\s+/g, " ")
     .replace(/\s*\.\s*(?:\d{1,2}\.\d{2}\s*(?:AM|PM|am|pm)\s*-\s*\d{1,2}\.\d{2}\s*(?:AM|PM|am|pm))\.?/g, "")
     .replace(/\s*(?:\.|,)?\s*01\d[-\s]?\d{7,8}\b/g, "")
+    .replace(/\bJln\b/gi, "JALAN")
     .replace(/\bW\.P\.\s*Kuala Lumpur\b/g, "Kuala Lumpur")
     .replace(/\bFederal Territory of Kuala Lumpur\b/g, "Kuala Lumpur")
     .replace(/\bWilayah Persekutuan Kuala Lumpur\b/g, "Kuala Lumpur")
