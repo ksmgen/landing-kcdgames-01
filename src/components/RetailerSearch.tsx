@@ -63,8 +63,24 @@ function regionAnchor(key: string) {
   return key.toLowerCase().replace(/\s+/g, "-");
 }
 
+function normalizeAddress(address: string) {
+  return address
+    .replace(/\s+/g, " ")
+    .replace(/\s*\.\s*(?:\d{1,2}\.\d{2}\s*(?:AM|PM|am|pm)\s*-\s*\d{1,2}\.\d{2}\s*(?:AM|PM|am|pm))\.?/g, "")
+    .replace(/\s*(?:\.|,)?\s*01\d[-\s]?\d{7,8}\b/g, "")
+    .replace(/\bW\.P\.\s*Kuala Lumpur\b/g, "Kuala Lumpur")
+    .replace(/\bFederal Territory of Kuala Lumpur\b/g, "Kuala Lumpur")
+    .replace(/\bWilayah Persekutuan Kuala Lumpur\b/g, "Kuala Lumpur")
+    .replace(/\bJohor Darul Ta'zim\b/g, "Johor")
+    .replace(/\bMY\b/g, "Malaysia")
+    .replace(/\s+,/g, ",")
+    .replace(/,{2,}/g, ",")
+    .replace(/\s*\.\s*$/g, "")
+    .trim();
+}
+
 function mapsUrl(name: string, address: string) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name}, ${address}`)}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name}, ${normalizeAddress(address)}`)}`;
 }
 
 export default function RetailerSearch({ retailers }: RetailerSearchProps) {
@@ -322,7 +338,7 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
                                   className="mt-0.5 h-4 w-4 shrink-0 text-navy-400 transition-colors group-hover/addr:text-silver-300"
                                   aria-hidden
                                 />
-                                <address className="not-italic leading-relaxed">{retailer.address}</address>
+                                <address className="min-w-0 flex-1 not-italic leading-relaxed">{normalizeAddress(retailer.address)}</address>
                                 <MapIcon
                                   className="ml-auto mt-0.5 h-4 w-4 shrink-0 text-navy-500 transition-colors group-hover/addr:text-silver-300"
                                   aria-hidden
@@ -367,7 +383,7 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
                                     className="mt-0.5 h-4 w-4 shrink-0 text-navy-400 transition-colors group-hover/addr:text-silver-300"
                                     aria-hidden
                                   />
-                                  <address className="not-italic leading-relaxed">{retailer.address}</address>
+                                  <address className="min-w-0 flex-1 not-italic uppercase leading-relaxed">{normalizeAddress(retailer.address)}</address>
                                   <MapIcon
                                     className="ml-auto mt-0.5 h-4 w-4 shrink-0 text-navy-500 transition-colors group-hover/addr:text-silver-300"
                                     aria-hidden
