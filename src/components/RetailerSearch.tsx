@@ -383,7 +383,7 @@ export default function RetailerSearch({ retailers }: RetailerSearchProps) {
                                     className="mt-0.5 h-4 w-4 shrink-0 text-navy-400 transition-colors group-hover/addr:text-silver-300"
                                     aria-hidden
                                   />
-                                  <address className="min-w-0 flex-1 not-italic leading-relaxed">{normalizeAddress(retailer.address)}</address>
+                                  <address className="min-w-0 flex-1 not-italic uppercase leading-relaxed">{normalizeAddress(retailer.address)}</address>
                                   <MapIcon
                                     className="ml-auto mt-0.5 h-4 w-4 shrink-0 text-navy-500 transition-colors group-hover/addr:text-silver-300"
                                     aria-hidden
