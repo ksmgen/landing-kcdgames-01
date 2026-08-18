@@ -1,6 +1,7 @@
 import { ArrowRight, Globe, Handshake, MapPin, Target, Truck, Users } from "lucide-react";
 import ContactWidget from "../components/ContactWidget";
 import FacebookFooterLink from "../components/FacebookFooterLink";
+import RetailerAppBanner from "../components/RetailerAppBanner";
 import Image from "next/image";
 import type { Metadata } from "next";
 
@@ -420,6 +421,8 @@ export default function Home() {
 
           </div>
         </section>
+
+        <RetailerAppBanner />
 
         <footer className="flex flex-col items-center gap-4 text-center -mt-8 pb-4">
           <FacebookFooterLink className="text-silver-400" />

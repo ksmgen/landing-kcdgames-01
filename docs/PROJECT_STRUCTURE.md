@@ -18,8 +18,8 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 
 ## Current Files
 
-- `src/app/page.tsx`: Landing experience with hero, Riftbound launch announcement, brand/partner cards, services, mission, benefits, contact section, homepage canonical metadata, and JSON-LD organization schema for Malaysia and Brunei SEO.
-- `src/app/retailer/page.tsx`: KC Games themed retailer pre-signup page that leads into the live Betobee signup, presents themed Betobee app-store download badges, serves Malaysia & Brunei, and declares retailer canonical metadata.
+- `src/app/page.tsx`: Landing experience with hero, Riftbound launch announcement, brand/partner cards, services, mission, benefits, contact section, shared Betobee retailer-app banner below Company Information, homepage canonical metadata, and JSON-LD organization schema for Malaysia and Brunei SEO.
+- `src/app/retailer/page.tsx`: KC Games themed retailer pre-signup page that leads into the live Betobee signup, presents the shared themed Betobee app-store download banner, serves Malaysia & Brunei, and declares retailer canonical metadata.
 - `src/app/retailers/page.tsx`: Authorised retailer directory page that imports retailer data from JSON and emits retailer ItemList JSON-LD.
 - `src/app/layout.tsx`: Root layout plus page metadata, robots directives, release/version markers, and Google Tag Manager snippet.
 - `src/app/robots.ts`: Static robots.txt metadata route with sitemap pointer.
@@ -27,6 +27,7 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 - `src/app/globals.css`: Tailwind entrypoint and global styles.
 - `src/components/ContactWidget.tsx`: Phone display and WhatsApp CTA with a simple math gate.
 - `src/components/FacebookFooterLink.tsx`: Shared Facebook footer link used across landing pages.
+- `src/components/RetailerAppBanner.tsx`: Shared navy/silver Betobee app-download banner used on the homepage and retailer flow.
 - `src/components/RetailerSearch.tsx`: Retailer directory search, All/Hobby Gaming Stores/Playing Locations/Retail Only Stores filters, dynamic region navigation chips, and playing-location badges.
 - `src/data/retailers.json`: Retailer records with region, country, store-type, and playing-location flags.
 - `public/logo.png`: KC Games logo used in the hero section.
