@@ -1,5 +1,6 @@
 import { ArrowRight, BadgeCheck, Home, Megaphone, PackageCheck, Store } from "lucide-react";
 import FacebookFooterLink from "../../components/FacebookFooterLink";
+import RetailerAppBanner from "../../components/RetailerAppBanner";
 import Image from "next/image";
 import type { Metadata } from "next";
 
@@ -127,26 +128,28 @@ export default function RetailerPage() {
               ))}
             </div>
 
-            <div className="flex flex-wrap items-center gap-4">
-              <a
-                href="https://betobee.co/sign-up/kc-games-sdn-bhd"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
-                <span className="relative flex items-center gap-2 font-display tracking-wider">
-                  Sign Up as Retailer
-                  <ArrowRight className="h-5 w-5" aria-hidden />
-                </span>
-              </a>
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-center gap-4">
+                <a
+                  href="https://betobee.co/sign-up/kc-games-sdn-bhd"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
+                  <span className="relative flex items-center gap-2 font-display tracking-wider">
+                    Sign Up as Retailer
+                    <ArrowRight className="h-5 w-5" aria-hidden />
+                  </span>
+                </a>
 
-              <a
-                href="/#contact-us"
-                className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                Contact first
-              </a>
+                <a
+                  href="/#contact-us"
+                  className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  Contact first
+                </a>
+              </div>
             </div>
           </div>
 
@@ -236,6 +239,8 @@ export default function RetailerPage() {
             ))}
           </div>
         </section>
+
+        <RetailerAppBanner />
 
         <section className="relative overflow-hidden rounded-3xl border border-navy-700/50 bg-card-gradient p-8 shadow-2xl sm:p-12">
           <div className="absolute top-0 left-0 h-16 w-16 rounded-tl-3xl border-l-2 border-t-2 border-silver-500/30" />

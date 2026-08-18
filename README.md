@@ -4,10 +4,10 @@ KC Games landing page built with **Next.js 14**, **TypeScript**, and **Tailwind 
 
 ## What is in this repo
 
-- A single-page marketing site in `src/app/page.tsx` with homepage canonical metadata
-- A KC Games themed retailer pre-signup page in `src/app/retailer/page.tsx` for Malaysia & Brunei with retailer canonical metadata
+- A single-page marketing site in `src/app/page.tsx` with homepage canonical metadata and the shared Betobee retailer-app banner below Company Information
+- A KC Games themed retailer pre-signup page in `src/app/retailer/page.tsx` for Malaysia & Brunei with retailer canonical metadata and the shared themed Betobee app-store download banner
 - An authorised retailer directory in `src/app/retailers/page.tsx`, backed by `src/data/retailers.json` with store-type and playing-location flags for easy add/remove updates
-- Shared contact UI in `src/components/ContactWidget.tsx`
+- Shared contact UI in `src/components/ContactWidget.tsx` and shared retailer-app UI in `src/components/RetailerAppBanner.tsx`
 - KC Games brand assets, mirrored retailer images, partner logos, and campaign banners in `public/`
 - SEO helpers in `src/app/robots.ts`, `src/app/sitemap.ts`, and homepage JSON-LD
 - Deployment workflows in `.github/workflows/`
