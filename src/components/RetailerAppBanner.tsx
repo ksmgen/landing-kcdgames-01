@@ -31,9 +31,6 @@ export default function RetailerAppBanner() {
             <h2 className="mt-1 font-display text-xl font-bold text-white sm:whitespace-nowrap sm:text-2xl">
               Get the Betobee Retailer app
             </h2>
-            <p className="mt-1 text-sm leading-relaxed text-navy-100">
-              Keep orders and retailer access close at hand.
-            </p>
           </div>
         </div>
 
