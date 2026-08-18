@@ -34,7 +34,7 @@ Update these files before every push if the codebase, content, or workflow chang
 - Shared footer social link UI lives in `src/components/FacebookFooterLink.tsx`.
 - Static assets are served from `public/`.
 - Brand and partner logos live in `public/partners/`.
-- Retailer flow images mirrored from the source retailer page live in `public/retailer/`.
+- Retailer flow images mirrored from the source retailer page live in `public/retailer/`; retailer mobile app download links are surfaced on the retailer flow page.
 - Riftbound announcement assets live in `public/riftbound/`.
 - `main` deploys through Azure Static Web Apps after GitHub Actions builds `out/` and stamps epoch release and short commit version markers across exported HTML pages.
 - `demo` deploys to Azure Blob Static Website through GitHub Actions, stamps exported HTML pages with epoch release and short commit version markers, logs the resolved preview URL, and can notify Telegram on completion.

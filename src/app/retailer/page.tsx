@@ -1,4 +1,4 @@
-import { ArrowRight, BadgeCheck, Home, Megaphone, PackageCheck, Store } from "lucide-react";
+import { ArrowRight, BadgeCheck, Home, Megaphone, PackageCheck, Smartphone, Store } from "lucide-react";
 import FacebookFooterLink from "../../components/FacebookFooterLink";
 import Image from "next/image";
 import type { Metadata } from "next";
@@ -72,6 +72,17 @@ const businessTerms = [
   "Shipping terms are Ex Works",
 ];
 
+const retailerAppLinks = [
+  {
+    label: "App Store",
+    href: "https://apps.apple.com/app/betobee-retailer/id6739699685",
+  },
+  {
+    label: "Google Play",
+    href: "https://play.google.com/store/apps/details?id=com.kc.b2bretailerapp",
+  },
+];
+
 export default function RetailerPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-navy-950 selection:bg-silver-500/30 selection:text-white">
@@ -127,26 +138,60 @@ export default function RetailerPage() {
               ))}
             </div>
 
-            <div className="flex flex-wrap items-center gap-4">
-              <a
-                href="https://betobee.co/sign-up/kc-games-sdn-bhd"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
-                <span className="relative flex items-center gap-2 font-display tracking-wider">
-                  Sign Up as Retailer
-                  <ArrowRight className="h-5 w-5" aria-hidden />
-                </span>
-              </a>
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-center gap-4">
+                <a
+                  href="https://betobee.co/sign-up/kc-games-sdn-bhd"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-silver-100 px-8 py-4 text-base font-bold text-navy-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  <span className="absolute inset-0 bg-foil opacity-20 transition-opacity group-hover:opacity-40" />
+                  <span className="relative flex items-center gap-2 font-display tracking-wider">
+                    Sign Up as Retailer
+                    <ArrowRight className="h-5 w-5" aria-hidden />
+                  </span>
+                </a>
 
-              <a
-                href="/#contact-us"
-                className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                Contact first
-              </a>
+                <a
+                  href="/#contact-us"
+                  className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-900/60 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  Contact first
+                </a>
+              </div>
+
+              <div className="max-w-xl rounded-2xl border border-silver-500/20 bg-navy-900/60 p-4 shadow-card backdrop-blur-sm sm:p-5">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-start gap-3 text-left">
+                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-silver-500/10 text-silver-200 ring-1 ring-silver-500/20">
+                      <Smartphone className="h-5 w-5" aria-hidden />
+                    </span>
+                    <div>
+                      <p className="font-display text-sm font-bold uppercase tracking-[0.25em] text-silver-200">
+                        Get the Betobee Retailer app
+                      </p>
+                      <p className="mt-1 text-sm leading-relaxed text-navy-200">
+                        Manage retailer access from your preferred mobile store.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-3 sm:justify-end">
+                    {retailerAppLinks.map((link) => (
+                      <a
+                        key={link.label}
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center rounded-lg border border-silver-400/30 bg-navy-950/60 px-4 py-2 text-sm font-semibold text-silver-100 transition-all hover:border-white hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                      >
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
