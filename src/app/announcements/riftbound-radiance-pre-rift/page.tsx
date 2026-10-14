@@ -141,6 +141,11 @@ export default function RiftboundRadiancePreRiftAnnouncementPage() {
                 <p className="max-w-3xl text-lg leading-relaxed text-navy-100">
                   As a result, some Pre-Rift events scheduled for this coming weekend may be affected.
                 </p>
+                <br />
+                <h2 className="flex items-center gap-3 font-display text-xl font-bold text-amber-200 sm:text-2xl">
+                  <AlertTriangle className="h-6 w-6 shrink-0" aria-hidden />
+                  WHAT DOES THIS MEAN FOR PLAYERS?
+                </h2>
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
