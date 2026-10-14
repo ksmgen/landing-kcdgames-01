@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AlertTriangle, ArrowLeft, CalendarDays, HeartHandshake, PackageCheck, Store } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CalendarDays, HeartHandshake, PackageCheck, Ticket, Megaphone } from "lucide-react";
 import FacebookFooterLink from "../../../components/FacebookFooterLink";
 
 export const metadata: Metadata = {
@@ -66,10 +66,18 @@ const infoCards = [
   },
   {
     title: "Existing Registrations & Payments",
-    icon: <Store className="h-5 w-5" aria-hidden />,
-    body:
-      "If you have already registered or paid for a Pre-Rift event, please contact your respective participating retailer directly for updates regarding your event. Each retailer will manage its own arrangements, including rescheduling, registration transfers and refunds where applicable.",
+    icon: <Ticket className="h-5 w-5" aria-hidden />,
+    body: (
+      <>
+        If you have already registered or paid for a Pre-Rift event, please contact your respective participating retailer directly for updates regarding your event.
+        <br /><br />
+        Each retailer will be managing its own event arrangements, including rescheduling, registration transfers and refunds where applicable.
+      </>
+    ),
   },
+];
+
+const companyCards = [
   {
     title: "KC Games Action",
     icon: <PackageCheck className="h-5 w-5" aria-hidden />,
@@ -171,11 +179,34 @@ export default function RiftboundRadiancePreRiftAnnouncementPage() {
               </div>
 
               <section className="rounded-2xl border border-silver-400/20 bg-navy-900/45 p-6">
-                <h2 className="font-display text-2xl font-bold text-white">Stay Updated</h2>
+                <h2 className="flex items-center gap-3 font-display text-2xl font-bold text-white"><Megaphone className="h-6 w-6 shrink-0 text-amber-200" aria-hidden />Stay Updated</h2>
                 <p className="mt-4 leading-relaxed text-navy-100">
-                  We strongly encourage all players to check with their respective retailers before travelling to any scheduled Pre-Rift event. Please follow your retailer’s official communication channels for the latest event updates.
+                  We strongly encourage all players to check with their respective retailers before travelling to any scheduled Pre-Rift event.
+                  <br /><br />
+                  Please follow your retailer’s official communication channels for the latest event updates.
                 </p>
               </section>
+
+              <h2 className="flex items-center gap-3 font-display text-xl font-bold text-amber-200 sm:text-2xl">
+                <PackageCheck className="h-6 w-6 shrink-0" aria-hidden />
+                WHAT IS KC GAMES DOING?
+              </h2>
+              <div className="grid gap-4 md:grid-cols-2">
+                {companyCards.map((card) => (
+                  <section
+                    key={card.title}
+                    className="rounded-2xl border border-navy-700/60 bg-navy-900/55 p-5 shadow-lg"
+                  >
+                    <div className="flex items-center gap-3 text-amber-200">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-400/10 ring-1 ring-amber-300/30">
+                        {card.icon}
+                      </div>
+                      <h2 className="font-display text-lg font-bold text-white">{card.title}</h2>
+                    </div>
+                    <p className="mt-4 text-sm leading-relaxed text-navy-100 sm:text-base">{card.body}</p>
+                  </section>
+                ))}
+              </div>
 
               <section className="rounded-2xl border border-amber-400/25 bg-amber-400/10 p-6">
                 <h2 className="font-display text-2xl font-bold text-white">To Our Riftbound Community</h2>
