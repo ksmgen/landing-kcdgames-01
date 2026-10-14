@@ -1,4 +1,4 @@
-import { ArrowRight, Globe, Handshake, MapPin, Target, Truck, Users } from "lucide-react";
+import { AlertTriangle, ArrowRight, Globe, Handshake, MapPin, Target, Truck, Users } from "lucide-react";
 import ContactWidget from "../components/ContactWidget";
 import FacebookFooterLink from "../components/FacebookFooterLink";
 import RetailerAppBanner from "../components/RetailerAppBanner";
@@ -139,6 +139,15 @@ export default function Home() {
               </span>
             </a>
             <a
+              className="order-1 sm:order-none group inline-flex min-h-16 w-full items-center justify-center rounded-lg border border-red-400/50 bg-red-950/80 px-8 py-4 text-base font-semibold text-red-100 shadow-[0_10px_30px_rgba(0,0,0,0.32)] backdrop-blur-sm transition-all hover:border-red-300 hover:bg-red-900 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400 sm:w-auto sm:min-w-[260px]"
+              href="/announcements/riftbound-radiance-pre-rift.html"
+            >
+              <span className="flex items-center gap-2 text-center font-display tracking-wide leading-tight">
+                <AlertTriangle className="h-5 w-5" aria-hidden />
+                Urgent Riftbound Notice
+              </span>
+            </a>
+            <a
               className="order-1 sm:order-none group inline-flex min-h-16 w-full items-center justify-center rounded-lg border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-8 py-4 text-base font-semibold text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm transition-all hover:border-amber-300 hover:bg-[rgba(50,42,28,0.85)] hover:text-amber-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 sm:w-auto sm:min-w-[240px]"
               href="/retailers.html"
             >
@@ -168,6 +177,34 @@ export default function Home() {
           </div>
         </div>
       </header>
+
+      <section className="relative z-10 mx-auto -mt-10 max-w-6xl px-6 sm:px-10 lg:px-16">
+        <a
+          href="/announcements/riftbound-radiance-pre-rift.html"
+          className="group block rounded-3xl border border-red-400/40 bg-[linear-gradient(135deg,rgba(69,10,10,0.96),rgba(32,28,21,0.96))] p-6 shadow-2xl shadow-red-950/30 transition hover:-translate-y-1 hover:border-red-300/70 sm:p-8"
+        >
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-red-500/15 text-red-100 ring-1 ring-red-300/40">
+                <AlertTriangle className="h-6 w-6" aria-hidden />
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.3em] text-red-200">Urgent Official Announcement</p>
+                <h2 className="mt-2 font-display text-2xl font-bold leading-tight text-white sm:text-3xl">
+                  Riftbound: Radiance Pre-Rift Events – Malaysia
+                </h2>
+                <p className="mt-3 max-w-3xl text-sm leading-relaxed text-red-50/90 sm:text-base">
+                  Product arrival may be affected by customs clearance delays. Players should check with their participating retailers before travelling to scheduled Pre-Rift events.
+                </p>
+              </div>
+            </div>
+            <span className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-bold text-red-950 transition group-hover:bg-red-50">
+              Read Announcement
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </span>
+          </div>
+        </a>
+      </section>
 
       <div className="relative mx-auto flex max-w-6xl flex-col gap-16 px-6 py-16 sm:px-10 sm:py-20 lg:px-16 lg:py-24">
 

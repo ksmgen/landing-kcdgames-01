@@ -23,6 +23,7 @@ Update these files before every push if the codebase, content, or workflow chang
 
 ## Current App Notes
 
+- Homepage highlights the urgent Riftbound: Radiance Pre-Rift announcement and links to `src/app/announcements/riftbound-radiance-pre-rift/page.tsx`.
 - Main landing page lives in `src/app/page.tsx`, declares homepage canonical metadata, targets Malaysia & Brunei in the intro copy, and shows the shared Betobee retailer-app banner below Company Information.
 - Retailer landing flow lives in `src/app/retailer/page.tsx`, declares retailer canonical metadata, serves Malaysia & Brunei, and reuses the same app banner before its final signup CTA.
 - Retailer directory data lives in `src/data/retailers.json`; update this JSON when adding/removing retailers or changing country/store-type/playing-location flags.
