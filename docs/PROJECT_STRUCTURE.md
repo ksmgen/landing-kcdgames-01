@@ -18,8 +18,8 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 
 ## Current Files
 
-- `src/app/page.tsx`: Landing experience with hero, urgent Riftbound Pre-Rift announcement highlight, Riftbound launch announcement, brand/partner cards, services, mission, benefits, contact section, shared Betobee retailer-app banner below Company Information, homepage canonical metadata, and JSON-LD organization schema for Malaysia and Brunei SEO.
-- `src/app/announcements/riftbound-radiance-pre-rift/page.tsx`: Official Riftbound: Radiance Pre-Rift event delay announcement page for Malaysia with article metadata and JSON-LD.
+- `src/app/page.tsx`: Landing experience with hero, bottom-floating urgent Riftbound Pre-Rift announcement warning, Riftbound launch announcement, brand/partner cards, services, mission, benefits, contact section, shared Betobee retailer-app banner below Company Information, homepage canonical metadata, and JSON-LD organization schema for Malaysia and Brunei SEO.
+- `src/app/announcements/riftbound-radiance-pre-rift/page.tsx`: Official Riftbound: Radiance Pre-Rift event delay announcement page for Malaysia with article metadata, JSON-LD, and top/bottom Back to Home links.
 - `src/app/retailer/page.tsx`: KC Games themed retailer pre-signup page that leads into the live Betobee signup, presents the shared themed Betobee app-store download banner, serves Malaysia & Brunei, and declares retailer canonical metadata.
 - `src/app/retailers/page.tsx`: Authorised retailer directory page that imports retailer data from JSON and emits retailer ItemList JSON-LD.
 - `src/app/layout.tsx`: Root layout plus page metadata, robots directives, release/version markers, and Google Tag Manager snippet.

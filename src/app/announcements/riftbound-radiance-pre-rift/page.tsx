@@ -194,6 +194,16 @@ export default function RiftboundRadiancePreRiftAnnouncementPage() {
               </footer>
             </div>
           </section>
+
+          <div className="mt-8 flex justify-center">
+            <a
+              href="/"
+              className="inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-5 py-3 text-sm font-bold text-amber-100 backdrop-blur-sm transition hover:border-amber-200/60 hover:bg-amber-400/20 hover:text-white"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden />
+              Back to Home
+            </a>
+          </div>
         </article>
 
         <footer className="flex flex-col items-center gap-4 pb-10 pt-2">
