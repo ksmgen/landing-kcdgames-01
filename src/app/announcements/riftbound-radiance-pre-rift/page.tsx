@@ -213,7 +213,7 @@ export default function RiftboundRadiancePreRiftAnnouncementPage() {
           <div className="mt-16 flex justify-center">
             <a
               href="/"
-              className="inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-5 py-3 text-sm font-bold text-amber-100 backdrop-blur-sm transition hover:border-amber-200/60 hover:bg-amber-400/20 hover:text-white"
+              className="inline-flex items-center gap-2 rounded-full border border-silver-400/20 bg-navy-900/60 px-4 py-2 text-sm font-semibold text-silver-200 backdrop-blur-sm transition hover:border-silver-300/40 hover:bg-navy-800 hover:text-white"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden />
               Back to Home
