@@ -119,8 +119,8 @@ export default function RiftboundRadiancePreRiftAnnouncementPage() {
             Back to Home
           </a>
 
-          <section className="mt-8 overflow-hidden rounded-[2rem] border border-amber-400/30 bg-[linear-gradient(135deg,rgba(12,24,43,0.96),rgba(32,28,21,0.94))] shadow-2xl">
-            <div className="space-y-8 p-6 sm:p-8 lg:p-10">
+          <section className="mt-8">
+            <div className="space-y-8">
               <div className="space-y-5">
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-amber-200">Riftbound: Radiance Pre-Rift Events – Malaysia</p>
                 <h1 className="font-display text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
