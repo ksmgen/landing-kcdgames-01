@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AlertTriangle, ArrowLeft, CalendarDays, HeartHandshake, PackageCheck, Ticket, Megaphone } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CalendarDays, Heart, PackageCheck, Ticket, Megaphone } from "lucide-react";
 import FacebookFooterLink from "../../../components/FacebookFooterLink";
 
 export const metadata: Metadata = {
@@ -74,21 +74,6 @@ const infoCards = [
         Each retailer will be managing its own event arrangements, including rescheduling, registration transfers and refunds where applicable.
       </>
     ),
-  },
-];
-
-const companyCards = [
-  {
-    title: "KC Games Action",
-    icon: <PackageCheck className="h-5 w-5" aria-hidden />,
-    body:
-      "KC Games is actively working with the relevant parties to expedite customs clearance and arrange the fastest possible delivery of the affected products to our retail partners.",
-  },
-  {
-    title: "Community Support",
-    icon: <HeartHandshake className="h-5 w-5" aria-hidden />,
-    body:
-      "We sincerely apologise to all players, retailers and organisers who may be affected by this unexpected disruption, and ask for your patience and understanding as retailers make alternative arrangements.",
   },
 ];
 
@@ -187,32 +172,26 @@ export default function RiftboundRadiancePreRiftAnnouncementPage() {
                 </p>
               </section>
 
-              <h2 className="flex items-center gap-3 font-display text-xl font-bold text-amber-200 sm:text-2xl">
-                <PackageCheck className="h-6 w-6 shrink-0" aria-hidden />
-                WHAT IS KC GAMES DOING?
-              </h2>
-              <div className="grid gap-4 md:grid-cols-2">
-                {companyCards.map((card) => (
-                  <section
-                    key={card.title}
-                    className="rounded-2xl border border-navy-700/60 bg-navy-900/55 p-5 shadow-lg"
-                  >
-                    <div className="flex items-center gap-3 text-amber-200">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-400/10 ring-1 ring-amber-300/30">
-                        {card.icon}
-                      </div>
-                      <h2 className="font-display text-lg font-bold text-white">{card.title}</h2>
-                    </div>
-                    <p className="mt-4 text-sm leading-relaxed text-navy-100 sm:text-base">{card.body}</p>
-                  </section>
-                ))}
-              </div>
+              <section className="rounded-2xl border border-navy-700/60 bg-navy-900/55 p-6">
+                <h2 className="flex items-center gap-3 font-display text-xl font-bold text-amber-200 sm:text-2xl">
+                  <PackageCheck className="h-6 w-6 shrink-0" aria-hidden />
+                  WHAT IS KC GAMES DOING?
+                </h2>
+                <p className="mt-6 leading-relaxed text-navy-100">
+                  KC Games is actively working with the relevant parties to expedite customs clearance and arrange the fastest possible delivery of the affected products to our retail partners.
+                  <br /><br />
+                  We are treating this situation as a matter of urgency and will continue providing updates as more information becomes available.
+                </p>
+              </section>
 
               <section className="rounded-2xl border border-amber-400/25 bg-amber-400/10 p-6">
-                <h2 className="font-display text-2xl font-bold text-white">To Our Riftbound Community</h2>
-                <div className="mt-4 space-y-4 leading-relaxed text-navy-100">
+                <h2 className="flex items-center gap-3 font-display text-2xl font-bold text-white"><Heart className="h-6 w-6 shrink-0 text-red-400" aria-hidden />TO OUR RIFTBOUND COMMUNITY</h2>
+                <div className="mt-6 space-y-6 leading-relaxed text-navy-100">
                   <p>
                     We understand how much excitement and anticipation surrounds the Radiance Pre-Rift events.
+                  </p>
+                  <p>
+                    We sincerely apologise to all players, retailers and organisers who may be affected by this unexpected disruption.
                   </p>
                   <p>
                     Our retail partners have invested considerable time and effort into preparing these events, and we ask for your patience and understanding as they work to make alternative arrangements.
@@ -223,12 +202,14 @@ export default function RiftboundRadiancePreRiftAnnouncementPage() {
                   <p>
                     Thank you for your understanding and continued support of Riftbound in Malaysia.
                   </p>
+                  <p className="font-semibold text-amber-200">
+                    KC Games Sdn Bhd<br />
+                    Official Riftbound Distributor – Malaysia
+                  </p>
                 </div>
               </section>
 
               <footer className="border-t border-white/10 pt-6">
-                <p className="font-display text-lg font-bold text-white">KC Games Sdn Bhd</p>
-                <p className="mt-1 text-sm font-semibold text-amber-200">Official Riftbound Distributor – Malaysia</p>
                 <p className="mt-4 text-sm leading-relaxed text-navy-300">
                   #Riftbound #RiftboundTCG #RiftboundMalaysia #Radiance #PreRift #KCGames #LeagueOfLegends
                 </p>
