@@ -1,5 +1,7 @@
 # Project Structure
 
+Homepage notice: yellow **OFFICIAL ANNOUNCEMENT** button under Latest News replaces the temporary KC Games x Riftbound link; the bottom-floating warning keeps its Riftbound event heading.
+
 ## Update Rule
 
 Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever the project structure or workflow changes.

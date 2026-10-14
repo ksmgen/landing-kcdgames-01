@@ -1,5 +1,7 @@
 # AGENTS
 
+Homepage notice: yellow **OFFICIAL ANNOUNCEMENT** button under Latest News replaces the temporary KC Games x Riftbound link; the bottom-floating warning keeps its Riftbound event heading.
+
 ## Project Overview
 
 This repository contains the KC Games marketing site built with Next.js 14, TypeScript, and Tailwind CSS.

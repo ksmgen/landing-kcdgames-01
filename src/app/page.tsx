@@ -139,15 +139,6 @@ export default function Home() {
               </span>
             </a>
             <a
-              className="order-1 sm:order-none group inline-flex min-h-16 w-full items-center justify-center rounded-lg border border-yellow-300/70 bg-yellow-400 px-8 py-4 text-base font-extrabold text-navy-950 shadow-[0_10px_30px_rgba(0,0,0,0.32)] transition-all hover:scale-105 hover:bg-yellow-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-200 sm:w-auto sm:min-w-[260px]"
-              href="/announcements/riftbound-radiance-pre-rift.html"
-            >
-              <span className="flex items-center gap-2 text-center font-display tracking-wide leading-tight">
-                <AlertTriangle className="h-5 w-5" aria-hidden />
-                Urgent Riftbound Notice
-              </span>
-            </a>
-            <a
               className="order-1 sm:order-none group inline-flex min-h-16 w-full items-center justify-center rounded-lg border border-amber-400/40 bg-[rgba(32,28,21,0.78)] px-8 py-4 text-base font-semibold text-amber-200 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm transition-all hover:border-amber-300 hover:bg-[rgba(50,42,28,0.85)] hover:text-amber-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 sm:w-auto sm:min-w-[240px]"
               href="/retailers.html"
             >
@@ -163,16 +154,16 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="mt-4 sm:mt-12 flex flex-wrap justify-center gap-6 sm:gap-8 border-t border-white/10 pt-4 sm:pt-8">
+          <div className="mt-4 sm:mt-12 flex flex-col items-center gap-3 border-t border-white/10 pt-4 sm:pt-8">
+            <p className="font-display text-xs font-bold uppercase tracking-widest text-silver-400">Latest News</p>
             <a
-              href="#riftbound"
-              className="group flex flex-col items-center gap-1 transition-opacity hover:opacity-80"
+              className="order-1 sm:order-none group inline-flex min-h-16 w-full items-center justify-center rounded-lg border border-yellow-300/70 bg-yellow-400 px-8 py-4 text-base font-extrabold text-navy-950 shadow-[0_10px_30px_rgba(0,0,0,0.32)] transition-all hover:scale-105 hover:bg-yellow-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-200 sm:w-auto sm:min-w-[260px]"
+              href="/announcements/riftbound-radiance-pre-rift.html"
             >
-              <p className="font-display text-xs font-bold uppercase tracking-widest text-silver-400">Latest News</p>
-              <p className="font-display text-xl sm:text-2xl font-bold text-silver-100 drop-shadow-sm flex items-center gap-2">
-                KC Games x Riftbound
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden />
-              </p>
+              <span className="flex items-center gap-2 text-center font-display tracking-wide leading-tight">
+                <AlertTriangle className="h-5 w-5" aria-hidden />
+                OFFICIAL ANNOUNCEMENT
+              </span>
             </a>
           </div>
         </div>
@@ -188,12 +179,12 @@ export default function Home() {
               <AlertTriangle className="h-6 w-6" aria-hidden />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-navy-800 sm:text-xs sm:tracking-[0.3em]">Urgent Official Announcement</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-navy-800 sm:text-xs sm:tracking-[0.3em]">OFFICIAL ANNOUNCEMENT</p>
               <h2 className="mt-1 truncate font-display text-base font-black leading-tight text-navy-950 sm:text-xl">
                 Riftbound: Radiance Pre-Rift Events – Malaysia
               </h2>
               <p className="mt-1 hidden max-w-3xl text-sm font-semibold leading-relaxed text-navy-900 sm:block">
-                Product arrival may be affected by customs clearance delays. Check with participating retailers before travelling.
+                Product arrival may be affected by customs clearance delays.<br className="hidden sm:block" />Check with participating retailers before travelling.
               </p>
             </div>
             <span className="hidden shrink-0 items-center justify-center gap-2 rounded-lg bg-navy-950 px-5 py-3 text-sm font-bold text-yellow-200 transition group-hover:bg-navy-900 sm:inline-flex">

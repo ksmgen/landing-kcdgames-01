@@ -1,5 +1,7 @@
 # landing-kcdgames-01
 
+Homepage notice: yellow **OFFICIAL ANNOUNCEMENT** button under Latest News replaces the temporary KC Games x Riftbound link; the bottom-floating warning keeps its Riftbound event heading.
+
 KC Games landing page built with **Next.js 14**, **TypeScript**, and **Tailwind CSS**.
 
 ## What is in this repo
