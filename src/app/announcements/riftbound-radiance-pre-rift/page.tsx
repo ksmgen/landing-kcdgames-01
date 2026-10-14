@@ -120,13 +120,6 @@ export default function RiftboundRadiancePreRiftAnnouncementPage() {
           </a>
 
           <section className="mt-8 overflow-hidden rounded-[2rem] border border-amber-400/30 bg-[linear-gradient(135deg,rgba(12,24,43,0.96),rgba(32,28,21,0.94))] shadow-2xl">
-            <div className="border-b border-amber-400/20 bg-amber-500/10 px-6 py-4 sm:px-8">
-              <div className="inline-flex items-center gap-2 rounded-full border border-amber-300/40 bg-amber-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-amber-200">
-                <AlertTriangle className="h-4 w-4" aria-hidden />
-                Official Announcement
-              </div>
-            </div>
-
             <div className="space-y-8 p-6 sm:p-8 lg:p-10">
               <div className="space-y-5">
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-amber-200">Riftbound: Radiance Pre-Rift Events – Malaysia</p>
@@ -209,7 +202,7 @@ export default function RiftboundRadiancePreRiftAnnouncementPage() {
                 </div>
               </section>
 
-              <footer className="border-t border-white/10 pt-6">
+              <footer className="pt-6">
                 <p className="mt-4 text-sm leading-relaxed text-navy-300">
                   #Riftbound #RiftboundTCG #RiftboundMalaysia #Radiance #PreRift #KCGames #LeagueOfLegends
                 </p>
