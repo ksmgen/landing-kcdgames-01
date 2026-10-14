@@ -202,15 +202,15 @@ export default function RiftboundRadiancePreRiftAnnouncementPage() {
                 </div>
               </section>
 
-              <footer className="pt-6">
-                <p className="mt-4 text-sm leading-relaxed text-navy-300">
+              <footer>
+                <p className="text-sm leading-relaxed text-navy-300">
                   #Riftbound #RiftboundTCG #RiftboundMalaysia #Radiance #PreRift #KCGames #LeagueOfLegends
                 </p>
               </footer>
             </div>
           </section>
 
-          <div className="mt-8 flex justify-center">
+          <div className="mt-16 flex justify-center">
             <a
               href="/"
               className="inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-5 py-3 text-sm font-bold text-amber-100 backdrop-blur-sm transition hover:border-amber-200/60 hover:bg-amber-400/20 hover:text-white"
