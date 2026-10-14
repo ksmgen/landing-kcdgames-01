@@ -1,4 +1,4 @@
-import { ArrowRight, Globe, Handshake, MapPin, Target, Truck, Users } from "lucide-react";
+import { AlertTriangle, ArrowRight, Globe, Handshake, MapPin, Target, Truck, Users } from "lucide-react";
 import ContactWidget from "../components/ContactWidget";
 import FacebookFooterLink from "../components/FacebookFooterLink";
 import RetailerAppBanner from "../components/RetailerAppBanner";
@@ -62,7 +62,7 @@ const organizationSchema = {
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-navy-950 selection:bg-silver-500/30 selection:text-white">
+    <main className="relative min-h-screen overflow-hidden bg-navy-950 pb-28 selection:bg-silver-500/30 selection:text-white sm:pb-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
@@ -154,20 +154,49 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="mt-4 sm:mt-12 flex flex-wrap justify-center gap-6 sm:gap-8 border-t border-white/10 pt-4 sm:pt-8">
+          <div className="mt-4 sm:mt-12 flex flex-col items-center gap-3 border-t border-white/10 pt-4 sm:pt-8">
+            <p className="font-display text-xs font-bold uppercase tracking-widest text-silver-400">Latest News</p>
             <a
-              href="#riftbound"
-              className="group flex flex-col items-center gap-1 transition-opacity hover:opacity-80"
+              className="order-1 sm:order-none group inline-flex min-h-16 w-full items-center justify-center rounded-lg border border-yellow-300/70 bg-yellow-400 px-8 py-4 text-base font-extrabold text-navy-950 shadow-[0_10px_30px_rgba(0,0,0,0.32)] transition-all hover:scale-105 hover:bg-yellow-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-200 sm:w-auto sm:min-w-[260px]"
+              href="/announcements/riftbound-radiance-pre-rift.html"
             >
-              <p className="font-display text-xs font-bold uppercase tracking-widest text-silver-400">Latest News</p>
-              <p className="font-display text-xl sm:text-2xl font-bold text-silver-100 drop-shadow-sm flex items-center gap-2">
-                KC Games x Riftbound
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden />
-              </p>
+              <span className="flex items-center gap-2 text-center font-display tracking-wide leading-tight">
+                <AlertTriangle className="h-5 w-5" aria-hidden />
+                OFFICIAL ANNOUNCEMENT
+              </span>
             </a>
           </div>
         </div>
       </header>
+
+      <section className="fixed inset-x-0 bottom-0 z-50 px-3 pb-3 sm:px-6 sm:pb-5">
+        <a
+          href="/announcements/riftbound-radiance-pre-rift.html"
+          className="group mx-auto block max-w-5xl rounded-2xl border border-yellow-200 bg-[linear-gradient(135deg,rgba(254,240,138,0.98),rgba(245,158,11,0.96))] p-3 shadow-[0_18px_55px_rgba(0,0,0,0.45)] ring-1 ring-navy-950/10 transition hover:border-yellow-100 hover:brightness-105 sm:p-4"
+        >
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-navy-950 text-yellow-300 ring-2 ring-yellow-200/90 sm:h-12 sm:w-12">
+              <AlertTriangle className="h-6 w-6" aria-hidden />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-navy-800 sm:text-xs sm:tracking-[0.3em]">OFFICIAL ANNOUNCEMENT</p>
+              <h2 className="mt-1 truncate font-display text-base font-black leading-tight text-navy-950 sm:text-xl">
+                Riftbound: Radiance Pre-Rift Events – Malaysia
+              </h2>
+              <p className="mt-1 hidden max-w-3xl text-sm font-semibold leading-relaxed text-navy-900 sm:block">
+                Product arrival may be affected by customs clearance delays.<br className="hidden sm:block" />Check with participating retailers before travelling.
+              </p>
+            </div>
+            <span className="hidden shrink-0 items-center justify-center gap-2 rounded-lg bg-navy-950 px-5 py-3 text-sm font-bold text-yellow-200 transition group-hover:bg-navy-900 sm:inline-flex">
+              Read Announcement
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </span>
+            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-navy-950 text-yellow-200 sm:hidden" aria-hidden>
+              <ArrowRight className="h-5 w-5" />
+            </span>
+          </div>
+        </a>
+      </section>
 
       <div className="relative mx-auto flex max-w-6xl flex-col gap-16 px-6 py-16 sm:px-10 sm:py-20 lg:px-16 lg:py-24">
 

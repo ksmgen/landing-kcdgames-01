@@ -1,11 +1,16 @@
 # landing-kcdgames-01
 
+The Pre-Rift announcement includes a warning-triangle “WHAT DOES THIS MEAN FOR PLAYERS?” heading before the player information cards. Player guidance contains Event Rescheduling, Existing Registrations & Payments, and Stay Updated with supplied wording and double line breaks. Two standalone sections follow: WHAT IS KC GAMES DOING? and TO OUR RIFTBOUND COMMUNITY, preserving approved paragraphs and clear blank lines. The article uses an unboxed page layout, without the outer card, Official Announcement box, or divider above its hashtags; inner content cards remain unchanged. Hashtags sit closer to the community section with extra clearance before the bottom Back to Home button, which matches the top button styling.
+
+Homepage notice: yellow **OFFICIAL ANNOUNCEMENT** button under Latest News replaces the temporary KC Games x Riftbound link; the bottom-floating warning keeps its Riftbound event heading.
+
 KC Games landing page built with **Next.js 14**, **TypeScript**, and **Tailwind CSS**.
 
 ## What is in this repo
 
 - A single-page marketing site in `src/app/page.tsx` with homepage canonical metadata and the shared Betobee retailer-app banner below Company Information
 - A KC Games themed retailer pre-signup page in `src/app/retailer/page.tsx` for Malaysia & Brunei with retailer canonical metadata and the shared themed Betobee app-store download banner
+- An urgent Riftbound announcement page in `src/app/announcements/riftbound-radiance-pre-rift/page.tsx`, highlighted by a bottom-floating homepage warning
 - An authorised retailer directory in `src/app/retailers/page.tsx`, backed by `src/data/retailers.json` with store-type and playing-location flags for easy add/remove updates
 - Shared contact UI in `src/components/ContactWidget.tsx` and shared retailer-app UI in `src/components/RetailerAppBanner.tsx`
 - KC Games brand assets, mirrored retailer images, partner logos, and campaign banners in `public/`

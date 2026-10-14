@@ -1,5 +1,9 @@
 # Project Structure
 
+The Pre-Rift announcement includes a warning-triangle “WHAT DOES THIS MEAN FOR PLAYERS?” heading before the player information cards. Player guidance contains Event Rescheduling, Existing Registrations & Payments, and Stay Updated with supplied wording and double line breaks. Two standalone sections follow: WHAT IS KC GAMES DOING? and TO OUR RIFTBOUND COMMUNITY, preserving approved paragraphs and clear blank lines. The article uses an unboxed page layout, without the outer card, Official Announcement box, or divider above its hashtags; inner content cards remain unchanged. Hashtags sit closer to the community section with extra clearance before the bottom Back to Home button, which matches the top button styling.
+
+Homepage notice: yellow **OFFICIAL ANNOUNCEMENT** button under Latest News replaces the temporary KC Games x Riftbound link; the bottom-floating warning keeps its Riftbound event heading.
+
 ## Update Rule
 
 Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever the project structure or workflow changes.
@@ -18,12 +22,13 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 
 ## Current Files
 
-- `src/app/page.tsx`: Landing experience with hero, Riftbound launch announcement, brand/partner cards, services, mission, benefits, contact section, shared Betobee retailer-app banner below Company Information, homepage canonical metadata, and JSON-LD organization schema for Malaysia and Brunei SEO.
+- `src/app/page.tsx`: Landing experience with hero, bottom-floating urgent Riftbound Pre-Rift announcement warning, Riftbound launch announcement, brand/partner cards, services, mission, benefits, contact section, shared Betobee retailer-app banner below Company Information, homepage canonical metadata, and JSON-LD organization schema for Malaysia and Brunei SEO.
+- `src/app/announcements/riftbound-radiance-pre-rift/page.tsx`: Official Riftbound: Radiance Pre-Rift event delay announcement page for Malaysia with article metadata, JSON-LD, and top/bottom Back to Home links.
 - `src/app/retailer/page.tsx`: KC Games themed retailer pre-signup page that leads into the live Betobee signup, presents the shared themed Betobee app-store download banner, serves Malaysia & Brunei, and declares retailer canonical metadata.
 - `src/app/retailers/page.tsx`: Authorised retailer directory page that imports retailer data from JSON and emits retailer ItemList JSON-LD.
 - `src/app/layout.tsx`: Root layout plus page metadata, robots directives, release/version markers, and Google Tag Manager snippet.
 - `src/app/robots.ts`: Static robots.txt metadata route with sitemap pointer.
-- `src/app/sitemap.ts`: Static sitemap metadata route for the homepage and retailer page.
+- `src/app/sitemap.ts`: Static sitemap metadata route for the homepage, announcement, retailer signup, and retailer directory pages.
 - `src/app/globals.css`: Tailwind entrypoint and global styles.
 - `src/components/ContactWidget.tsx`: Phone display and WhatsApp CTA with a simple math gate.
 - `src/components/FacebookFooterLink.tsx`: Shared Facebook footer link used across landing pages.

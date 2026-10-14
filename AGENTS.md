@@ -1,5 +1,9 @@
 # AGENTS
 
+The Pre-Rift announcement includes a warning-triangle “WHAT DOES THIS MEAN FOR PLAYERS?” heading before the player information cards. Player guidance contains Event Rescheduling, Existing Registrations & Payments, and Stay Updated with supplied wording and double line breaks. Two standalone sections follow: WHAT IS KC GAMES DOING? and TO OUR RIFTBOUND COMMUNITY, preserving approved paragraphs and clear blank lines. The article uses an unboxed page layout, without the outer card, Official Announcement box, or divider above its hashtags; inner content cards remain unchanged. Hashtags sit closer to the community section with extra clearance before the bottom Back to Home button, which matches the top button styling.
+
+Homepage notice: yellow **OFFICIAL ANNOUNCEMENT** button under Latest News replaces the temporary KC Games x Riftbound link; the bottom-floating warning keeps its Riftbound event heading.
+
 ## Project Overview
 
 This repository contains the KC Games marketing site built with Next.js 14, TypeScript, and Tailwind CSS.
@@ -23,6 +27,7 @@ Update these files before every push if the codebase, content, or workflow chang
 
 ## Current App Notes
 
+- Homepage highlights the urgent Riftbound: Radiance Pre-Rift announcement with a bottom-floating yellow warning and links to `src/app/announcements/riftbound-radiance-pre-rift/page.tsx`.
 - Main landing page lives in `src/app/page.tsx`, declares homepage canonical metadata, targets Malaysia & Brunei in the intro copy, and shows the shared Betobee retailer-app banner below Company Information.
 - Retailer landing flow lives in `src/app/retailer/page.tsx`, declares retailer canonical metadata, serves Malaysia & Brunei, and reuses the same app banner before its final signup CTA.
 - Retailer directory data lives in `src/data/retailers.json`; update this JSON when adding/removing retailers or changing country/store-type/playing-location flags.
