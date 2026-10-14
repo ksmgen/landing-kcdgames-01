@@ -56,8 +56,13 @@ const infoCards = [
   {
     title: "Event Rescheduling",
     icon: <CalendarDays className="h-5 w-5" aria-hidden />,
-    body:
-      "The official Radiance Pre-Rift event window runs from 16–22 October 2026. Affected retailers may need to reschedule or cancel their original events, with alternative sessions potentially arranged within the permitted event window.",
+    body: (
+      <>
+        The official Radiance Pre-Rift event window runs from 16–22 October 2026.
+        <br />
+        Affected retailers may need to reschedule or cancel their original events, with alternative sessions potentially being arranged within the permitted event window.
+      </>
+    ),
   },
   {
     title: "Existing Registrations & Payments",
