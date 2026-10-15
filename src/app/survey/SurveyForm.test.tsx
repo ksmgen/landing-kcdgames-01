@@ -1,6 +1,15 @@
-import { describe, it, expect } from "vitest";
+import { beforeEach, describe, it, expect } from "vitest";
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import SurveyForm from "./SurveyForm";
+import { SURVEY_DRAFT_STORAGE_KEY as DRAFT_KEY } from "./useSurveyDraft";
+
+function seedDraft(draft: unknown) {
+  sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+}
+
+function replaceSessionStorage(impl: PropertyDescriptor) {
+  Object.defineProperty(window, "sessionStorage", impl);
+}
 
 function goToExperienceStep(gameTitle: string) {
   fireEvent.change(screen.getByLabelText(/which kc games title/i), {
@@ -25,6 +34,10 @@ function completeSurvey(gameTitle: string, rating: number, feedback?: string) {
 }
 
 describe("SurveyForm", () => {
+  beforeEach(() => {
+    sessionStorage.clear();
+  });
+
   it("renders the demo notice, step 1, and accessible progress", () => {
     render(<SurveyForm />);
 
@@ -153,5 +166,216 @@ describe("SurveyForm", () => {
     expect(
       screen.getByRole("progressbar", { name: /survey progress/i }),
     ).toHaveAttribute("aria-valuenow", "1");
+    expect(sessionStorage.getItem(DRAFT_KEY)).toBeNull();
+  });
+
+  it("persists progress in the session draft while answering", () => {
+    render(<SurveyForm />);
+
+    goToExperienceStep("Riftbound");
+    expect(JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? "")).toEqual({
+      version: 1,
+      step: 1,
+      values: { gameInterest: "Riftbound" },
+    });
+
+    fireEvent.click(screen.getByRole("radio", { name: /4/ }));
+    expect(JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? "")).toEqual({
+      version: 1,
+      step: 1,
+      values: { gameInterest: "Riftbound", experienceRating: 4 },
+    });
+  });
+
+  it("restores an in-progress first step with its saved input", () => {
+    seedDraft({ version: 1, step: 0, values: { gameInterest: "Riftbound" } });
+    render(<SurveyForm />);
+
+    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue(
+      "Riftbound",
+    );
+  });
+
+  it("restores the experience step with the saved rating and continues from it", () => {
+    seedDraft({
+      version: 1,
+      step: 1,
+      values: { gameInterest: "Riftbound", experienceRating: 4 },
+    });
+    render(<SurveyForm />);
+
+    expect(screen.getByText(/step 2 of 3/i)).toBeInTheDocument();
+    expect(screen.getByText(/experience with riftbound/i)).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /4/ })).toBeChecked();
+
+    fireEvent.click(screen.getByRole("button", { name: /next/i }));
+    expect(screen.getByText(/step 3 of 3/i)).toBeInTheDocument();
+  });
+
+  it("restores the feedback step with unsent feedback and finishes from it", () => {
+    seedDraft({
+      version: 1,
+      step: 2,
+      values: {
+        gameInterest: "Riftbound",
+        experienceRating: 4,
+        feedback: "Half-typed thought",
+      },
+    });
+    render(<SurveyForm />);
+
+    expect(screen.getByText(/step 3 of 3/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/additional feedback/i)).toHaveValue(
+      "Half-typed thought",
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /see my answers/i }));
+    expect(screen.getByText(/thank you!/i)).toBeInTheDocument();
+  });
+
+  it("keeps unsent typing across a remount", () => {
+    const { unmount } = render(<SurveyForm />);
+    fireEvent.change(screen.getByLabelText(/which kc games title/i), {
+      target: { value: "Riftb" },
+    });
+    unmount();
+
+    render(<SurveyForm />);
+    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue("Riftb");
+  });
+
+  it("keeps an unsent rating selection across a remount", () => {
+    const { unmount } = render(<SurveyForm />);
+    goToExperienceStep("Riftbound");
+    fireEvent.click(screen.getByRole("radio", { name: /4/ }));
+    unmount();
+
+    render(<SurveyForm />);
+    expect(screen.getByText(/step 2 of 3/i)).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /4/ })).toBeChecked();
+  });
+
+  it("keeps earlier answers when navigating back after a restore", () => {
+    seedDraft({
+      version: 1,
+      step: 1,
+      values: { gameInterest: "Riftbound", experienceRating: 4 },
+    });
+    render(<SurveyForm />);
+
+    fireEvent.click(screen.getByRole("button", { name: /back/i }));
+
+    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue(
+      "Riftbound",
+    );
+  });
+
+  it("keeps later draft answers when going back and refreshing", () => {
+    seedDraft({ version: 1, step: 2, values: {
+      gameInterest: "Riftbound", experienceRating: 4, feedback: "Unsent draft",
+    } });
+    const { unmount } = render(<SurveyForm />);
+    fireEvent.click(screen.getByRole("button", { name: /^back$/i }));
+    unmount();
+    render(<SurveyForm />);
+    expect(screen.getByRole("radio", { name: /4/ })).toBeChecked();
+    fireEvent.click(screen.getByRole("button", { name: /next/i }));
+    expect(screen.getByLabelText(/additional feedback/i)).toHaveValue("Unsent draft");
+  });
+
+  it("restores a completed survey as the summary and clears it on start over", () => {
+    seedDraft({
+      version: 1,
+      step: 2,
+      values: { gameInterest: "Riftbound", experienceRating: 5, feedback: "Great" },
+      completed: true,
+    });
+    render(<SurveyForm />);
+
+    expect(screen.getByText(/thank you!/i)).toBeInTheDocument();
+    expect(screen.getByText("Riftbound")).toBeInTheDocument();
+    expect(screen.getByText("5/5")).toBeInTheDocument();
+    expect(screen.getByText("Great")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /start over/i }));
+    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue("");
+    expect(sessionStorage.getItem(DRAFT_KEY)).toBeNull();
+  });
+
+  it("start over clears only the survey draft key", () => {
+    sessionStorage.setItem("unrelated-app-key", "keep me");
+    render(<SurveyForm />);
+
+    completeSurvey("Riftbound", 2);
+    fireEvent.click(screen.getByRole("button", { name: /start over/i }));
+
+    expect(sessionStorage.getItem("unrelated-app-key")).toBe("keep me");
+    expect(sessionStorage.getItem(DRAFT_KEY)).toBeNull();
+  });
+
+  it("treats a corrupt draft as no draft", () => {
+    sessionStorage.setItem(DRAFT_KEY, "{not json at all");
+    render(<SurveyForm />);
+
+    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue("");
+  });
+
+  it("rejects drafts with an unknown version", () => {
+    seedDraft({
+      version: 2,
+      step: 1,
+      values: { gameInterest: "Riftbound", experienceRating: 4 },
+    });
+    render(<SurveyForm />);
+
+    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue("");
+  });
+
+  it("still completes the survey when storage access throws", () => {
+    const original = Object.getOwnPropertyDescriptor(window, "sessionStorage");
+    expect(original).toBeDefined();
+    replaceSessionStorage({
+      configurable: true,
+      get() {
+        throw new DOMException("Storage blocked", "SecurityError");
+      },
+    });
+
+    try {
+      render(<SurveyForm />);
+      completeSurvey("Riftbound", 5, "Still works");
+      expect(screen.getByText(/thank you!/i)).toBeInTheDocument();
+    } finally {
+      replaceSessionStorage(original!);
+    }
+  });
+
+  it("still completes the survey when storage writes fail", () => {
+    const original = Object.getOwnPropertyDescriptor(window, "sessionStorage");
+    expect(original).toBeDefined();
+    replaceSessionStorage({
+      configurable: true,
+      value: {
+        getItem: () => null,
+        setItem: () => {
+          throw new DOMException("Quota exceeded", "QuotaExceededError");
+        },
+        removeItem: () => {},
+      },
+    });
+
+    try {
+      render(<SurveyForm />);
+      completeSurvey("Riftbound", 4);
+      expect(screen.getByText(/thank you!/i)).toBeInTheDocument();
+    } finally {
+      replaceSessionStorage(original!);
+    }
   });
 });

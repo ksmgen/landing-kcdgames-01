@@ -1,10 +1,16 @@
 "use client";
 
 import type { FormEvent, ReactNode } from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useFormity } from "@formity/react";
-import type { Flow, OnReturn, s } from "@formity/react";
+import type { Flow, OnReturn, State, s } from "@formity/react";
+import {
+  draftToFormityState,
+  useSurveyDraft,
+  type DraftField,
+  type SurveyDraft,
+} from "./useSurveyDraft";
 
 const TOTAL_STEPS = 3;
 
@@ -46,80 +52,166 @@ type SurveySchema = {
   params: Record<never, never>;
 };
 
-const flow: Flow<SurveySchema> = [
-  {
-    form: {
-      fields: () => ({ gameInterest: ["", []] }),
-      render: ({ fields, next }) => (
-        <InterestStep gameInterest={fields.gameInterest} onNext={next} />
-      ),
+type SurveyDraftStore = {
+  saveDraft: (draft: SurveyDraft) => void;
+  saveField: (field: DraftField, value: string | number) => void;
+};
+
+/**
+ * Build the Formity flow with yield handlers that mirror every navigation
+ * into the session draft: `next` stores the step being entered with the
+ * accumulated answers, `back` stores the step being returned to.
+ */
+function createSurveyFlow({
+  saveDraft,
+  saveField,
+}: SurveyDraftStore): Flow<SurveySchema> {
+  return [
+    {
+      form: {
+        fields: () => ({ gameInterest: ["", []] }),
+        render: ({ fields, next }) => (
+          <InterestStep
+            gameInterest={fields.gameInterest}
+            onNext={next}
+            onDraftChange={(value) => saveField("gameInterest", value)}
+          />
+        ),
+      },
     },
-  },
-  {
-    yield: {
-      next: ({ gameInterest }) => [{ type: "next", data: { gameInterest } }],
-      back: ({ gameInterest }) => [{ type: "back", data: { gameInterest } }],
+    {
+      yield: {
+        next: (values) => {
+          saveDraft({
+            version: 1,
+            step: 1,
+            values: { gameInterest: values.gameInterest },
+          });
+          return [{ type: "next", data: { gameInterest: values.gameInterest } }];
+        },
+        back: (values) => {
+          saveDraft({
+            version: 1,
+            step: 0,
+            values: { gameInterest: values.gameInterest },
+          });
+          return [{ type: "back", data: { gameInterest: values.gameInterest } }];
+        },
+      },
     },
-  },
-  {
-    form: {
-      fields: () => ({ experienceRating: [0, []] }),
-      render: ({ fields, values, next, back }) => (
-        <ExperienceStep
-          rating={fields.experienceRating}
-          gameInterest={values.gameInterest}
-          onNext={next}
-          onBack={back}
-        />
-      ),
+    {
+      form: {
+        fields: () => ({ experienceRating: [0, []] }),
+        render: ({ fields, values, next, back }) => (
+          <ExperienceStep
+            rating={fields.experienceRating}
+            gameInterest={values.gameInterest}
+            onNext={next}
+            onBack={back}
+            onDraftChange={(value) => saveField("experienceRating", value)}
+          />
+        ),
+      },
     },
-  },
-  {
-    yield: {
-      next: ({ experienceRating }) => [
-        { type: "next", data: { experienceRating } },
-      ],
-      back: ({ experienceRating }) => [
-        { type: "back", data: { experienceRating } },
-      ],
+    {
+      yield: {
+        next: (values) => {
+          saveDraft({
+            version: 1,
+            step: 2,
+            values: {
+              gameInterest: values.gameInterest,
+              experienceRating: values.experienceRating,
+            },
+          });
+          return [
+            { type: "next", data: { experienceRating: values.experienceRating } },
+          ];
+        },
+        back: (values) => {
+          saveDraft({
+            version: 1,
+            step: 1,
+            values: {
+              gameInterest: values.gameInterest,
+              experienceRating: values.experienceRating,
+            },
+          });
+          return [
+            { type: "back", data: { experienceRating: values.experienceRating } },
+          ];
+        },
+      },
     },
-  },
-  {
-    form: {
-      fields: () => ({ feedback: ["", []] }),
-      render: ({ fields, next, back }) => (
-        <FeedbackStep
-          feedback={fields.feedback}
-          onNext={next}
-          onBack={back}
-        />
-      ),
+    {
+      form: {
+        fields: () => ({ feedback: ["", []] }),
+        render: ({ fields, next, back }) => (
+          <FeedbackStep
+            feedback={fields.feedback}
+            onNext={next}
+            onBack={back}
+            onDraftChange={(value) => saveField("feedback", value)}
+          />
+        ),
+      },
     },
-  },
-  {
-    yield: {
-      next: ({ feedback }) => [{ type: "next", data: { feedback } }],
-      back: ({ feedback }) => [{ type: "back", data: { feedback } }],
+    {
+      yield: {
+        next: (values) => [{ type: "next", data: { feedback: values.feedback } }],
+        back: (values) => [{ type: "back", data: { feedback: values.feedback } }],
+      },
     },
-  },
-  {
-    return: ({ gameInterest, experienceRating, feedback }) => ({
-      gameInterest,
-      experienceRating,
-      feedback,
-    }),
-  },
-];
+    {
+      return: ({ gameInterest, experienceRating, feedback }) => ({
+        gameInterest,
+        experienceRating,
+        feedback,
+      }),
+    },
+  ];
+}
 
 export default function SurveyForm() {
+  const { draft, ready, saveDraft, saveField, clearDraft } = useSurveyDraft();
   const [values, setValues] = useState<SurveyValues | null>(null);
 
-  // Formity hands the accumulated answers back here; they are kept in React
-  // state only — never submitted, stored, or sent anywhere.
+  // Formity hands the accumulated answers back here. They are kept in React
+  // state and the tab's session draft only — never submitted or sent anywhere.
   const handleReturn = useCallback<OnReturn<SurveySchema>>(
-    (returned) => setValues(returned),
-    [],
+    (returned) => {
+      setValues(returned);
+      saveDraft({
+        version: 1,
+        step: 2,
+        values: {
+          gameInterest: returned.gameInterest,
+          experienceRating: returned.experienceRating,
+          feedback: returned.feedback,
+        },
+        completed: true,
+      });
+    },
+    [saveDraft],
   );
+
+  // Start over: drop the displayed answers and clear only the survey's own
+  // session draft key, so a fresh flow mounts from step 1.
+  const handleStartOver = useCallback(() => {
+    clearDraft();
+    setValues(null);
+  }, [clearDraft]);
+
+  const restoredValues = useMemo<SurveyValues | null>(() => {
+    if (!draft?.completed) return null;
+    return {
+      gameInterest: draft.values.gameInterest ?? "",
+      experienceRating: draft.values.experienceRating ?? 0,
+      feedback: draft.values.feedback ?? "",
+    };
+  }, [draft]);
+
+  const summaryValues = values ?? restoredValues;
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-navy-950 pb-28">
@@ -138,14 +230,21 @@ export default function SurveyForm() {
 
           <DemoNotice />
 
-          {values ? (
-            <SurveySummary
-              values={values}
-              onStartOver={() => setValues(null)}
-            />
-          ) : (
-            <SurveyFlow onReturn={handleReturn} />
-          )}
+          {ready ? (
+            summaryValues ? (
+              <SurveySummary
+                values={summaryValues}
+                onStartOver={handleStartOver}
+              />
+            ) : (
+              <SurveyFlow
+                initialDraft={draft}
+                saveDraft={saveDraft}
+                saveField={saveField}
+                onReturn={handleReturn}
+              />
+            )
+          ) : null}
         </div>
 
         <footer className="mt-12 flex justify-center">
@@ -159,16 +258,42 @@ export default function SurveyForm() {
   );
 }
 
-function SurveyFlow({ onReturn }: { onReturn: OnReturn<SurveySchema> }) {
-  return useFormity<SurveySchema>({ flow, onReturn });
+function SurveyFlow({
+  initialDraft,
+  saveDraft,
+  saveField,
+  onReturn,
+}: {
+  initialDraft: SurveyDraft | null;
+  saveDraft: (draft: SurveyDraft) => void;
+  saveField: (field: DraftField, value: string | number) => void;
+  onReturn: OnReturn<SurveySchema>;
+}) {
+  // The draft snapshot taken at mount is the only input Formity needs to
+  // resume. It is captured once so the flow and its state stay stable while
+  // the draft keeps updating as the user answers.
+  const [initialState] = useState<State | undefined>(() =>
+    initialDraft && !initialDraft.completed
+      ? draftToFormityState(initialDraft)
+      : undefined,
+  );
+
+  const flow = useMemo(
+    () => createSurveyFlow({ saveDraft, saveField }),
+    [saveDraft, saveField],
+  );
+
+  return useFormity<SurveySchema>({ flow, initialState, onReturn });
 }
 
 function InterestStep({
   gameInterest,
   onNext,
+  onDraftChange,
 }: {
   gameInterest: string;
   onNext: (fields: { gameInterest: string }) => void;
+  onDraftChange: (value: string) => void;
 }) {
   const [value, setValue] = useState(gameInterest);
   const [error, setError] = useState<string | null>(null);
@@ -195,6 +320,7 @@ function InterestStep({
           <input
             id="game-interest"
             name="gameInterest"
+            maxLength={200}
             type="text"
             autoFocus
             required
@@ -202,7 +328,10 @@ function InterestStep({
             aria-describedby="game-interest-error"
             placeholder="e.g. Riftbound, King's Quest…"
             value={value}
-            onChange={(event) => setValue(event.target.value)}
+            onChange={(event) => {
+              setValue(event.target.value);
+              onDraftChange(event.target.value);
+            }}
             className="w-full rounded-lg border border-navy-700 bg-navy-900/50 px-4 py-3 text-white placeholder-navy-400 outline-none ring-2 ring-transparent transition-all focus:ring-amber-400/60"
           />
         </label>
@@ -226,11 +355,13 @@ function ExperienceStep({
   gameInterest,
   onNext,
   onBack,
+  onDraftChange,
 }: {
   rating: number;
   gameInterest: string;
   onNext: (fields: { experienceRating: number }) => void;
   onBack: (fields: { experienceRating: number }) => void;
+  onDraftChange: (value: number) => void;
 }) {
   const [selected, setSelected] = useState(rating);
   const [error, setError] = useState<string | null>(null);
@@ -270,6 +401,7 @@ function ExperienceStep({
               onChange={() => {
                 setSelected(value);
                 setError(null);
+                onDraftChange(value);
               }}
               className="peer sr-only"
             />
@@ -301,10 +433,12 @@ function FeedbackStep({
   feedback,
   onNext,
   onBack,
+  onDraftChange,
 }: {
   feedback: string;
   onNext: (fields: { feedback: string }) => void;
   onBack: (fields: { feedback: string }) => void;
+  onDraftChange: (value: string) => void;
 }) {
   const [value, setValue] = useState(feedback);
 
@@ -327,10 +461,14 @@ function FeedbackStep({
           <textarea
             id="feedback"
             name="feedback"
+            maxLength={2000}
             rows={4}
             placeholder="Optional — tell us what you'd like to see…"
             value={value}
-            onChange={(event) => setValue(event.target.value)}
+            onChange={(event) => {
+              setValue(event.target.value);
+              onDraftChange(event.target.value);
+            }}
             className="w-full resize-y rounded-lg border border-navy-700 bg-navy-900/50 px-4 py-3 text-white placeholder-navy-400 outline-none ring-2 ring-transparent transition-all focus:ring-amber-400/60"
           />
         </label>
@@ -387,7 +525,7 @@ function StepHeader({
 function DemoNotice() {
   return (
     <div className="mb-6 rounded-xl border border-amber-400/30 bg-[rgba(50,42,28,0.6)] p-4 text-xs leading-relaxed text-amber-200/80">
-      <strong className="text-amber-100">Demo mode</strong> — Your answers stay in this browser tab only. They are not sent anywhere or saved to any server.
+      <strong className="text-amber-100">Demo mode</strong> — Your answers stay in this browser tab only. They are not sent anywhere or saved to any server. Your progress is saved in this tab session and will appear again if you refresh the page. Closing the tab ends the session.
     </div>
   );
 }
@@ -403,7 +541,7 @@ function SurveySummary({
     <div className="space-y-6">
       <h2 className="font-display text-xl font-bold text-white">Thank you!</h2>
       <p className="text-sm text-navy-200">
-        Here is everything you told us. Nothing was submitted or stored — it disappears when you leave this page.
+        Here is everything you told us. Nothing was submitted — it stays in this tab session and disappears when you close the tab.
       </p>
       <div className="space-y-3 rounded-xl border border-navy-700 bg-navy-900/40 p-5">
         <ul className="space-y-2 text-sm text-silver-300">
