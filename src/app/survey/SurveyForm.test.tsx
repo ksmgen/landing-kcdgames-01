@@ -1,381 +1,125 @@
-import { beforeEach, describe, it, expect } from "vitest";
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
 import SurveyForm from "./SurveyForm";
-import { SURVEY_DRAFT_STORAGE_KEY as DRAFT_KEY } from "./useSurveyDraft";
+import { DAY_KEYS, SURVEY_DRAFT_STORAGE_KEY as KEY, type SurveyDraftValues } from "./useSurveyDraft";
 
-function seedDraft(draft: unknown) {
-  sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+function next() { fireEvent.click(screen.getByRole("button", { name: /^next$/i })); }
+function back() { fireEvent.click(screen.getByRole("button", { name: /^back$/i })); }
+function change(label: RegExp, value: string) { fireEvent.change(screen.getByLabelText(label), { target: { value } }); }
+function seed(step: number, values: SurveyDraftValues = {}) {
+  sessionStorage.setItem(KEY, JSON.stringify({ version: 2, step, values }));
+}
+function chooseShop() { change(/choose your shop/i, "retailer:52"); next(); }
+function seating() { change(/^tables/i, "4"); change(/^chairs/i, "16"); next(); }
+function closeWeek() { for (const day of DAY_KEYS) fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))); next(); }
+function progress(n: number) { expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", String(n)); }
+function eventAnswer(info: string) {
+  fireEvent.click(screen.getByRole("checkbox"));
+  change(/^date/i, "2026-12-10"); change(/^time/i, "14:30"); change(/^event info/i, info); next();
 }
 
-function replaceSessionStorage(impl: PropertyDescriptor) {
-  Object.defineProperty(window, "sessionStorage", impl);
-}
+describe("retailer survey simulation", () => {
+  beforeEach(() => { sessionStorage.clear(); });
 
-function goToExperienceStep(gameTitle: string) {
-  fireEvent.change(screen.getByLabelText(/which kc games title/i), {
-    target: { value: gameTitle },
-  });
-  fireEvent.click(screen.getByRole("button", { name: /next/i }));
-}
-
-function goToFeedbackStep(gameTitle: string, rating: number) {
-  goToExperienceStep(gameTitle);
-  fireEvent.click(screen.getByRole("radio", { name: new RegExp(String(rating)) }));
-  fireEvent.click(screen.getByRole("button", { name: /next/i }));
-}
-
-function completeSurvey(gameTitle: string, rating: number, feedback?: string) {
-  goToFeedbackStep(gameTitle, rating);
-  const feedbackField = screen.getByLabelText(/additional feedback/i);
-  if (feedback) {
-    fireEvent.change(feedbackField, { target: { value: feedback } });
-  }
-  fireEvent.click(screen.getByRole("button", { name: /see my answers/i }));
-}
-
-describe("SurveyForm", () => {
-  beforeEach(() => {
-    sessionStorage.clear();
+  it("shows retailer-only choices and conditional branch selection", () => {
+    render(<SurveyForm />); progress(1);
+    next(); expect(screen.getByRole("alert")).toHaveTextContent(/choose your shop/i);
+    change(/choose your shop/i, "chain:box-hunt"); next();
+    expect(screen.getByRole("alert")).toHaveTextContent(/choose the branch/i);
+    change(/which branch/i, "1");
+    change(/choose your shop/i, "chain:games-haven");
+    expect(screen.getByLabelText(/which branch/i)).toHaveValue("");
+    change(/choose your shop/i, "retailer:52");
+    expect(screen.queryByLabelText(/which branch/i)).not.toBeInTheDocument();
+    next(); progress(2);
   });
 
-  it("renders the demo notice, step 1, and accessible progress", () => {
+  it("completes all twelve sections in order with distinct event answers and simulated SUBMIT", () => {
     render(<SurveyForm />);
-
-    expect(screen.getByText(/demo mode/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/which kc games title/i)).toBeInTheDocument();
-
-    const progress = screen.getByRole("progressbar", {
-      name: /survey progress/i,
-    });
-    expect(progress).toHaveAttribute("aria-valuemin", "1");
-    expect(progress).toHaveAttribute("aria-valuemax", "3");
-    expect(progress).toHaveAttribute("aria-valuenow", "1");
-
-    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /back to home/i })).toHaveLength(2);
-  });
-
-  it("requires a game title before continuing", () => {
-    render(<SurveyForm />);
-
-    fireEvent.click(screen.getByRole("button", { name: /next/i }));
-
-    expect(screen.getByRole("alert")).toHaveTextContent(
-      /please enter a game title/i,
-    );
-    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
-  });
-
-  it("advances to the experience step with the accumulated game interest", () => {
-    render(<SurveyForm />);
-
-    goToExperienceStep("Riftbound");
-
-    expect(screen.getByText(/step 2 of 3/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("progressbar", { name: /survey progress/i }),
-    ).toHaveAttribute("aria-valuenow", "2");
-    expect(
-      screen.getByText(/experience with riftbound/i),
-    ).toBeInTheDocument();
-  });
-
-  it("requires an experience rating before continuing", () => {
-    render(<SurveyForm />);
-
-    goToExperienceStep("Riftbound");
-    fireEvent.click(screen.getByRole("button", { name: /next/i }));
-
-    expect(screen.getByRole("alert")).toHaveTextContent(
-      /please select a rating/i,
-    );
-    expect(screen.getByText(/step 2 of 3/i)).toBeInTheDocument();
-  });
-
-  it("keeps earlier answers when navigating back and forward", () => {
-    render(<SurveyForm />);
-
-    goToFeedbackStep("Riftbound", 4);
-
-    fireEvent.click(screen.getByRole("button", { name: /back/i }));
-    expect(screen.getByText(/step 2 of 3/i)).toBeInTheDocument();
-    expect(screen.getByRole("radio", { name: /4/ })).toBeChecked();
-
-    fireEvent.click(screen.getByRole("button", { name: /back/i }));
-    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue(
-      "Riftbound",
-    );
-
-    fireEvent.click(screen.getByRole("button", { name: /next/i }));
-    expect(screen.getByRole("radio", { name: /4/ })).toBeChecked();
-  });
-
-  it("shows the completion summary with all collected values", () => {
-    render(<SurveyForm />);
-
-    completeSurvey("Riftbound", 5, "More Riftbound events please");
-
-    const summary = screen.getByText(/thank you!/i).closest("div");
-    expect(summary).not.toBeNull();
-    expect(within(summary as HTMLElement).getByText("Riftbound")).toBeInTheDocument();
-    expect(within(summary as HTMLElement).getByText("5/5")).toBeInTheDocument();
-    expect(
-      within(summary as HTMLElement).getByText(/more riftbound events please/i),
-    ).toBeInTheDocument();
-  });
-
-  it("treats feedback as optional and reports it as not provided", () => {
-    render(<SurveyForm />);
-
-    completeSurvey("King's Quest", 3);
-
-    const summary = screen.getByText(/thank you!/i).closest("div");
-    expect(summary).not.toBeNull();
-    expect(summary).toHaveTextContent(/not provided/i);
-    expect(within(summary as HTMLElement).getByText("3/5")).toBeInTheDocument();
-  });
-
-  it("keeps the typed feedback when navigating back and then forward", () => {
-    render(<SurveyForm />);
-
-    goToFeedbackStep("Riftbound", 4);
-    fireEvent.change(screen.getByLabelText(/additional feedback/i), {
-      target: { value: "More local tournaments" },
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: /back/i }));
-    expect(screen.getByText(/step 2 of 3/i)).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: /next/i }));
-    expect(screen.getByText(/step 3 of 3/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/additional feedback/i)).toHaveValue(
-      "More local tournaments",
-    );
-  });
-
-  it("restarts the survey from scratch", () => {
-    render(<SurveyForm />);
-
-    completeSurvey("Riftbound", 2);
-    fireEvent.click(screen.getByRole("button", { name: /start over/i }));
-
-    expect(screen.queryByText(/thank you!/i)).not.toBeInTheDocument();
-    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue("");
-    expect(
-      screen.getByRole("progressbar", { name: /survey progress/i }),
-    ).toHaveAttribute("aria-valuenow", "1");
-    expect(sessionStorage.getItem(DRAFT_KEY)).toBeNull();
-  });
-
-  it("persists progress in the session draft while answering", () => {
-    render(<SurveyForm />);
-
-    goToExperienceStep("Riftbound");
-    expect(JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? "")).toEqual({
-      version: 1,
-      step: 1,
-      values: { gameInterest: "Riftbound" },
-    });
-
-    fireEvent.click(screen.getByRole("radio", { name: /4/ }));
-    expect(JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? "")).toEqual({
-      version: 1,
-      step: 1,
-      values: { gameInterest: "Riftbound", experienceRating: 4 },
-    });
-  });
-
-  it("restores an in-progress first step with its saved input", () => {
-    seedDraft({ version: 1, step: 0, values: { gameInterest: "Riftbound" } });
-    render(<SurveyForm />);
-
-    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue(
-      "Riftbound",
-    );
-  });
-
-  it("restores the experience step with the saved rating and continues from it", () => {
-    seedDraft({
-      version: 1,
-      step: 1,
-      values: { gameInterest: "Riftbound", experienceRating: 4 },
-    });
-    render(<SurveyForm />);
-
-    expect(screen.getByText(/step 2 of 3/i)).toBeInTheDocument();
-    expect(screen.getByText(/experience with riftbound/i)).toBeInTheDocument();
-    expect(screen.getByRole("radio", { name: /4/ })).toBeChecked();
-
-    fireEvent.click(screen.getByRole("button", { name: /next/i }));
-    expect(screen.getByText(/step 3 of 3/i)).toBeInTheDocument();
-  });
-
-  it("restores the feedback step with unsent feedback and finishes from it", () => {
-    seedDraft({
-      version: 1,
-      step: 2,
-      values: {
-        gameInterest: "Riftbound",
-        experienceRating: 4,
-        feedback: "Half-typed thought",
-      },
-    });
-    render(<SurveyForm />);
-
-    expect(screen.getByText(/step 3 of 3/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/additional feedback/i)).toHaveValue(
-      "Half-typed thought",
-    );
-
-    fireEvent.click(screen.getByRole("button", { name: /see my answers/i }));
-    expect(screen.getByText(/thank you!/i)).toBeInTheDocument();
-  });
-
-  it("keeps unsent typing across a remount", () => {
-    const { unmount } = render(<SurveyForm />);
-    fireEvent.change(screen.getByLabelText(/which kc games title/i), {
-      target: { value: "Riftb" },
-    });
-    unmount();
-
-    render(<SurveyForm />);
-    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue("Riftb");
-  });
-
-  it("keeps an unsent rating selection across a remount", () => {
-    const { unmount } = render(<SurveyForm />);
-    goToExperienceStep("Riftbound");
-    fireEvent.click(screen.getByRole("radio", { name: /4/ }));
-    unmount();
-
-    render(<SurveyForm />);
-    expect(screen.getByText(/step 2 of 3/i)).toBeInTheDocument();
-    expect(screen.getByRole("radio", { name: /4/ })).toBeChecked();
-  });
-
-  it("keeps earlier answers when navigating back after a restore", () => {
-    seedDraft({
-      version: 1,
-      step: 1,
-      values: { gameInterest: "Riftbound", experienceRating: 4 },
-    });
-    render(<SurveyForm />);
-
-    fireEvent.click(screen.getByRole("button", { name: /back/i }));
-
-    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue(
-      "Riftbound",
-    );
-  });
-
-  it("keeps later draft answers when going back and refreshing", () => {
-    seedDraft({ version: 1, step: 2, values: {
-      gameInterest: "Riftbound", experienceRating: 4, feedback: "Unsent draft",
-    } });
-    const { unmount } = render(<SurveyForm />);
-    fireEvent.click(screen.getByRole("button", { name: /^back$/i }));
-    unmount();
-    render(<SurveyForm />);
-    expect(screen.getByRole("radio", { name: /4/ })).toBeChecked();
-    fireEvent.click(screen.getByRole("button", { name: /next/i }));
-    expect(screen.getByLabelText(/additional feedback/i)).toHaveValue("Unsent draft");
-  });
-
-  it("restores a completed survey as the summary and clears it on start over", () => {
-    seedDraft({
-      version: 1,
-      step: 2,
-      values: { gameInterest: "Riftbound", experienceRating: 5, feedback: "Great" },
-      completed: true,
-    });
-    render(<SurveyForm />);
-
-    expect(screen.getByText(/thank you!/i)).toBeInTheDocument();
-    expect(screen.getByText("Riftbound")).toBeInTheDocument();
-    expect(screen.getByText("5/5")).toBeInTheDocument();
-    expect(screen.getByText("Great")).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: /start over/i }));
-    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue("");
-    expect(sessionStorage.getItem(DRAFT_KEY)).toBeNull();
-  });
-
-  it("start over clears only the survey draft key", () => {
-    sessionStorage.setItem("unrelated-app-key", "keep me");
-    render(<SurveyForm />);
-
-    completeSurvey("Riftbound", 2);
-    fireEvent.click(screen.getByRole("button", { name: /start over/i }));
-
-    expect(sessionStorage.getItem("unrelated-app-key")).toBe("keep me");
-    expect(sessionStorage.getItem(DRAFT_KEY)).toBeNull();
-  });
-
-  it("treats a corrupt draft as no draft", () => {
-    sessionStorage.setItem(DRAFT_KEY, "{not json at all");
-    render(<SurveyForm />);
-
-    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue("");
-  });
-
-  it("rejects drafts with an unknown version", () => {
-    seedDraft({
-      version: 2,
-      step: 1,
-      values: { gameInterest: "Riftbound", experienceRating: 4 },
-    });
-    render(<SurveyForm />);
-
-    expect(screen.getByText(/step 1 of 3/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/which kc games title/i)).toHaveValue("");
-  });
-
-  it("still completes the survey when storage access throws", () => {
-    const original = Object.getOwnPropertyDescriptor(window, "sessionStorage");
-    expect(original).toBeDefined();
-    replaceSessionStorage({
-      configurable: true,
-      get() {
-        throw new DOMException("Storage blocked", "SecurityError");
-      },
-    });
-
-    try {
-      render(<SurveyForm />);
-      completeSurvey("Riftbound", 5, "Still works");
-      expect(screen.getByText(/thank you!/i)).toBeInTheDocument();
-    } finally {
-      replaceSessionStorage(original!);
+    chooseShop(); progress(2);
+    change(/retail area picture/i, "retail-card-wall"); change(/play area picture/i, "play-table-rows"); next();
+    progress(3); seating(); progress(4);
+    change(/^instagram/i, "@demo_shop"); change(/^facebook/i, "Demo shop"); change(/^tiktok/i, "@demo"); next();
+    progress(5); closeWeek();
+    progress(6); eventAnswer("Regular event simulation");
+    progress(7); expect(screen.getByRole("checkbox")).not.toBeChecked(); eventAnswer("Notable simulation");
+    progress(8); eventAnswer("Learn to play simulation");
+    progress(9); eventAnswer("External simulation");
+    progress(10); change(/^shop feedback/i, "Shop feedback simulation"); change(/^retailer feedback/i, "Retailer feedback simulation"); next();
+    progress(11); eventAnswer("Personal simulation");
+    progress(12); change(/^other products sold/i, "Board games and sleeves");
+    fireEvent.click(screen.getByRole("button", { name: "SUBMIT" }));
+    expect(screen.getByRole("heading", { name: /simulation complete/i })).toBeInTheDocument();
+    for (const answer of ["Regular event simulation", "Notable simulation", "Learn to play simulation", "External simulation", "Personal simulation", "Board games and sleeves"]) {
+      expect(screen.getByText(answer, { exact: false })).toBeInTheDocument();
     }
+    expect(screen.getByText("TCG Malaysia")).toBeInTheDocument();
+    expect(JSON.parse(sessionStorage.getItem(KEY)!)).toMatchObject({ completed: true, step: 11 });
   });
 
-  it("still completes the survey when storage writes fail", () => {
-    const original = Object.getOwnPropertyDescriptor(window, "sessionStorage");
-    expect(original).toBeDefined();
-    replaceSessionStorage({
-      configurable: true,
-      value: {
-        getItem: () => null,
-        setItem: () => {
-          throw new DOMException("Quota exceeded", "QuotaExceededError");
-        },
-        removeItem: () => {},
-      },
-    });
+  it("allows optional pictures, social, events, feedback and products to be skipped", () => {
+    render(<SurveyForm />); chooseShop(); next(); seating(); next(); closeWeek();
+    for (let step = 6; step <= 11; step++) { progress(step); next(); }
+    progress(12); fireEvent.click(screen.getByRole("button", { name: "SUBMIT" }));
+    expect(screen.getByRole("heading", { name: /simulation complete/i })).toBeInTheDocument();
+  });
 
-    try {
-      render(<SurveyForm />);
-      completeSurvey("Riftbound", 4);
-      expect(screen.getByText(/thank you!/i)).toBeInTheDocument();
-    } finally {
-      replaceSessionStorage(original!);
+  it("requires whole nonnegative seating counts and accepts zero", () => {
+    seed(2); render(<SurveyForm />); next(); progress(3);
+    change(/^tables/i, "-1"); change(/^chairs/i, "2.5"); next();
+    expect(screen.getByRole("alert")).toHaveTextContent(/whole number/i);
+    change(/^tables/i, "0"); change(/^chairs/i, "0"); next(); progress(4);
+  });
+
+  it("requires opening and closing times for an open day", () => {
+    seed(4); render(<SurveyForm />); next();
+    expect(screen.getByRole("alert")).toHaveTextContent(/opening and closing/i);
+    closeWeek(); progress(6);
+  });
+
+  it("requires event date, time and info only when enabled", () => {
+    seed(5); render(<SurveyForm />);
+    fireEvent.click(screen.getByRole("checkbox")); next(); progress(6);
+    expect(screen.getAllByRole("alert")).toHaveLength(3);
+    change(/^date/i, "2026-12-10"); change(/^time/i, "10:00"); change(/^event info/i, "Event simulation"); next(); progress(7);
+    expect(screen.getByRole("checkbox")).not.toBeChecked();
+  });
+
+  it("restores partial social typing on refresh and preserves it through back navigation", () => {
+    seed(3, { shop: { selection: "retailer:52", branchId: 0 }, seating: { tables: 4, chairs: 16 } });
+    const view = render(<SurveyForm />);
+    change(/^instagram/i, "@unfinished"); view.unmount();
+    const restored = render(<SurveyForm />); progress(4);
+    expect(screen.getByLabelText(/^instagram/i)).toHaveValue("@unfinished");
+    back(); progress(3); restored.unmount();
+    render(<SurveyForm />); progress(3); next(); progress(4);
+    expect(screen.getByLabelText(/^instagram/i)).toHaveValue("@unfinished");
+  });
+
+  it("restores every section at the same step including future draft answers", () => {
+    const values: SurveyDraftValues = { shop: { selection: "retailer:52", branchId: 0 }, seating: { tables: 4, chairs: 16 }, feedback: { shop: "unsent", retailer: "draft" } };
+    for (let step = 0; step < 12; step++) {
+      seed(step, values); const view = render(<SurveyForm />); progress(step + 1); view.unmount();
     }
+    seed(9, values); render(<SurveyForm />);
+    expect(screen.getByLabelText(/^shop feedback/i)).toHaveValue("unsent");
+  });
+
+  it("restores completed summaries and Start over clears only this survey", () => {
+    sessionStorage.setItem("unrelated", "keep");
+    sessionStorage.setItem(KEY, JSON.stringify({ version: 2, step: 11, completed: true, values: { shop: { selection: "retailer:52", branchId: 0 }, seating: { tables: 0, chairs: 0 }, otherProducts: "Sleeves" } }));
+    render(<SurveyForm />);
+    expect(screen.getByRole("heading", { name: /simulation complete/i })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /start over/i })); progress(1);
+    expect(sessionStorage.getItem(KEY)).toBeNull(); expect(sessionStorage.getItem("unrelated")).toBe("keep");
+  });
+
+  it.each(["{broken", JSON.stringify({ version: 1, step: 11, values: {} })])("ignores corrupt or incompatible drafts", (payload) => {
+    sessionStorage.setItem(KEY, payload); render(<SurveyForm />); progress(1);
+  });
+
+  it("continues when storage writes fail", () => {
+    const spy = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw new DOMException("blocked"); });
+    try { render(<SurveyForm />); chooseShop(); progress(2); } finally { spy.mockRestore(); }
   });
 });

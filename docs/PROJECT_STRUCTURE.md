@@ -26,9 +26,10 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 - `src/app/announcements/riftbound-radiance-pre-rift/page.tsx`: Official Riftbound: Radiance Pre-Rift event delay announcement page for Malaysia with article metadata, JSON-LD, and top/bottom Back to Home links.
 - `src/app/retailer/page.tsx`: KC Games themed retailer pre-signup page that leads into the live Betobee signup, presents the shared themed Betobee app-store download banner, serves Malaysia & Brunei, and declares retailer canonical metadata.
 - `src/app/retailers/page.tsx`: Authorised retailer directory page that imports retailer data from JSON and emits retailer ItemList JSON-LD.
-- `src/app/survey/page.tsx`: Demo-only player survey page with noindex metadata.
-- `src/app/survey/SurveyForm.tsx`: Client-side Formity 3 multi-step survey (useFormity flow with required game interest, required experience rating, optional feedback, in-memory next/back recall, completion summary and restart, demo notice; resumes the saved step and unsent answers from the session draft, no submission to any server) plus its Vitest suite in `src/app/survey/SurveyForm.test.tsx`.
+- `src/app/survey/page.tsx`: Demo-only retailer survey page with noindex metadata.
+- `src/app/survey/SurveyForm.tsx`: Twelve-question Formity retailer simulation with JSON shop/branch choice, sample retail/play pictures, seating, social media, weekly hours, event categories, feedback, products and simulated SUBMIT summary. Covered by `SurveyForm.test.tsx`.
 - `src/app/survey/useSurveyDraft.ts`: Validated, versioned session draft of the current step and unsent answers stored in the tab's `sessionStorage` and restored into Formity via `initialState`; tolerates corrupt or blocked storage, and `Start over` clears only the survey draft key. Unit-tested in `src/app/survey/useSurveyDraft.test.ts`.
+- `src/app/survey/surveyData.ts`: Read-only retailer JSON options, explicitly simulated chain groups and sample-picture metadata; unit-tested in `surveyData.test.ts`.
 - `src/app/layout.tsx`: Root layout plus page metadata, robots directives, release/version markers, and Google Tag Manager snippet.
 - `src/app/robots.ts`: Static robots.txt metadata route with sitemap pointer.
 - `src/app/sitemap.ts`: Static sitemap metadata route for the homepage, announcement, retailer signup, and retailer directory pages.
