@@ -31,6 +31,8 @@ Update these files before every push if the codebase, content, or workflow chang
 - Main landing page lives in `src/app/page.tsx`, declares homepage canonical metadata, targets Malaysia & Brunei in the intro copy, and shows the shared Betobee retailer-app banner below Company Information.
 - Retailer landing flow lives in `src/app/retailer/page.tsx`, declares retailer canonical metadata, serves Malaysia & Brunei, and reuses the same app banner before its final signup CTA.
 - Retailer directory data lives in `src/data/retailers.json`; update this JSON when adding/removing retailers or changing country/store-type/playing-location flags.
+- Demo-only player survey lives in `src/app/survey/page.tsx` with server metadata set to noindex; `src/app/survey/SurveyForm.tsx` drives a Formity 3 flow (`useFormity` with `Flow` from `@formity/react`): required game interest, required experience rating, optional feedback, real next/back navigation with Formity's in-memory value recall, and a completion summary with restart. Nothing is submitted or persisted.
+- Tests use Vitest + React Testing Library: config in `vitest.config.ts`, setup in `src/test-setup.ts`, suite under `src/**/*.test.{ts,tsx}`; run with `npm run test`, typecheck with `npm run typecheck`.
 - Global metadata, release/version markers, robots directives, and Google Tag Manager are configured in `src/app/layout.tsx`.
 - SEO routes live in `src/app/robots.ts` and `src/app/sitemap.ts`.
 - Homepage structured data is emitted as JSON-LD from `src/app/page.tsx`.

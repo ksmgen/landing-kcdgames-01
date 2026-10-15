@@ -26,6 +26,8 @@ Keep this file, `AGENTS.md`, and `README.md` updated before each push whenever t
 - `src/app/announcements/riftbound-radiance-pre-rift/page.tsx`: Official Riftbound: Radiance Pre-Rift event delay announcement page for Malaysia with article metadata, JSON-LD, and top/bottom Back to Home links.
 - `src/app/retailer/page.tsx`: KC Games themed retailer pre-signup page that leads into the live Betobee signup, presents the shared themed Betobee app-store download banner, serves Malaysia & Brunei, and declares retailer canonical metadata.
 - `src/app/retailers/page.tsx`: Authorised retailer directory page that imports retailer data from JSON and emits retailer ItemList JSON-LD.
+- `src/app/survey/page.tsx`: Demo-only player survey page with noindex metadata.
+- `src/app/survey/SurveyForm.tsx`: Client-side Formity 3 multi-step survey (useFormity flow with required game interest, required experience rating, optional feedback, in-memory next/back recall, completion summary and restart, demo notice, no persistence or submission) plus its Vitest suite in `src/app/survey/SurveyForm.test.tsx`.
 - `src/app/layout.tsx`: Root layout plus page metadata, robots directives, release/version markers, and Google Tag Manager snippet.
 - `src/app/robots.ts`: Static robots.txt metadata route with sitemap pointer.
 - `src/app/sitemap.ts`: Static sitemap metadata route for the homepage, announcement, retailer signup, and retailer directory pages.
