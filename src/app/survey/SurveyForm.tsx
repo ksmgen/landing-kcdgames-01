@@ -193,25 +193,25 @@ function createSurveyFlow({ saveDraft, saveField }: DraftStore) {
             onDraftChange={(partial) => saveField("externalEvent", partial)}
           />
         )),
-    formStep("feedback", defaultFeedbackValue(), ({ fields, next, back }) => (
-          <FeedbackStep
-            value={fields.feedback}
-            onNext={(fields) => { saveDraft({ step: 10, values: fields }); next(fields); }}
-            onBack={(fields) => { saveDraft({ step: 8, values: fields }); back(fields); }}
-            onDraftChange={(partial) => saveField("feedback", partial)}
-          />
-        )),
     formStep("personalEvent", defaultEventValue(), ({ fields, next, back }) => (
           <EventStep
-            key="event-step-11"
-            current={11}
+            key="event-step-10"
+            current={10}
             title="Personal event"
             hint="Any personal event you would like KC Games to know about."
             toggleLabel="I have a personal event to share"
             value={fields.personalEvent}
-            onNext={(fields) => { const answer = { personalEvent: fields.event }; saveDraft({ step: 11, values: answer }); next(answer); }}
-            onBack={(fields) => { const answer = { personalEvent: fields.event }; saveDraft({ step: 9, values: answer }); back(answer); }}
+            onNext={(fields) => { const answer = { personalEvent: fields.event }; saveDraft({ step: 10, values: answer }); next(answer); }}
+            onBack={(fields) => { const answer = { personalEvent: fields.event }; saveDraft({ step: 8, values: answer }); back(answer); }}
             onDraftChange={(partial) => saveField("personalEvent", partial)}
+          />
+        )),
+    formStep("feedback", defaultFeedbackValue(), ({ fields, next, back }) => (
+          <FeedbackStep
+            value={fields.feedback}
+            onNext={(fields) => { saveDraft({ step: 11, values: fields }); next(fields); }}
+            onBack={(fields) => { saveDraft({ step: 9, values: fields }); back(fields); }}
+            onDraftChange={(partial) => saveField("feedback", partial)}
           />
         )),
     formStep("otherProducts", "", ({ fields, next, back }) => (
@@ -1092,7 +1092,7 @@ function FeedbackStep({
       noValidate
     >
       <StepHeader
-        current={10}
+        current={11}
         onBack={() =>
           onBack({
             feedback: { shop: feedback.shop.trim(), retailer: feedback.retailer.trim() },
@@ -1327,7 +1327,10 @@ function SurveySummary({
         <SummarySection title="9. External event">
           {eventSummaryLines(values.externalEvent)}
         </SummarySection>
-        <SummarySection title="10. Feedback">
+        <SummarySection title="10. Personal event">
+          {eventSummaryLines(values.personalEvent)}
+        </SummarySection>
+        <SummarySection title="11. Feedback">
           <OrNotProvided>
             {values.feedback.shop ? `Shop: ${values.feedback.shop}` : ""}
           </OrNotProvided>
@@ -1336,9 +1339,6 @@ function SurveySummary({
               ? `Retailer: ${values.feedback.retailer}`
               : ""}
           </OrNotProvided>
-        </SummarySection>
-        <SummarySection title="11. Personal event">
-          {eventSummaryLines(values.personalEvent)}
         </SummarySection>
         <SummarySection title="12. Other products sold">
           <OrNotProvided>

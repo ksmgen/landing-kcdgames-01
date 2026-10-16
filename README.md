@@ -12,7 +12,7 @@ KC Games landing page built with **Next.js 14**, **TypeScript**, and **Tailwind 
 - A KC Games themed retailer pre-signup page in `src/app/retailer/page.tsx` for Malaysia & Brunei with retailer canonical metadata and the shared themed Betobee app-store download banner
 - An urgent Riftbound announcement page in `src/app/announcements/riftbound-radiance-pre-rift/page.tsx`, highlighted by a bottom-floating homepage warning
 - An authorised retailer directory in `src/app/retailers/page.tsx`, backed by `src/data/retailers.json` with store-type and playing-location flags for easy add/remove updates
-- A demo-only 12-question retailer survey in `src/app/survey/page.tsx` (noindex), using Formity 3, JSON-only shops/conditional simulated branches, simulated shop pictures, seating, socials, hours, five event categories, two feedback fields and other products; SUBMIT shows a local simulation summary. SessionStorage preserves progress and unfinished answers across refresh; no uploads or backend.
+- A demo-only 12-question retailer survey in `src/app/survey/page.tsx` (noindex), using Formity 3, JSON-only shops/conditional simulated branches, simulated shop pictures, seating, socials, hours, five event categories (personal event at step 10), two feedback fields at step 11 and other products; SUBMIT shows a local simulation summary. SessionStorage preserves progress and unfinished answers across refresh; no uploads or backend.
 - Shared contact UI in `src/components/ContactWidget.tsx` and shared retailer-app UI in `src/components/RetailerAppBanner.tsx`
 - KC Games brand assets, mirrored retailer images, partner logos, and campaign banners in `public/`
 - SEO helpers in `src/app/robots.ts`, `src/app/sitemap.ts`, and homepage JSON-LD

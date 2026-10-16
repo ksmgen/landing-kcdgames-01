@@ -354,7 +354,7 @@ describe("draftToFormityState", () => {
       [{ type: "list", slot: 0 }],
       [{ type: "list", slot: 1 }],
     ]);
-    expect(state.memory.list[9]).toEqual({
+    expect(state.memory.list[10]).toEqual({
       feedback: {
         data: { here: true, data: { shop: "later answer", retailer: "" } },
         keys: {},

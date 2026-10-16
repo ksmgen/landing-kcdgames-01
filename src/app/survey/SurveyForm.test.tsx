@@ -45,8 +45,8 @@ describe("retailer survey simulation", () => {
     progress(7); expect(screen.getByRole("checkbox")).not.toBeChecked(); eventAnswer("Notable simulation");
     progress(8); eventAnswer("Learn to play simulation");
     progress(9); eventAnswer("External simulation");
-    progress(10); change(/^shop feedback/i, "Shop feedback simulation"); change(/^retailer feedback/i, "Retailer feedback simulation"); next();
-    progress(11); eventAnswer("Personal simulation");
+    progress(10); eventAnswer("Personal simulation");
+    progress(11); change(/^shop feedback/i, "Shop feedback simulation"); change(/^retailer feedback/i, "Retailer feedback simulation"); next();
     progress(12); change(/^other products sold/i, "Board games and sleeves");
     fireEvent.click(screen.getByRole("button", { name: "SUBMIT" }));
     expect(screen.getByRole("heading", { name: /simulation complete/i })).toBeInTheDocument();
@@ -101,8 +101,23 @@ describe("retailer survey simulation", () => {
     for (let step = 0; step < 12; step++) {
       seed(step, values); const view = render(<SurveyForm />); progress(step + 1); view.unmount();
     }
-    seed(9, values); render(<SurveyForm />);
+    seed(10, values); render(<SurveyForm />);
     expect(screen.getByLabelText(/^shop feedback/i)).toHaveValue("unsent");
+  });
+
+  it("keeps swapped steps aligned through next, back and refresh", () => {
+    seed(9);
+    const view = render(<SurveyForm />); progress(10);
+    expect(screen.getByRole("checkbox", { name: /personal event/i })).toBeInTheDocument();
+    eventAnswer("Personal draft"); progress(11);
+    change(/^shop feedback/i, "Feedback draft");
+    back(); progress(10);
+    expect(screen.getByLabelText(/^event info/i)).toHaveValue("Personal draft");
+    view.unmount();
+    render(<SurveyForm />); progress(10);
+    expect(screen.getByLabelText(/^event info/i)).toHaveValue("Personal draft");
+    next(); progress(11);
+    expect(screen.getByLabelText(/^shop feedback/i)).toHaveValue("Feedback draft");
   });
 
   it("restores completed summaries and Start over clears only this survey", () => {

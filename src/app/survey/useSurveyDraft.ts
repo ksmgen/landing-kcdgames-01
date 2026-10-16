@@ -57,8 +57,8 @@ export const STEP_KEYS = [
   "notableEvent",
   "learnToPlay",
   "externalEvent",
-  "feedback",
   "personalEvent",
+  "feedback",
   "otherProducts",
 ] as const;
 
