@@ -19,7 +19,11 @@ function eventAnswer(info: string) {
 }
 
 describe("retailer survey simulation", () => {
-  beforeEach(() => { sessionStorage.clear(); });
+  beforeEach(() => {
+    sessionStorage.clear();
+    HTMLDialogElement.prototype.showModal = function () { this.setAttribute("open", ""); };
+    HTMLDialogElement.prototype.close = function () { this.removeAttribute("open"); };
+  });
 
   it("shows retailer-only choices and conditional branch selection", () => {
     render(<SurveyForm />); progress(1);
@@ -34,7 +38,7 @@ describe("retailer survey simulation", () => {
     next(); progress(2);
   });
 
-  it("completes all twelve sections in order with distinct event answers and simulated SUBMIT", () => {
+  it("completes all twelve sections in order and opens the submission UI", () => {
     render(<SurveyForm />);
     chooseShop(); progress(2);
     change(/retail area picture/i, "retail-card-wall"); change(/play area picture/i, "play-table-rows"); next();
@@ -48,20 +52,17 @@ describe("retailer survey simulation", () => {
     progress(10); eventAnswer("Personal simulation");
     progress(11); change(/^shop feedback/i, "Shop feedback simulation"); change(/^retailer feedback/i, "Retailer feedback simulation"); next();
     progress(12); change(/^other products sold/i, "Board games and sleeves");
-    fireEvent.click(screen.getByRole("button", { name: "SUBMIT" }));
-    expect(screen.getByRole("heading", { name: /simulation complete/i })).toBeInTheDocument();
-    for (const answer of ["Regular event simulation", "Notable simulation", "Learn to play simulation", "External simulation", "Personal simulation", "Board games and sleeves"]) {
-      expect(screen.getByText(answer, { exact: false })).toBeInTheDocument();
-    }
-    expect(screen.getByText("TCG Malaysia")).toBeInTheDocument();
-    expect(JSON.parse(sessionStorage.getItem(KEY)!)).toMatchObject({ completed: true, step: 11 });
+    fireEvent.click(screen.getByRole("button", { name: "Ready to submit" }));
+    expect(screen.getByRole("dialog", { name: "Ready to submit" })).toBeInTheDocument();
+    expect(JSON.parse(sessionStorage.getItem(KEY)!)).toMatchObject({ step: 11, values: { personalEvent: { info: "Personal simulation" }, feedback: { shop: "Shop feedback simulation" }, otherProducts: "Board games and sleeves" } });
+    expect(JSON.parse(sessionStorage.getItem(KEY)!)).not.toHaveProperty("completed");
   });
 
   it("allows optional pictures, social, events, feedback and products to be skipped", () => {
     render(<SurveyForm />); chooseShop(); next(); seating(); next(); closeWeek();
     for (let step = 6; step <= 11; step++) { progress(step); next(); }
-    progress(12); fireEvent.click(screen.getByRole("button", { name: "SUBMIT" }));
-    expect(screen.getByRole("heading", { name: /simulation complete/i })).toBeInTheDocument();
+    progress(12); fireEvent.click(screen.getByRole("button", { name: "Ready to submit" }));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
 
   it("requires whole nonnegative seating counts and accepts zero", () => {
@@ -131,6 +132,31 @@ describe("retailer survey simulation", () => {
 
   it.each(["{broken", JSON.stringify({ version: 1, step: 11, values: {} })])("ignores corrupt or incompatible drafts", (payload) => {
     sessionStorage.setItem(KEY, payload); render(<SurveyForm />); progress(1);
+  });
+
+  it("dismisses only with X or Cancel and never stores credentials", () => {
+    seed(11, { otherProducts: "Sleeves" });
+    render(<SurveyForm />);
+    const open = () => fireEvent.click(screen.getByRole("button", { name: "Ready to submit" }));
+    open();
+    const dialog = screen.getByRole("dialog");
+    fireEvent.click(dialog);
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(fireEvent(dialog, new Event("cancel", { cancelable: true }))).toBe(false);
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    change(/^username/i, "fake-user"); change(/^password/i, "fake-secret");
+    fireEvent.click(screen.getByRole("button", { name: /^submit$/i }));
+    expect(screen.getByRole("status")).toHaveTextContent(/not connected/i);
+    expect(screen.getByLabelText(/^password/i)).toHaveValue("");
+    expect(sessionStorage.getItem(KEY)).not.toContain("fake-secret");
+    expect(sessionStorage.getItem(KEY)).not.toContain("fake-user");
+    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByLabelText(/^other products/i)).toHaveValue("Sleeves");
+    open(); expect(screen.getByLabelText(/^username/i)).toHaveValue("");
+    change(/^password/i, "discard-this");
+    fireEvent.click(screen.getByRole("button", { name: /close submission dialog/i }));
+    open(); expect(screen.getByLabelText(/^password/i)).toHaveValue("");
   });
 
   it("continues when storage writes fail", () => {

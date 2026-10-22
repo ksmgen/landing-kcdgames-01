@@ -4,6 +4,7 @@ import type { FormEvent, ReactNode } from "react";
 import { useCallback, useMemo, useState } from "react";
 import { ArrowLeft, ImageIcon } from "lucide-react";
 import { useFormity } from "@formity/react";
+import SubmissionModal from "./SubmissionModal";
 import type { Flow, OnReturn, State, s } from "@formity/react";
 import {
   CHAIN_GROUPS,
@@ -1156,12 +1157,14 @@ function OtherProductsStep({
   onDraftChange: (value: string) => void;
 }) {
   const [otherProducts, setOtherProducts] = useState(value);
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <form
       onSubmit={(submit) => {
         submit.preventDefault();
-        onNext({ otherProducts: otherProducts.trim() });
+        onDraftChange(otherProducts);
+        setModalOpen(true);
       }}
       noValidate
     >
@@ -1185,11 +1188,12 @@ function OtherProductsStep({
         />
       </div>
       <p className="mb-4 text-xs text-navy-200">
-        Pressing SUBMIT finishes the simulation — nothing is sent anywhere, and you will see a summary of every answer.
+        Ready to submit opens the sign-in dialog. This is a UI demo only; authentication and submission are not connected.
       </p>
       <button type="submit" className={nextButtonClass}>
-        SUBMIT
+        Ready to submit
       </button>
+      {modalOpen && <SubmissionModal onClose={() => setModalOpen(false)} />}
     </form>
   );
 }
