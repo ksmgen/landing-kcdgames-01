@@ -499,9 +499,6 @@ function ShopStep({
   return (
     <form onSubmit={handleSubmit} noValidate>
       <StepHeader current={1} />
-      <div className="mb-4 rounded-xl border border-amber-400/30 bg-[rgba(50,42,28,0.6)] p-4 text-xs leading-relaxed text-amber-200/80">
-        <strong className="text-amber-100">Demo simulation</strong> — multi-branch chains below are grouped by shop name prefix for this simulation only. The branch grouping is not connected to actual KC Games B2B relationships, and every option comes straight from the public retailer list.
-      </div>
       <div className="mb-1">
         <label htmlFor="shop-selection" className={fieldLabelClass}>
           Choose your shop
