@@ -9,6 +9,12 @@ import {
   type SurveyDraft,
 } from "./useSurveyDraft";
 
+/** A valid chain-group branch selection from the authoritative JSON. */
+const CHAIN_HAVEN_BRANCH = { selection: "chain:games-haven", branchId: "6a0eaff24e59c09193f726af" };
+
+/** A valid standalone retailer selection from the authoritative JSON. */
+const STANDALONE_ARCAIDA = { selection: "retailer:6a204dcccada14e24b758e79", branchId: "" };
+
 function seed(values: Record<string, unknown>, step = 0, completed?: true) {
   return JSON.stringify({
     version: 2,
@@ -28,7 +34,7 @@ describe("parseSurveyDraft", () => {
     expect(
       parseSurveyDraft(
         seed({
-          shop: { selection: "retailer:52", branchId: 0 },
+          shop: STANDALONE_ARCAIDA,
           seating: { tables: 4, chairs: 16 },
         }),
       ),
@@ -36,7 +42,7 @@ describe("parseSurveyDraft", () => {
       version: 2,
       step: 0,
       values: {
-        shop: { selection: "retailer:52", branchId: 0 },
+        shop: STANDALONE_ARCAIDA,
         seating: { tables: 4, chairs: 16 },
       },
     });
@@ -85,43 +91,43 @@ describe("parseSurveyDraft", () => {
 });
 
 describe("sanitizeDraftValues", () => {
-  it("keeps a valid shop selection with its branch", () => {
-    expect(
-      sanitizeDraftValues({
-        shop: { selection: "chain:games-haven", branchId: 13 },
-      }),
-    ).toEqual({ shop: { selection: "chain:games-haven", branchId: 13 } });
-  });
-
-  it("drops stale shop selections without losing the rest of the draft", () => {
-    expect(
-      sanitizeDraftValues({
-        shop: { selection: "retailer:999999", branchId: 0 },
-        seating: { tables: 1, chairs: 1 },
-      }),
-    ).toEqual({ seating: { tables: 1, chairs: 1 } });
-    expect(
-      sanitizeDraftValues({ shop: { selection: "chain:not-a-chain", branchId: 1 } }),
-    ).toEqual({});
-    // Chain member rows are not valid direct selections.
-    expect(
-      sanitizeDraftValues({ shop: { selection: "retailer:13", branchId: 0 } }),
-    ).toEqual({});
-    expect(sanitizeDraftValues({ shop: { selection: "nope", branchId: 0 } })).toEqual({});
-    expect(sanitizeDraftValues({ shop: { selection: "retailer:52", branchId: 7 } })).toEqual({
-      shop: { selection: "retailer:52", branchId: 0 },
+  it("keeps a valid shop selection with its branch id", () => {
+    expect(sanitizeDraftValues({ shop: CHAIN_HAVEN_BRANCH })).toEqual({
+      shop: CHAIN_HAVEN_BRANCH,
     });
   });
 
-  it("keeps a chain selection but resets a stale branch id", () => {
+  it("drops stale shop selections without losing the rest of the draft", () => {
+    // Invalid standalone id (no matching row)
     expect(
       sanitizeDraftValues({
-        shop: { selection: "chain:box-hunt", branchId: 999999 },
+        shop: { selection: "retailer:zzzzzzzzzzzzzzzzzzzzzzzz", branchId: "" },
+        seating: { tables: 1, chairs: 1 },
       }),
-    ).toEqual({ shop: { selection: "chain:box-hunt", branchId: 0 } });
+    ).toEqual({ seating: { tables: 1, chairs: 1 } });
+
+    // Chain member picked as standalone — not valid
     expect(
-      sanitizeDraftValues({ shop: { selection: "chain:box-hunt", branchId: -1 } }),
+      sanitizeDraftValues({ shop: { selection: "retailer:6a0eaff24e59c09193f726af", branchId: "" } }),
     ).toEqual({});
+
+    // Garbage selection string — pattern fails immediately
+    expect(sanitizeDraftValues({ shop: { selection: "nope", branchId: "" } })).toEqual({});
+  });
+
+  it("drops a chain selection with no matching group", () => {
+    expect(
+      sanitizeDraftValues({ shop: { selection: "chain:not-a-chain", branchId: "abc" } }),
+    ).toEqual({});
+  });
+
+  it("drops old-format numeric-id drafts (they do not resolve to current shops)", () => {
+    // Old `retailer:<number>` ids — pattern rejects digits-only ids
+    expect(sanitizeDraftValues({ shop: { selection: "retailer:52", branchId: "" } })).toEqual({});
+    expect(sanitizeDraftValues({ shop: { selection: "retailer:13", branchId: "0" } })).toEqual({});
+    // Old chain slugs (e.g. box-hunt) don't exist in the authoritative source
+    expect(sanitizeDraftValues({ shop: { selection: "chain:box-hunt", branchId: "" } })).toEqual({});
+    expect(sanitizeDraftValues({ shop: { selection: "chain:impulse-gaming", branchId: "abc" } })).toEqual({});
   });
 
   it("keeps partially typed events and clears disabled events", () => {
@@ -214,14 +220,12 @@ describe("sanitizeDraftValues", () => {
 
 describe("completed drafts", () => {
   const completedBase = {
-    shop: { selection: "retailer:52", branchId: 0 },
+    shop: STANDALONE_ARCAIDA,
     seating: { tables: 2, chairs: 8 },
   };
 
   it("parses a completed draft with the required answers", () => {
-    expect(
-      parseSurveyDraft(seed(completedBase, 11, true)),
-    ).toEqual({
+    expect(parseSurveyDraft(seed(completedBase, 11, true))).toEqual({
       version: 2,
       step: 11,
       values: completedBase,
@@ -238,19 +242,21 @@ describe("completed drafts", () => {
     expect(
       parseSurveyDraft(seed({ seating: { tables: 1, chairs: 1 } }, 11, true)),
     ).toEqual({ version: 2, step: 11, values: { seating: { tables: 1, chairs: 1 } } });
+    // Stale retail id — resolved to null → no completed flag
     expect(
       parseSurveyDraft(
-        seed({ shop: { selection: "retailer:999999", branchId: 0 }, seating: { tables: 1, chairs: 1 } }, 11, true),
+        seed({ shop: { selection: "retailer:zzzzzzzzzzzzzzzzzzzzzzzz", branchId: "" }, seating: { tables: 1, chairs: 1 } }, 11, true),
       ),
-    ).toEqual({ version: 2, step: 11, values: { seating: { tables: 1, chairs: 1 } } });
+    ).toEqual({ version: 2, step: 0, values: { seating: { tables: 1, chairs: 1 } } });
+    // Chain without branch — resolved to null → no completed flag
     expect(
       parseSurveyDraft(
-        seed({ shop: { selection: "chain:games-haven", branchId: 0 }, seating: { tables: 1, chairs: 1 } }, 11, true),
+        seed({ shop: { selection: "chain:games-haven", branchId: "" }, seating: { tables: 1, chairs: 1 } }, 11, true),
       ),
     ).toEqual({
       version: 2,
-      step: 11,
-      values: { shop: { selection: "chain:games-haven", branchId: 0 }, seating: { tables: 1, chairs: 1 } },
+      step: 0,
+      values: { shop: { selection: "chain:games-haven", branchId: "" }, seating: { tables: 1, chairs: 1 } },
     });
     expect(parseSurveyDraft(seed(completedBase, 11, false as never))).toEqual({
       version: 2,
@@ -260,10 +266,18 @@ describe("completed drafts", () => {
   });
 });
 
+describe("legacy shop draft recovery", () => {
+  it("returns old numeric selections to shop choice while preserving all other answers", () => {
+    const restored = parseSurveyDraft(seed({ shop: { selection: "retailer:52", branchId: 0 }, otherProducts: "Preserved answer", seating: { tables: 3, chairs: 12 } }, 11));
+    expect(restored).toMatchObject({ step: 0, values: { otherProducts: "Preserved answer", seating: { tables: 3, chairs: 12 } } });
+    expect(restored?.values.shop).toBeUndefined();
+  });
+});
+
 describe("draftToSurveyValues", () => {
   it("fills defaults for missing steps", () => {
-    const values = draftToSurveyValues({ shop: { selection: "retailer:52", branchId: 0 } });
-    expect(values.shop.selection).toBe("retailer:52");
+    const values = draftToSurveyValues({ shop: STANDALONE_ARCAIDA });
+    expect(values.shop.selection).toBe(STANDALONE_ARCAIDA.selection);
     expect(values.seating).toEqual({ tables: null, chairs: null });
     expect(values.hours).toEqual(defaultHoursValue());
     expect(values.event).toEqual({ enabled: false, date: "", time: "", info: "" });
@@ -276,7 +290,7 @@ describe("draftToFormityState", () => {
     const state = draftToFormityState({
       version: 2,
       step: 0,
-      values: { shop: { selection: "retailer:52", branchId: 0 } },
+      values: { shop: STANDALONE_ARCAIDA },
     });
 
     expect(state.points).toEqual([
@@ -286,7 +300,7 @@ describe("draftToFormityState", () => {
       type: "list",
       list: {
         0: {
-          shop: { data: { here: true, data: { selection: "retailer:52", branchId: 0 } }, keys: {} },
+          shop: { data: { here: true, data: STANDALONE_ARCAIDA }, keys: {} },
         },
       },
     });
@@ -297,7 +311,7 @@ describe("draftToFormityState", () => {
       version: 2,
       step: 4,
       values: {
-        shop: { selection: "retailer:52", branchId: 0 },
+        shop: STANDALONE_ARCAIDA,
         pictures: { retailArea: "retail-card-wall", playArea: "" },
         seating: { tables: 4, chairs: 16 },
         social: { instagram: "@kcgames", facebook: "", tiktok: "" },
@@ -315,12 +329,12 @@ describe("draftToFormityState", () => {
       [{ type: "list", slot: 4 }],
     ]);
     expect(state.points[3].values).toEqual({
-      shop: { selection: "retailer:52", branchId: 0 },
+      shop: STANDALONE_ARCAIDA,
       pictures: { retailArea: "retail-card-wall", playArea: "" },
       seating: { tables: 4, chairs: 16 },
     });
     expect(state.points[4].values).toEqual({
-      shop: { selection: "retailer:52", branchId: 0 },
+      shop: STANDALONE_ARCAIDA,
       pictures: { retailArea: "retail-card-wall", playArea: "" },
       seating: { tables: 4, chairs: 16 },
       social: { instagram: "@kcgames", facebook: "", tiktok: "" },
@@ -344,7 +358,7 @@ describe("draftToFormityState", () => {
       version: 2,
       step: 1,
       values: {
-        shop: { selection: "retailer:52", branchId: 0 },
+        shop: STANDALONE_ARCAIDA,
         pictures: { retailArea: "retail-card-wall", playArea: "" },
         feedback: { shop: "later answer", retailer: "" },
       },

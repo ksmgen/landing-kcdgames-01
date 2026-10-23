@@ -467,12 +467,12 @@ function ShopStep({
     : null;
 
   function handleSelectionChange(selection: string) {
-    setShop({ selection, branchId: 0 });
-    onDraftChange({ selection, branchId: 0 });
+    setShop({ selection, branchId: "" });
+    onDraftChange({ selection, branchId: "" });
     setError(null);
   }
 
-  function handleBranchChange(branchId: number) {
+  function handleBranchChange(branchId: string) {
     setShop((current) => ({ ...current, branchId }));
     onDraftChange({ branchId });
     setError(null);
@@ -512,7 +512,7 @@ function ShopStep({
           className={selectClass}
         >
           <option value="">Select a shop…</option>
-          <optgroup label="Multi-branch chains (demo simulation)">
+          <optgroup label="Multi-branch chains">
             {CHAIN_GROUPS.map((group) => (
               <option key={group.slug} value={`chain:${group.slug}`}>
                 {group.label} — {group.branches.length} branches
@@ -539,10 +539,8 @@ function ShopStep({
           <select
             id="shop-branch"
             name="shopBranch"
-            value={shop.branchId ? String(shop.branchId) : ""}
-            onChange={(event) =>
-              handleBranchChange(event.target.value ? Number(event.target.value) : 0)
-            }
+            value={shop.branchId}
+            onChange={(event) => handleBranchChange(event.target.value)}
             className={selectClass}
           >
             <option value="">Select a branch…</option>
@@ -1192,18 +1190,10 @@ function SurveySummary({
               <p className="font-semibold text-white">{shop.retailer.name}</p>
               <p>{shop.retailer.address}</p>
               <p>
-                Retailer #{shop.retailer.id} · {shop.retailer.region},{" "}
+                {shop.retailer.serial} · {shop.retailer.region},{" "}
                 {shop.retailer.country} · {shop.retailer.storeType}
-                {shop.chain
-                  ? ` · ${shop.chain.label} branch (demo grouping)`
-                  : ""}
+                {shop.chain ? ` · ${shop.chain.label}` : ""}
               </p>
-              {shop.chain && (
-                <p className="pt-1 text-[10px] text-amber-200/70">
-                  Branch grouping is a demo simulation and is not connected to
-                  actual KC Games B2B relationships.
-                </p>
-              )}
             </>
           ) : (
             <OrNotProvided />

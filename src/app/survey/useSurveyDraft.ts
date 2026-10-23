@@ -243,9 +243,7 @@ function validateStepValue(
       const { selection, branchId } = value;
       if (
         typeof selection !== "string" ||
-        typeof branchId !== "number" ||
-        !Number.isInteger(branchId) ||
-        branchId < 0 ||
+        typeof branchId !== "string" ||
         !SHOP_SELECTION_PATTERN.test(selection)
       ) {
         return null;
@@ -262,12 +260,10 @@ function validateStepValue(
         );
         return hasBranch
           ? { selection, branchId }
-          : { selection, branchId: 0 };
+          : { selection, branchId: "" };
       }
-      const id = Number(selection.slice("retailer:".length));
-      const exists = STANDALONE_RETAILERS.some((row) => row.id === id);
-      // Standalone ids only; chain members are picked through the branch step.
-      return exists ? { selection, branchId: 0 } : null;
+      const retailer = STANDALONE_RETAILERS.some((row) => row.id === selection.slice("retailer:".length));
+      return retailer ? { selection, branchId: "" } : null;
     }
     case "pictures": {
       if (!isRecord(value)) return null;
@@ -373,6 +369,11 @@ export function parseSurveyDraft(raw: string | null): SurveyDraft | null {
     step: step as SurveyStep,
     values: sanitizeDraftValues(values),
   };
+  // Revisit shop selection when an older source's saved IDs no longer resolve.
+  // Keep all other keyed answers so replacing the shop does not discard progress.
+  if (values.shop !== undefined && (!draft.values.shop || !resolveShop(draft.values.shop))) {
+    draft.step = 0;
+  }
   if (completed === true && hasRequiredCompletedAnswers(draft.values)) {
     draft.completed = true;
   }

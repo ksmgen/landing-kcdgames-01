@@ -7,39 +7,36 @@ import {
   Store,
   Table,
 } from "lucide-react";
-import retailersData from "../../data/retailers.json";
+import shopOptions from "../../../public/data/survey-shop-options.json";
 
-export type SurveyRetailer = {
-  id: number;
+/** A branch row from the authoritative shop-options JSON (string MongoDB id). */
+export type BranchRow = {
+  id: string;
+  serial: string;
   name: string;
   address: string;
   region: string;
   country: string;
-  storeType: string;
   playing: boolean;
+  storeType: string;
 };
 
-export const RETAILERS = retailersData as unknown as SurveyRetailer[];
+/** A standalone retailer row from the authoritative shop-options JSON. */
+export type StandaloneRow = BranchRow;
 
-/**
- * Demo-only chain prefixes. Rows whose name starts with one of these prefixes
- * are grouped into a simulated multi-branch chain, except rows whose name is
- * exactly the prefix (the ambiguous bare HQ), which stay standalone.
- */
-export const CHAIN_PREFIXES = [
-  "Box Hunt -",
-  "Impulse Gaming",
-  "Games Haven",
-  "Ace Cards & Collectibles",
-  "TCG Malaysia",
-] as const;
-
+/** Authoritative chain group sourced from the public shop-options JSON. */
 export type ChainGroup = {
   slug: string;
   label: string;
   prefix: string;
-  branches: SurveyRetailer[];
+  branches: BranchRow[];
 };
+
+/** All chain groups from the authoritative source. */
+export const CHAIN_GROUPS: ChainGroup[] = shopOptions.chainGroups;
+
+/** All standalone retailers from the authoritative source. */
+export const STANDALONE_RETAILERS: StandaloneRow[] = shopOptions.standaloneRetailers;
 
 export type PictureSample = {
   id: string;
@@ -49,69 +46,32 @@ export type PictureSample = {
   icon: LucideIcon;
 };
 
-function chainSlug(prefix: string): string {
-  return prefix
-    .replace(/[-\s]+$/, "")
-    .trim()
-    .toLowerCase()
-    .replace(/&/g, " ")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-export function buildChainGroups(retailers: SurveyRetailer[]): ChainGroup[] {
-  return CHAIN_PREFIXES.map((prefix) => ({
-    slug: chainSlug(prefix),
-    label: prefix.replace(/[-\s]+$/, "").trim(),
-    prefix,
-    branches: retailers.filter(
-      (retailer) =>
-        retailer.name.startsWith(prefix) && retailer.name !== prefix,
-    ),
-  }));
-}
-
-export function buildStandaloneRetailers(
-  retailers: SurveyRetailer[],
-  groups: ChainGroup[],
-): SurveyRetailer[] {
-  const groupedIds = new Set(
-    groups.flatMap((group) => group.branches.map((branch) => branch.id)),
-  );
-  return retailers.filter((retailer) => !groupedIds.has(retailer.id));
-}
-
-export const CHAIN_GROUPS = buildChainGroups(RETAILERS);
-export const STANDALONE_RETAILERS = buildStandaloneRetailers(
-  RETAILERS,
-  CHAIN_GROUPS,
-);
-
 export type ShopValue = {
   selection: string;
-  branchId: number;
+  branchId: string;
 };
 
 export function emptyShopValue(): ShopValue {
-  return { selection: "", branchId: 0 };
+  return { selection: "", branchId: "" };
 }
 
 function chainBySlug(slug: string): ChainGroup | undefined {
   return CHAIN_GROUPS.find((group) => group.slug === slug);
 }
 
-function standaloneById(id: number): SurveyRetailer | undefined {
+function standaloneById(id: string): StandaloneRow | undefined {
   return STANDALONE_RETAILERS.find((retailer) => retailer.id === id);
 }
 
 export type ResolvedShop = {
-  retailer: SurveyRetailer;
+  retailer: BranchRow;
   chain: ChainGroup | null;
 };
 
 /**
- * Resolve the shop value to the original JSON row it points at. Returns null
- * for empty, malformed, or stale selections (rows that no longer exist).
+ * Resolve the shop value to the authoritative row it points at.
+ * Returns null for empty, malformed, or stale selections — including
+ * drafts that use old numeric ids or no longer match any row.
  */
 export function resolveShop(shop: ShopValue): ResolvedShop | null {
   if (typeof shop.selection !== "string" || shop.selection === "") return null;
@@ -119,28 +79,28 @@ export function resolveShop(shop: ShopValue): ResolvedShop | null {
   if (shop.selection.startsWith("chain:")) {
     const group = chainBySlug(shop.selection.slice("chain:".length));
     if (!group) return null;
-    if (!Number.isInteger(shop.branchId) || shop.branchId <= 0) return null;
+    if (!shop.branchId) return null;
     const branch = group.branches.find((row) => row.id === shop.branchId);
     if (!branch) return null;
     return { retailer: branch, chain: group };
   }
 
   if (shop.selection.startsWith("retailer:")) {
-    const id = Number(shop.selection.slice("retailer:".length));
-    if (!Number.isInteger(id) || id <= 0) return null;
+    const id = shop.selection.slice("retailer:".length);
+    if (id === "") return null;
     const retailer = standaloneById(id);
-    if (!retailer || shop.branchId !== 0) return null;
+    if (!retailer || shop.branchId !== "") return null;
     return { retailer, chain: null };
   }
 
   return null;
 }
 
-export const SHOP_SELECTION_PATTERN = /^(chain:[a-z0-9-]+|retailer:\d+)$/;
+export const SHOP_SELECTION_PATTERN = /^(chain:[a-z0-9-]+|retailer:[a-f0-9]{24})$/;
 
-/** Format a branch choice from the original JSON row: id, name and address. */
-export function branchOptionLabel(retailer: SurveyRetailer): string {
-  return `${retailer.id} — ${retailer.name} — ${retailer.address}`;
+/** Format a branch choice: serial, name, and address. */
+export function branchOptionLabel(retailer: BranchRow): string {
+  return `${retailer.serial} — ${retailer.name} — ${retailer.address}`;
 }
 
 export const RETAIL_AREA_SAMPLES: PictureSample[] = [

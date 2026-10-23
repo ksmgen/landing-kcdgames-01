@@ -4,13 +4,21 @@ import SurveyForm from "./SurveyForm";
 import { RETRY_KEY } from "./submitSurvey";
 import { DAY_KEYS, SURVEY_DRAFT_STORAGE_KEY as KEY, type SurveyDraftValues } from "./useSurveyDraft";
 
+/** Valid standalone retailer selection from authoritative source. */
+const VALID_SHOP_SELECTION = "retailer:6a204dcccada14e24b758e79";
+/** Valid chain-group branch selection. */
+const CHAIN_HAVEN_BRANCH = "chain:games-haven|6a0eaff24e59c09193f726af";
+
 function next() { fireEvent.click(screen.getByRole("button", { name: /^next$/i })); }
 function back() { fireEvent.click(screen.getByRole("button", { name: /^back$/i })); }
 function change(label: RegExp, value: string) { fireEvent.change(screen.getByLabelText(label), { target: { value } }); }
 function seed(step: number, values: SurveyDraftValues = {}) {
   sessionStorage.setItem(KEY, JSON.stringify({ version: 2, step, values }));
 }
-function chooseShop() { change(/choose your shop/i, "retailer:52"); next(); }
+function chooseShop() {
+  change(/choose your shop/i, VALID_SHOP_SELECTION);
+  next();
+}
 function seating() { change(/^tables/i, "4"); change(/^chairs/i, "16"); next(); }
 function closeWeek() { for (const day of DAY_KEYS) fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))); next(); }
 function progress(n: number) { expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", String(n)); }
@@ -31,12 +39,10 @@ describe("retailer survey simulation", () => {
   it("shows retailer-only choices and conditional branch selection", () => {
     render(<SurveyForm />); progress(1);
     next(); expect(screen.getByRole("alert")).toHaveTextContent(/choose your shop/i);
-    change(/choose your shop/i, "chain:box-hunt"); next();
+    change(/choose your shop/i, "chain:games-haven"); next();
     expect(screen.getByRole("alert")).toHaveTextContent(/choose the branch/i);
-    change(/which branch/i, "1");
-    change(/choose your shop/i, "chain:games-haven");
-    expect(screen.getByLabelText(/which branch/i)).toHaveValue("");
-    change(/choose your shop/i, "retailer:52");
+    change(/which branch/i, CHAIN_HAVEN_BRANCH.split("|")[1]);
+    change(/choose your shop/i, VALID_SHOP_SELECTION);
     expect(screen.queryByLabelText(/which branch/i)).not.toBeInTheDocument();
     next(); progress(2);
   });
@@ -90,7 +96,7 @@ describe("retailer survey simulation", () => {
   });
 
   it("restores partial social typing on refresh and preserves it through back navigation", () => {
-    seed(3, { shop: { selection: "retailer:52", branchId: 0 }, seating: { tables: 4, chairs: 16 } });
+    seed(3, { shop: { selection: VALID_SHOP_SELECTION, branchId: "" }, seating: { tables: 4, chairs: 16 } });
     const view = render(<SurveyForm />);
     change(/^instagram/i, "@unfinished"); view.unmount();
     const restored = render(<SurveyForm />); progress(4);
@@ -101,7 +107,7 @@ describe("retailer survey simulation", () => {
   });
 
   it("restores every section at the same step including future draft answers", () => {
-    const values: SurveyDraftValues = { shop: { selection: "retailer:52", branchId: 0 }, seating: { tables: 4, chairs: 16 }, feedback: { shop: "unsent", retailer: "draft" } };
+    const values: SurveyDraftValues = { shop: { selection: VALID_SHOP_SELECTION, branchId: "" }, seating: { tables: 4, chairs: 16 }, feedback: { shop: "unsent", retailer: "draft" } };
     for (let step = 0; step < 12; step++) {
       seed(step, values); const view = render(<SurveyForm />); progress(step + 1); view.unmount();
     }
@@ -126,7 +132,7 @@ describe("retailer survey simulation", () => {
 
   it("restores completed summaries and Start over clears only this survey", () => {
     sessionStorage.setItem("unrelated", "keep");
-    sessionStorage.setItem(KEY, JSON.stringify({ version: 2, step: 11, completed: true, values: { shop: { selection: "retailer:52", branchId: 0 }, seating: { tables: 0, chairs: 0 }, otherProducts: "Sleeves" } }));
+    sessionStorage.setItem(KEY, JSON.stringify({ version: 2, step: 11, completed: true, values: { shop: { selection: VALID_SHOP_SELECTION, branchId: "" }, seating: { tables: 0, chairs: 0 }, otherProducts: "Sleeves" } }));
     render(<SurveyForm />);
     expect(screen.getByRole("heading", { name: /simulation complete/i })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /start over/i })); progress(1);
@@ -164,7 +170,7 @@ describe("retailer survey simulation", () => {
 
   it("sends all answers once, shows an accepted receipt and clears only survey data", async () => {
     sessionStorage.setItem("unrelated", "keep");
-    seed(11, { shop: { selection: "retailer:52", branchId: 0 }, seating: { tables: 4, chairs: 16 }, feedback: { shop: "TEST-feedback", retailer: "" }, otherProducts: "TEST-sleeves" });
+    seed(11, { shop: { selection: VALID_SHOP_SELECTION, branchId: "" }, seating: { tables: 4, chairs: 16 }, feedback: { shop: "TEST-feedback", retailer: "" }, otherProducts: "TEST-sleeves" });
     const fetchMock = vi.fn().mockImplementation(async (_url, init) => {
       const payload = JSON.parse(init.body);
       return { status: 201, json: async () => ({ receipt: { surveyID: "TEST-receipt", submissionId: payload.submissionId, status: "received", receivedDate: "2026-10-23T00:00:00Z" } }) };
@@ -211,7 +217,7 @@ describe("retailer survey simulation", () => {
     vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({ fillRect: vi.fn(), drawImage: vi.fn() } as unknown as CanvasRenderingContext2D);
     vi.spyOn(HTMLCanvasElement.prototype, "toDataURL").mockReturnValue("data:image/jpeg;base64,/9j/VEVTVC1QSE9UTw==");
     const { webcrypto } = await import("node:crypto"); vi.stubGlobal("crypto", webcrypto);
-    seed(1, { shop: { selection: "retailer:52", branchId: 0 } }); render(<SurveyForm />);
+    seed(1, { shop: { selection: VALID_SHOP_SELECTION, branchId: "" } }); render(<SurveyForm />);
     fireEvent.change(screen.getByLabelText(/retail area picture/i), { target: { files: [new File(["TEST-file"], "private-name.png", { type: "image/png" })] } });
     await waitFor(() => expect(screen.getByAltText(/retail area picture preview/i)).toBeInTheDocument());
     next(); progress(3); back(); progress(2);

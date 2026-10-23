@@ -1,0 +1,1894 @@
+{
+  "chainGroups": [
+    {
+      "slug": "bulba",
+      "label": "Bulba",
+      "prefix": "Bulba",
+      "branches": [
+        {
+          "id": "6841b1c188db84875a1d978d",
+          "serial": "RID000588",
+          "name": "Bulba Gamez & Hobby Store Enterprise",
+          "address": "PV128, Level 2, Unit 2-39, Jalan Genting Kelang, Setapak, 53300, Kuala Lumpur, Malaysia",
+          "region": "KUALA LUMPUR",
+          "country": "Malaysia",
+          "playing": false,
+          "storeType": "hobby"
+        },
+        {
+          "id": "67e3754fd4604ef9b281cf4c",
+          "serial": "RID000560",
+          "name": "Bulba Milk TCG",
+          "address": "117-1, Jalan Radin Bagus, Bandar Baru Sri Petaling, 57000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia",
+          "region": "KUALA LUMPUR",
+          "country": "Malaysia",
+          "playing": false,
+          "storeType": "hobby"
+        }
+      ]
+    },
+    {
+      "slug": "ericfun",
+      "label": "ERICFUN",
+      "prefix": "ERICFUN",
+      "branches": [
+        {
+          "id": "6ab4a775b33977a9cfa7f415",
+          "serial": "RID000841",
+          "name": "ERICFUN CARD AND HOBIZ",
+          "address": "428A JALAN KIAMBANG 14, PUSAT KOMERSIAL INDAH BANDAR INDAHPURA, 81000, kulai, Johor, Malaysia",
+          "region": "JOHOR",
+          "country": "Malaysia",
+          "playing": true,
+          "storeType": "hobby"
+        },
+        {
+          "id": "686ce68be40fd59684ceabe7",
+          "serial": "RID000607",
+          "name": "ERICFUN GAME & HOBBY SHOP",
+          "address": "83-1,Jalan Equine 9,Taman Equine Park, 43300 Seri Kembangan, Selangor, Malaysia",
+          "region": "SELANGOR",
+          "country": "Malaysia",
+          "playing": false,
+          "storeType": "hobby"
+        }
+      ]
+    },
+    {
+      "slug": "games-haven",
+      "label": "Games Haven",
+      "prefix": "Games Haven",
+      "branches": [
+        {
+          "id": "6a0eaff24e59c09193f726af",
+          "serial": "RID000735",
+          "name": "Games Haven Southkey",
+          "address": "D-1-10 Pusat Komersial Bayu Tasek Persiaran Southkey 1, Kota Southkey, 1, Southkey, 80150 Johor Bahru, Johor Darul Ta'zim, Malaysia",
+          "region": "JOHOR",
+          "country": "Malaysia",
+          "playing": false,
+          "storeType": "hobby"
+        },
+        {
+          "id": "674d71f90245a336268300ed",
+          "serial": "RID000522",
+          "name": "Games Haven",
+          "address": "20a, Jalan SS 3/31, Taman Universiti, 47300, Petaling Jaya, Selangor, Malaysia",
+          "region": "SELANGOR",
+          "country": "Malaysia",
+          "playing": false,
+          "storeType": "hobby"
+        }
+      ]
+    },
+    {
+      "slug": "invictus-collectibles",
+      "label": "Invictus Collectibles",
+      "prefix": "Invictus Collectibles",
+      "branches": [
+        {
+          "id": "667b8fd3a4715f4bd341627b",
+          "serial": "RID000443",
+          "name": "Invictus Collectibles",
+          "address": "Lot D-L1- 15, Edelweiss Shoppes, Plaza Tropicana 2B, Persiaran Surian, PJU 3, Tropicana Indah,Petaling Jaya, Selangor, 47810, Malaysia",
+          "region": "SELANGOR",
+          "country": "Malaysia",
+          "playing": false,
+          "storeType": "hobby"
+        },
+        {
+          "id": "6ac360c96b0aaafe4fa680ed",
+          "serial": "RID000851",
+          "name": "Invictus Collectibles",
+          "address": "D-L1-15, Edelweiss Shoppes, Plaza Tropicana 2B, Persiaran Surian, PJU 3, Tropicana Indah, 47810 Petaling Jaya, Selangor, Petaling Jaya, Malaysia",
+          "region": "SELANGOR",
+          "country": "Malaysia",
+          "playing": true,
+          "storeType": "hobby"
+        }
+      ]
+    }
+  ],
+  "standaloneRetailers": [
+    {
+      "id": "6a204dcccada14e24b758e79",
+      "serial": "RID000755",
+      "name": "Arcaida Games",
+      "address": "9a, Jalan Sulam, Taman Sentosa, 80150 Johor Bahru, Johor Darul Ta'zim, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a842b9aacad815a8dc784cf",
+      "serial": "RID000817",
+      "name": "Card Country Trading",
+      "address": "9,jalan 2,taman perindustrian sinaran, 86000, kluang, Johor, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69f86e52a4c3d03ee9071655",
+      "serial": "RID000699",
+      "name": "Hobby Town",
+      "address": "8, Jalan Tembaga, Taman Kolam Air, 80200, Johor Bahru, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a00fe7d5258c820dac59853",
+      "serial": "RID000717",
+      "name": "House Of Southerner",
+      "address": "No4, Jalan Pulai Ria 14, Bandar Baru Kangkar Pulai, 81300, Skudai, Johor, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "62ce88e746fbea823b5ff6a2",
+      "serial": "RID000038",
+      "name": "Impulse Gaming",
+      "address": "16, Jalan Ekoperniagaan 1/24, Taman Ekoperniagaan, 81100, Johor Bahru, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6989425bde0e9cb877c5cefe",
+      "serial": "RID000680",
+      "name": "KADO COLLECTIONS SDN. BHD.",
+      "address": "2F, A0331, Block A, Eco Galleria Iskandar Puteri, 79100 Johor, Johor Darul Ta'zim, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "664c573501d9adb86933fe8e",
+      "serial": "RID000432",
+      "name": "Kizuna Cards Trading",
+      "address": "26-A,Jalan Mutiara 1/1, Mutiara Rini, 81300, Skudai, Johor, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69f8716ea4c3d03ee9078145",
+      "serial": "RID000700",
+      "name": "Living Legends JB",
+      "address": "32A, Jalan Pingai, Taman Pelangi, 80400, Johor Bahru, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6aa3c5d0fe2fac11d10d926d",
+      "serial": "RID000838",
+      "name": "MIA COLLECTIBLE",
+      "address": "No 41A ( Tingkat 1 ) Jalan Putera Indah 15/6B, Taman Putera Indah Tongkang Pechah, 83010, Batu Pahat, Johor, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": true,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a54a1042db9ff7cf064d820",
+      "serial": "RID000782",
+      "name": "Muhaha tcg",
+      "address": "27-02 jalan indah 13/3 taman bukit indah 79100 iskandar puteri johor, 719100, Johor bahru, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69a7da0fdacd03d0dc1df6c3",
+      "serial": "RID000684",
+      "name": "SGC Card Cafe",
+      "address": "23-02,jalan suria 7,bandar baru seri alam, 81750, Masai, Johor, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "68ecc692bb3f0c6c0ea9f03f",
+      "serial": "RID000645",
+      "name": "Shuffle Duel Field",
+      "address": "G-10-01 Jalan Austin Perdana 2/24, Taman Austin Perdana, 81100, Johor bahru, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69f86d5fa4c3d03ee9070f80",
+      "serial": "RID000698",
+      "name": "The Bonfire Hobby Shop",
+      "address": "0509, Level 5, Wisma SP Setia, Indah Walk 3, Bukit Indah, 81200, Iskandar Puteri, Johor, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a86dcb2b6d30f2f4dbc355f",
+      "serial": "RID000824",
+      "name": "Trendy Toy Box",
+      "address": "19, Jalan Jaya Putra 7/9, Bandar Jaya Putra, 81100 Johor Bahru, Johor Darul Ta'zim, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a94872d518c2c0d32e7fa45",
+      "serial": "RID000831",
+      "name": "Trinity TCG",
+      "address": "No. 52A, jalan molek 2/1, taman molek, 81100 Johor bahru, Johor Malaysia.",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a4bb204a209d5713296b436",
+      "serial": "RID000780",
+      "name": "YUME CARD STUDIO",
+      "address": "19, jalan satria 8, Taman Perindustrian Jb Perdana, 81300 Skudai, Johor Darul Ta'zim, Malaysia",
+      "region": "JOHOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "624ba4bdb5ddfb386954d59e",
+      "serial": "RID000013",
+      "name": "CARDFIGHT BUDDY ENTERPRISE",
+      "address": "210B JALAN DATUK KUMBAR, 05300, Alor Setar, Kedah, Malaysia",
+      "region": "KEDAH",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a048c552a4a4cfbddeb044f",
+      "serial": "RID000726",
+      "name": "GAMEONBGC",
+      "address": "199B, Jln PSK 5, Pekan Simpang Kuala, 05400, Alor Setar, Kedah, Malaysia",
+      "region": "KEDAH",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "67e0ce8621259da037b5d88c",
+      "serial": "RID000558",
+      "name": "iGamez",
+      "address": "149A, Jalan Tunku Putra, 09000, Kulim, Kedah, Malaysia",
+      "region": "KEDAH",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a8562f1acad815a8dde159d",
+      "serial": "RID000821",
+      "name": "Northern Collectibles",
+      "address": "109A, Jln NCity 1/5, N-City Business Park, 08000, Sungai Petani, Kedah, Malaysia",
+      "region": "KEDAH",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "692692764868e7a2fe88d07c",
+      "serial": "RID000661",
+      "name": "NZ Hobbies Shop",
+      "address": "No. G6, Tingkat Bawah, Arked Niaga Pekan Rabu, Jalan Kuala Ketil, 08000, Sungai Petani, Kedah, Malaysia",
+      "region": "KEDAH",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69f9cdcc5fca720794d75f65",
+      "serial": "RID000706",
+      "name": "Sarang Mainan",
+      "address": "3-1, Jalan Anggerik 1/3A, Bandar Amanjaya, 08000, Sungai Petani, Kedah, Malaysia",
+      "region": "KEDAH",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "624e583ac04674cf034e70fb",
+      "serial": "RID000023",
+      "name": "Ace Cards Sdn Bhd",
+      "address": "A-0-1, Gembira Park, Jalan Riang, 58200, Taman Gembira, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6322f54ae20cdd037ce5f5b4",
+      "serial": "RID000229",
+      "name": "Atom Square Trading",
+      "address": "T028,3rd Floor,Sungei Wang Plaza, Jalan Sultan Ismail, Bukit Bintang, KL, 50250, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "63bbb0bb1ceb18a0ece63e60",
+      "serial": "RID000278",
+      "name": "Axes and Hexes",
+      "address": "2-1-42A Wisma Rampai, Jalan 34/26 Taman Sri Rampai, 53300, Setapak, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69f87abba4c3d03ee9081bde",
+      "serial": "RID000701",
+      "name": "Cardcade Tabletop Cafe",
+      "address": "45, Lorong Burhanuddin Helmi 10, Taman Tun Dr. Ismail, 60000, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6aa64695fe2fac11d11d85fb",
+      "serial": "RID000840",
+      "name": "Cards Dojo",
+      "address": "VO1-10-16/17, VOffice 1, Lingkaran Sunway Velocity, 55100, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": true,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69fb106a1c18ca681fbf5aac",
+      "serial": "RID000711",
+      "name": "Collector's Edition",
+      "address": "3, Jalan 6/155a, Bukit Jalil Golf Resort, 57000, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "67c93db98405e9931489413a",
+      "serial": "RID000552",
+      "name": "Discover Collectibles",
+      "address": "3, Jalan Ambong Kiri 1, Kepong Baru, 52100, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "674fdd830245a336268c00b8",
+      "serial": "RID000523",
+      "name": "EXAKADO TCG & COLLECTIBLES",
+      "address": "2A-1, PLAZA USAHAWAN GENTING KLANG, JLN DANAU NIAGA TMN DANAU KOTA, 53300, KUALA LUMPUR, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "67029b4bea09bb2a3794c7fb",
+      "serial": "RID000497",
+      "name": "Gaia card game sanctuary",
+      "address": "LOT 1-046, First FLOOR, ENDAH PARADE SHOPPING CENTRE, JALAN 1/149E, TAMAN SRI ENDAH,SRI PETALING, 57000, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "66be3eaa7f64106355fca4f6",
+      "serial": "RID000472",
+      "name": "Ghost Owl House",
+      "address": "2D Claw,A-G-9, Residence unggul kepong, 5, Jalan Vista Mutiara 1, Kepong Baru, 52000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a6ea8234f97419e3609ebfa",
+      "serial": "RID000801",
+      "name": "Gitcho Cards",
+      "address": "Parcel No. K2-071 F&N Point, Jalan Metro Pudu 1, Fraser Business Park, 55200, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6953b2384d7a2cc01de36f2b",
+      "serial": "RID000668",
+      "name": "Hobby Nikki",
+      "address": "NO.16, 2, JLN TASIK UTAMA 10, MEDAN NIAGA TASIK DAMAI ,57000 SUNGAI BESI, Cheras, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "65a74f68bbdddc3b71feb8e8",
+      "serial": "RID000403",
+      "name": "HOBI UNIK COLLECTIBLES (M) SDN. BHD.",
+      "address": "7-1, jalan 1/76, desa pandan, 55100, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": true,
+      "storeType": "hobby"
+    },
+    {
+      "id": "67cbf1f78405e99314954e24",
+      "serial": "RID000553",
+      "name": "Hobibear Gaming",
+      "address": "No. 52A, Jalan Cerdas, Taman Connaught, 56000, Cheras, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a7014bd8ff9434151e0e80b",
+      "serial": "RID000803",
+      "name": "ISA Hobby SDN BHD",
+      "address": "5.28.00, (Orange Zone Pavilion , Persiaran Jalil Utama, Pavillion, Bukit Jalil, 57000 Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a603888973e5cd5e558d9c8",
+      "serial": "RID000789",
+      "name": "Isekai Hobby",
+      "address": "Lot GM3A-25/26/27, No. 2,GMBB, Jalan Robertson, Bukit Bintang, 50150 Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69f3281aa4c3d03ee9ddff33",
+      "serial": "RID000695",
+      "name": "Kaadoya",
+      "address": "Kaadoya, L2-45, Mitsui Shopping Park Lalaport BUKIT BINTANG CITY CENTRE, Bukit Bintang City Centre, No.2, Jalan Hang Tuah, 55100, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "637c7492556fc418bb35ed5a",
+      "serial": "RID000265",
+      "name": "Kids Heaven Sdn. Bhd.",
+      "address": "20, Jalan Damai Perdana 3/2B, Bandar Damai Perdana, 56000, Cheras, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a0f430a4e59c0919311888a",
+      "serial": "RID000736",
+      "name": "Luludemon Collectibles (M) Sdn Bhd",
+      "address": "NO91, JALAN JALIL PERKASA 19, TAMAN ESPLANAD, 57000, BUKIT JALIL, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "68f5bfad2ff23797427c7564",
+      "serial": "RID000646",
+      "name": "MEWMON MIMPI RAKSASA",
+      "address": "14-2 jalan Manis 3 Taman segar, 56100, KUALA LUMPUR, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "67ff1cf80b02a82768bba342",
+      "serial": "RID000566",
+      "name": "Micro",
+      "address": "No. A44, Bazaar Taman Melawati, Jalan Negara, Taman Melawati, 53100, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a0d3e7a4e59c09193c7f318",
+      "serial": "RID000734",
+      "name": "MightyWizards TCG",
+      "address": "B-3A-08, ATIVO PLAZA, PERSIARAN PERDANA, BDR SRI DAMANSARA, 52200, KL, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6ab9e3a38ac64f77ddf0a685",
+      "serial": "RID000845",
+      "name": "Mob TCG",
+      "address": "12a, Jalan SS 4c/5, Taman Rasa Sayang, 47301 Petaling Jaya, Selangor, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": true,
+      "storeType": "hobby"
+    },
+    {
+      "id": "68be9cc3074734e6ec0b754e",
+      "serial": "RID000627",
+      "name": "Monxter Lab Sdn. Bhd.",
+      "address": "18-2, Jalan Menara Gading 1, Lebuhraya Hubungan Timur Barat, 56000, cheras, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "66f3f3e744640a3ca0ace0b3",
+      "serial": "RID000486",
+      "name": "ONE2DEAL",
+      "address": "C-12-02, PUSAT PERDAGANGAN BANDAR BUKIT JALIL, PERSIARAN JALIL 7, 57000, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a65e4c07ca2c13351a8968a",
+      "serial": "RID000795",
+      "name": "OnePlease TCG & Collectibles",
+      "address": "NO. 44-1 (1ST FLOOR) JALAN 28/70A, 50480, Desa Sri Hartamas, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "68695c50fc292eb2fd6bf359",
+      "serial": "RID000605",
+      "name": "SAIKYO HOBBY",
+      "address": "12-A JALAN MIDAH 1, TAMAN MIDAH, 56000, KUALA LUMPUR, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69fdb31b5258c820dab51399",
+      "serial": "RID000714",
+      "name": "Sector Mercatura",
+      "address": "52, jalan 7/12d, Kampung Batu Muda, 51100, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "624e572fc04674cf034e7095",
+      "serial": "RID000022",
+      "name": "Stella Toy House",
+      "address": "6-2， Jalan Jalil Jaya 1, 57000, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69fdbaf15258c820dab6269c",
+      "serial": "RID000715",
+      "name": "STP HOBBIES COLLECTIBLES SDN. BHD.",
+      "address": "NO.2-2, DINASTI SENTRAL, JALAN KUCHAI MAJU 19, 58200, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "66c35bfa7f641063550a8ead",
+      "serial": "RID000473",
+      "name": "TCG Malaysia",
+      "address": "K-02-13A Solaris mont kiara, Jalan Solaris 2, 50480, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6694dccd8e7dc1d5d0c9fbeb",
+      "serial": "RID000459",
+      "name": "Tsukiharu Station",
+      "address": "GP14, Sungei Wang Jumpa@G, 55100, Bukit bintang, Kuala Lumpur, Malaysia",
+      "region": "KUALA LUMPUR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69786ddf9192774beffdac5e",
+      "serial": "RID000676",
+      "name": "Epic Hobbies",
+      "address": "773E, Jalan Emas 5, Taman Kerjasama, 75450, Bukit Beruang, Melaka, Malaysia",
+      "region": "MELAKA",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69ca3387270f29279a16a106",
+      "serial": "RID000690",
+      "name": "Game Town Entertainment Studio",
+      "address": "No.4-1 Jalan Rahmat 4, Taman Malim Jaya, 75250, Melaka, Malaysia",
+      "region": "MELAKA",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "683747576db0eeef69f5b691",
+      "serial": "RID000583",
+      "name": "Korindou",
+      "address": "39-1, Jalan Bukit Beruang Utama 2, Taman Bukit Beruang Utama, 75450, Melaka, Malaysia",
+      "region": "MELAKA",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a10052a4e59c091931d2486",
+      "serial": "RID000738",
+      "name": "Latias Trading",
+      "address": "Latias Kingdom A-G-5 Pangsapuri Jayamuda Jalan Pelanduk Putih 75300 Melaka, Malaysia",
+      "region": "MELAKA",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a1459744e59c091936540a3",
+      "serial": "RID000741",
+      "name": "MOON ROOST ENTERPRISE",
+      "address": "555-A, Jln Tengkera, 75200, melaka, Malaysia",
+      "region": "MELAKA",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a7c2d7ca25e80ab66a60641",
+      "serial": "RID000814",
+      "name": "Mr. Pull TCG",
+      "address": "16-1 , JALAN BERKAT 2, TAMAN MALIM JAYA , BACHANG 75250 MELAKA, Malaysia",
+      "region": "MELAKA",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a20501fcada14e24b758ef1",
+      "serial": "RID000756",
+      "name": "N&C ENTERPRISE",
+      "address": "132, jalan suria 2, taman malim jaya, 75250, MELAKA, Malaysia",
+      "region": "MELAKA",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a37967fa5644db7ff7a1c6e",
+      "serial": "RID000765",
+      "name": "ORI GAME",
+      "address": "5-2, Jalan PNBB 2, Pusat Niaga Bukit Baru, 75150, Melaka, Malaysia",
+      "region": "MELAKA",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "63db791849aefdc2d1cc45df",
+      "serial": "RID000290",
+      "name": "Yuguco",
+      "address": "NO 5-1, JLN PNBB 2, PUSAT NIAGA BUKIT BARU, 75150 MELAKA, Malaysia",
+      "region": "MELAKA",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a01953c22349dcfd82e9eab",
+      "serial": "RID000720",
+      "name": "Meo Gaming Lab",
+      "address": "36-1, Jalan BBN 6/3B , Desa Cempaka, 71800, Nilai, Negeri Sembilan, Malaysia",
+      "region": "NEGERI SEMBILAN",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "68a0616ff4354938d21cfa72",
+      "serial": "RID000622",
+      "name": "The Rare Den",
+      "address": "26-1, Jalan KS 3, Kepayang Sentral, 70200, Seremban, Negeri Sembilan, Malaysia",
+      "region": "NEGERI SEMBILAN",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "667cdf3ea0d4c074b8558f7d",
+      "serial": "RID000446",
+      "name": "Round Table Cards & Hobbies Centre",
+      "address": "no48,lorong air putih3, ,25300kuantan pahang malaysia",
+      "region": "PAHANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69fc98d176419a57e9646fae",
+      "serial": "RID000713",
+      "name": "AeXern",
+      "address": "52A, JALAN RAJA UDA, PUSAT PERNIAGAAN RAJA UDA, 12300, BUTTERWORTH, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "649aa177a0722220896dc8f8",
+      "serial": "RID000352",
+      "name": "Armory TCG",
+      "address": "33-3-20, PRANGIN MALL, JALAN DR. LIM CHWEE LEONG, 10100, GEORGETOWN, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69f32e1da4c3d03ee9df8515",
+      "serial": "RID000696",
+      "name": "Card Master Club",
+      "address": "6-1-8 JALAN SERI TANJUNG PINANG 1, I-SANTORINI, 10470, PULAU PINANG, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a4494b14e01075af4a49e6c",
+      "serial": "RID000773",
+      "name": "Cardpitiam",
+      "address": "35-23-13 Golden Triangle 2, Jalan Dato Ismail Hashim, 11900, Bayan Lepas, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6976f33a105e6fdb5bd83709",
+      "serial": "RID000675",
+      "name": "Collect All Card Shop",
+      "address": "10, Pesara Lembah Permai 1, Tanjung Bungah, 11200, PENANG, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69e5c8ce739d4bbf9bf4d684",
+      "serial": "RID000692",
+      "name": "Critical Hits TCG",
+      "address": "1, Solok Prestij 5, Kampung Jalan Baru, 11000, Balik Pulau, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "624e61e3c04674cf034e728b",
+      "serial": "RID000024",
+      "name": "dueling nexus",
+      "address": "32 bakau street 11600, georgetown pulau pinang, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69f9d2f35fca720794d7bdcf",
+      "serial": "RID000707",
+      "name": "DUNIA CARDS",
+      "address": "50-3 JALAN PERDA BARAT, BANDAR PERDA, 14000, BUKIT MERTAJAM, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "626133e2aa67605e3dc710b7",
+      "serial": "RID000031",
+      "name": "Hobby Maker",
+      "address": "33-4-22,Jalan DR chwee Leong Praginmall,10100, Georgetown,Pulau pinang, George Town, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "675824d37add0da9e1d98f16",
+      "serial": "RID000524",
+      "name": "LEAFY LEGEND TCG",
+      "address": "98-1-41, Prima Tanjung Business Centre, Jalan Fettes, 10470, Tanjong Tokong, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "670e6a75c1344f50530939b1",
+      "serial": "RID000502",
+      "name": "Legacy Games",
+      "address": "281g Jalan Pekeliling, 11700, Bukit Gelugor, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a8ac62db6d30f2f4dec85c0",
+      "serial": "RID000826",
+      "name": "Pigeon games PLT",
+      "address": "31c-12-05 Tmn pekaka Apt sg dua gelugor, 11700, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": true,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6598a035c89820a78d3a0589",
+      "serial": "RID000400",
+      "name": "Ping Ooi Card Game Trading",
+      "address": "32 (orange gate), Lebuh Bakau, 11600, Jelutong, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a7c1334a25e80ab66a1644a",
+      "serial": "RID000812",
+      "name": "The Mulligan Cove",
+      "address": "72-2-22, Jalan Mahsuri, Arena Curve, 11950, Bayan Lepas, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6476f0ff9710b98573e4fae9",
+      "serial": "RID000345",
+      "name": "TOP DECK TRADING",
+      "address": "2ND FLOOR, 15-2 VANTAGE POINT, JALAN LENGGONG, 11600, JELUTONG, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "62d3b392328b6b932d4ac549",
+      "serial": "RID000129",
+      "name": "WIP SMART ENTEREPRISE",
+      "address": "Shuffle by Snacks & Ladders, 337m-2, Jalan Perak, 11600, Jelutong, Penang, Malaysia",
+      "region": "PENANG",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a794e9046731d6877f420ce",
+      "serial": "RID000809",
+      "name": "Cardee Tcg card game",
+      "address": "20, Taman Setia maju, 32000, sitiawan, perak, Malaysia",
+      "region": "PERAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "63490bb158f94d52bac113fb",
+      "serial": "RID000246",
+      "name": "Favonia Hobbies",
+      "address": "12B Persiaran Greentown 6, Greentown Business Centre, 30450, Ipoh, Perak, Malaysia",
+      "region": "PERAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a018e4c22349dcfd82ccab9",
+      "serial": "RID000719",
+      "name": "GM golden trading",
+      "address": "48,Taman Bauhinia,Kampung Koh, 32000, Sitiawan, Perak, Malaysia",
+      "region": "PERAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "624a8a4a88196a44e675e248",
+      "serial": "RID000004",
+      "name": "Hotcake trading",
+      "address": "NO.77A PERSIARAN RAJA PEREMPUAN MAZWIN SELATAN, DESA RISHAH INDAH, 30100, ipoh, Perak, Malaysia",
+      "region": "PERAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "668286481840caee9d990629",
+      "serial": "RID000450",
+      "name": "NEO HIBIKI TCG ENTERPRISE",
+      "address": "11B Jalan Teh Hawa, Kampung Jawa 30300, ipoh, Perak, Malaysia",
+      "region": "PERAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69fad2c61c18ca681fb262cf",
+      "serial": "RID000710",
+      "name": "Owlbear Eyrie",
+      "address": "No 18A, Laluan Tasek Timur 1, Pusat Perdagangan Tasek Indra, 31400, Ipoh, Perak, Malaysia",
+      "region": "PERAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a49fa40a209d57132774583",
+      "serial": "RID000777",
+      "name": "TRUE MINT COLLECTIBLES TRADING",
+      "address": "Block B-1-9 Soho Ipoh, Jalan Sultan Iskandar Shah, 30000, Perak, Malaysia",
+      "region": "PERAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a082dc04e59c09193786060",
+      "serial": "RID000730",
+      "name": "ZergHive",
+      "address": "100, Jalan Pasar, 34000, TAIPING, Perak, Malaysia",
+      "region": "PERAK",
+      "country": "Malaysia",
+      "playing": true,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69f82ad1a4c3d03ee9fcfc71",
+      "serial": "RID000697",
+      "name": "Adventurers' Hall",
+      "address": "50A, 1st Floor Jalan SS2 /4a, 47300, Petaling Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a02d615bd3177a902e597af",
+      "serial": "RID000722",
+      "name": "AM Cards & Collectibles",
+      "address": "32A-1, Jalan Ramin 3, Bandar Botanic, 41200, Klang, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6784e6538b61204e0aefdcd3",
+      "serial": "RID000540",
+      "name": "ASL Hobbies",
+      "address": "44B, JALAN SS22/25, DAMANSARA JAYA, 47400, PETALING JAYA, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": true,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6771021c1acd99d1915def12",
+      "serial": "RID000527",
+      "name": "ATLAS GAMERS",
+      "address": "54, Jalan SS21/62, Damansara Utama, 47400, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a040665bd3177a902ffa090",
+      "serial": "RID000724",
+      "name": "Belalang Collectablez",
+      "address": "3-2, Jalan Seri Putra 1/4, Bandar Seri Putra, 43000 Kajang, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "696f8ea2105e6fdb5b8e4d61",
+      "serial": "RID000672",
+      "name": "BOARDS & BREWS",
+      "address": "5D (3rd Floor), Nadayu28 Dagang, Jalan PJS 11/7, Bandar Sunway, 47500, Subang Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6683ab0bfe73d2139b8ab666",
+      "serial": "RID000453",
+      "name": "BOX BREAK TCG SDN BHD",
+      "address": "25, Jalan Bukit Indah 3/21, Taman Bukit Indah, 68000, Ampang, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69f97d45a4c3d03ee91bc087",
+      "serial": "RID000702",
+      "name": "Brick & Block - Hobby Store",
+      "address": "36-1, Jalan Eco Majestic 10/1D, Eco Majestic, 43500, Semenyih, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "68848760ca1187410e93f26a",
+      "serial": "RID000612",
+      "name": "Capitalist Hobbies Enterprise",
+      "address": "Level 1,Lot 1-059,Millennium Square, 98, Jalan 14/1, Seksyen 14, 46100 Petaling Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "673f0028830dfd9e04848786",
+      "serial": "RID000518",
+      "name": "CARD BROS",
+      "address": "22A-1, LORONG BATU NILAM 3F/KS06, Bandar Bukit Tinggi, 41200, Klang, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "62af2183232ad08d9a10ea64",
+      "serial": "RID000037",
+      "name": "Cardinals Hobby Store",
+      "address": "No 49-1, Jalan USJ 21/11, 47640, Subang Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "636108c587e8db2cb7dc5b4e",
+      "serial": "RID000258",
+      "name": "Cards & Hobbies",
+      "address": "A-1-5 Parklanes Commercial Hub, Jalan SS7/26, 47301, Kelana Jaya, Selangor",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a14254d4e59c091935d02dd",
+      "serial": "RID000740",
+      "name": "Cards Consign",
+      "address": "no 47, Jalan USJ 6/4, 47610, Subang Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "62d3b191328b6b932d4ac29d",
+      "serial": "RID000067",
+      "name": "Classroom",
+      "address": "74, JALAN SS21/35, DAMANSARA UTAMA, 47400, PETALING JAYA, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a3cb4ac81d9e72fd93f4237",
+      "serial": "RID000769",
+      "name": "Command Tower TCG Shop",
+      "address": "11-2F, Jalan Boling Padang G 13/G, Seksyen 13, 40100, SHAH ALAM, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "681218268bb7e8a21601a321",
+      "serial": "RID000573",
+      "name": "Deck Out Trading Cards",
+      "address": "8-2, Jalan USJ 21/6, Taman Indah Subang Uep, 47630 Subang Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "654223d4f2ed6e2f08fe9541",
+      "serial": "RID000383",
+      "name": "DeckOutDen",
+      "address": "No 15-1, Jalan Reko Sentral 9, Off Reko Sentral, 43000, Kajang, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69fc95b676419a57e9645da8",
+      "serial": "RID000712",
+      "name": "Direct No Limit Card Vault",
+      "address": "NO. 17-4-1 JALAN SETIA PRIMA, U13/D SETIA ALAM, SEKSYEN U13, 40170, Shah Alam, Malaysia, Selangor",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a2514ad6c5e2f8c095a946d",
+      "serial": "RID000758",
+      "name": "Elements Cards & Hobbies",
+      "address": "81a, Jalan Rengas, Taman Selatan, 41200, Klang, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6671b3b959475a38d70af581",
+      "serial": "RID000435",
+      "name": "Ethereal Sanctum",
+      "address": "Unit 603, Level 6, Block A4, Leisure Commerce Square, Jalan PJS 8/9, 46150, Petaling Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69926f4f87876b2e915a6f14",
+      "serial": "RID000681",
+      "name": "Game and Glory Sdn Bhd",
+      "address": "F-1, 42, Jalan PJU 1/45, Aman Suria, 47301 Petaling Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "62d3b3ff328b6b932d4ac74e",
+      "serial": "RID000176",
+      "name": "Game On",
+      "address": "S-217, Second Floor, The Starling Mall, Jalan SS 21/37, Damansara Utama, 47400, Petaling Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a1b113e02f6a9005a2db1e2",
+      "serial": "RID000748",
+      "name": "Game Over...here",
+      "address": "B-2-5, Arena Mentari, Jalan PJS8/15, Bandar Sunway, 46150, Petaling Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a0038605258c820dac3233a",
+      "serial": "RID000716",
+      "name": "Geniuz Maze Games",
+      "address": "Geniuz Maze Games, UG1-40 Radia, Persiaran Tebar Layar, Bukit Jelutong, 40150, Shah Alam, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a1d4dff02f6a9005a3e7a39",
+      "serial": "RID000749",
+      "name": "GG GAMING",
+      "address": "10-2, JALAN SS 2/61, 47300, PETALING JAYA, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6807050ce3cd47196240bd63",
+      "serial": "RID000568",
+      "name": "Guildhall card game and board game",
+      "address": "Unit D6-1-2 , Block D6, Dana 1, Commercial Centre, Jalan PJU 1a/46, Ara Damansara, 47301, Petaling jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "659921fcc89820a78d3a6971",
+      "serial": "RID000401",
+      "name": "HEAVYARM U GARAGE STORE",
+      "address": "A8, First Floor, Jalan SS15/8A, 47500, Subang Jaya, Selangor",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6720540d603d41a32ba0e6e9",
+      "serial": "RID000508",
+      "name": "Hobby Lords",
+      "address": "31-1F, Jalan Setia Perdana BA U13/BA, Seksyen U13, Setia Alam, 40170, Shah Alam, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69f9b7260ee38147d07ffcaf",
+      "serial": "RID000705",
+      "name": "Hobby Outpost Cheras",
+      "address": "C63-1, Jalan C180/1, Dataran C180, 43200, Cheras, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "624aa98688196a44e675ea5f",
+      "serial": "RID000008",
+      "name": "Hobby Spot",
+      "address": "Lot B2, Arked MARA Kajang, 43000, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6842bdbb88db84875a2b3395",
+      "serial": "RID000589",
+      "name": "iKAD CYK",
+      "address": "J-31-1, Block J, Jalan Multimedia, I-City, 40000, Shah Alam, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a0454732a4a4cfbdde8b685",
+      "serial": "RID000725",
+      "name": "JHK TRADING",
+      "address": "2A-B JALAN BAYU TINGGI 5 TAMAN BAYU TINGGI KLANG SELANGOR 41200 KLANG SELANGOR, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a606240973e5cd5e55f3b48",
+      "serial": "RID000790",
+      "name": "jomluffyz Sdn Bhd",
+      "address": "BLOCK B­13A­09, THE TUBE, JALAN PJU 1/39, DATARAN PRIMA, 47301, petaling, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a929d1733f39af1c2625c74",
+      "serial": "RID000829",
+      "name": "KADNEXTDOOR",
+      "address": "7A, Jln Medan Pusat 2d, Seksyen 9, Bandar Baru Bangi, 43650, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "650a9d9c73509436409f8ed6",
+      "serial": "RID000377",
+      "name": "Kai Cards & Collectibles",
+      "address": "No.47,3/6 Jalan Prima, Taman Puchong Prima, 47150, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "682addf5a80b4f1bf01b8d7b",
+      "serial": "RID000576",
+      "name": "KICHI",
+      "address": "77-2, Jalan BK 5A/2, Bandar Kinrara, 47180, Puchong, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "624e51dfc04674cf034e6fcb",
+      "serial": "RID000021",
+      "name": "KZ Hobby Base Trading",
+      "address": "B5-2-9, Jln Teknologi 2/1A, Signature Park, Kota Damansara, 47810, Petaling Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "67e238ec21259da037cdc9c4",
+      "serial": "RID000559",
+      "name": "Let's Koppie and Hobbies",
+      "address": "W-03A-4, West Wing, Subang Square Business Park, Jalan SS15/4G, 47500, Subang Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "62d786728ceca6d47cdc9b34",
+      "serial": "RID000195",
+      "name": "LF COLLECTIBLES TRADING",
+      "address": "3A-01, Dataran Pelangi Utama, Jalan Masjid, PJU 6A, Bandar Utama, 47400, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6253ffd4a7e906d2f0dbb5e6",
+      "serial": "RID000028",
+      "name": "littleAKIBA",
+      "address": "7-2, Jalan USJ 10/1C, 47620, Subang Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "62a831fb232ad08d9a109db4",
+      "serial": "RID000036",
+      "name": "Ministry of Hobbies",
+      "address": "43, Jalan Raja Abdullah Satu, 9/19A, Seksyen 9, 40100, Shah Alam, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "68ad77b84e83afc4fc8761fc",
+      "serial": "RID000623",
+      "name": "MVP Hobbies & Collectibles Sdn Bhd",
+      "address": "A-G-17, Zenopy Shoplex, Jalan LP 7/4, Lestari Perdana, 43300, Seri Kembangan, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6ac4816cc937e711e8cfb04d",
+      "serial": "RID000854",
+      "name": "MyToy",
+      "address": "L2-73 & L2-75, 2nd Floor Amcorp Mall, Jalan Persiaran Barat, Seksyen 52, 46200, Petaling Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": true,
+      "storeType": "hobby"
+    },
+    {
+      "id": "677d143f90311fcb5a26a88d",
+      "serial": "RID000536",
+      "name": "MYU Collectibles",
+      "address": "6, usj2/5c, 47600, Subang Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "64a40460f18f20659302dbf8",
+      "serial": "RID000355",
+      "name": "Nakama Shop",
+      "address": "46-1, Jalan Anggerik Vanilla Z 31/Z, 40460, Shah Alam, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a85749cacad815a8de469d3",
+      "serial": "RID000822",
+      "name": "Oxley Grading Sdn. Bhd.",
+      "address": "Lot 100-M.023, Block J, The School, Jaya One, No. 72A, Jalan Prof. Diraja Ungku Aziz, 46200, Petaling Jaya, Selangor, Singapore",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a3280c05661454438de2603",
+      "serial": "RID000764",
+      "name": "PCMOD",
+      "address": "C-11-GF, Garden Shoppe @ One City, Jalan USJ 25/1C, USJ, 47650 Subang Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a01c50c22349dcfd834cace",
+      "serial": "RID000721",
+      "name": "Pi Space",
+      "address": "Shoplot 1 Suria Residence , no5 Jalan Bazar u8/100 Bukit Jelutong, 40150, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a7aec8f18352b8ec8f8ccb6",
+      "serial": "RID000810",
+      "name": "Purr & Play",
+      "address": "No2-23, Glomac Centro, Jalan Teratai PJU 6A Bandar Utama, 47400, petaling, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6866273d71dc638a832a69ec",
+      "serial": "RID000603",
+      "name": "Rare Candy - Cards & Curios",
+      "address": "A-7-1, Jalan USJ 21/4, 47630, Subang Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "64d73bb7bc03d58ccbffaaa9",
+      "serial": "RID000369",
+      "name": "saikou",
+      "address": "34-1A, Jalan Puteri 1/2, Bandar Puteri, 47100, Puchong, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6681bd761840caee9d9725e5",
+      "serial": "RID000449",
+      "name": "SECRET BASE",
+      "address": "SH-G-17, Pangsapuri Perkhidmatan Knox Wawasan, Jalan Sungai Burung 32/68 Seksyen 32 Bukit Rimau, 40460, Shah Alam, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "690324d324012de9ed59cbb0",
+      "serial": "RID000652",
+      "name": "SideDeck",
+      "address": "No 20-1 Jalan Impian Makmur 3/A, 43000, Kajang, Malaysia, Selangor",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "662b0b31c933f59eff6a7284",
+      "serial": "RID000426",
+      "name": "Space card enterprise",
+      "address": "L2-16 Jalan Mewah 4, Taman Ampang Mewah, 68000, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "696e0bc5105e6fdb5b80697d",
+      "serial": "RID000671",
+      "name": "Spectre",
+      "address": "NO.9-1, JALAN PJS 8/13, DATARAN MENTARI, 46150 SUBANG JAYA, SELANGOR., Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "64dca275bc03d58ccb00b345",
+      "serial": "RID000370",
+      "name": "Storm Gate Games",
+      "address": "Unit R-3A-27 Emporis, Persiaran Surian, Kota Damansara, 47810, Petaling Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "680720a6e3cd471962428738",
+      "serial": "RID000570",
+      "name": "The Card Go-Getters",
+      "address": "A-13-05 BLOK A, Casa Green Condominium, Jalan Casa Green, 43200, Cheras, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": true,
+      "storeType": "retail"
+    },
+    {
+      "id": "6465de7b5d19f7f1f385bdee",
+      "serial": "RID000341",
+      "name": "The Card Shop PLT",
+      "address": "54A, Jalan 19/3, 46300, Petaling Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "63a170a25e1eeb61b488a43f",
+      "serial": "RID000275",
+      "name": "The Collective",
+      "address": "21-2, Jalan Elektron F U16/F, Denai Alam, 40160, Shah Alam, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "62ce8b4d46fbea823b5ff7e6",
+      "serial": "RID000049",
+      "name": "The Hypebox",
+      "address": "NO 9-G, JALAN SETIA UTAMA AR, U13/AR, SEKSYEN U13, SETIA ALAM, 40170, Shah Alam, Selangor",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "634d01ba58f94d52bac16e23",
+      "serial": "RID000247",
+      "name": "The Weatherlight Enterprise",
+      "address": "29-1, Jalan USJ 10/1A, Taipan Business Centre, 47620, Subang Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6669539f40bcd147f8f4c497",
+      "serial": "RID000434",
+      "name": "TORECA HOBBY",
+      "address": "10A, JALAN SS21/58, DAMANSARA UTAMA, 47400, PETALING JAYA, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "624aa36b88196a44e675e901",
+      "serial": "RID000007",
+      "name": "Toysbar Sdn. Bhd.",
+      "address": "78A Jalan SS22/21 Damansara Jaya, 47400, Petaling Jaya, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "retail"
+    },
+    {
+      "id": "66ff7a37ea09bb2a37861861",
+      "serial": "RID000493",
+      "name": "UNITY GAME",
+      "address": "A-13A-G & A-13A-M, SUNWAY GIZA, JALAN PJU 5/14, DATARAN SUNWAY, KOTA DAMANSARA, 47810, PETALING JAYA, Selangor, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6abb9d3e1e34d8c3d726a08e",
+      "serial": "RID000847",
+      "name": "XYZ A Collectible Store",
+      "address": "Edelweiss Shoppes ,Lot L1-05A, NO. 2B, PERSIARAN SURIAN, TROPICANA INDAH, PJU 3, 47810 PETALING JAYA, SELANGOR, Malaysia",
+      "region": "SELANGOR",
+      "country": "Malaysia",
+      "playing": true,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a7bc4c1a25e80ab669a398f",
+      "serial": "RID000811",
+      "name": "Borneo Collectors League",
+      "address": "Lot D26-1, Block D, 1st Floor, Cyber Perdana Commercial Centre, 88200, Kota Kinabalu, Sabah, Malaysia",
+      "region": "SABAH",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "62eb5b500e65dbd8b661731c",
+      "serial": "RID000211",
+      "name": "Game Anima",
+      "address": "Lot No. 6, First Floor, Block P, Taman Chemei Shophouse, KM 5 Jalan Penampang, Lido, Taman Che Mei, 88300, Kota Kinabalu, Sabah, Malaysia",
+      "region": "SABAH",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a1fd7a2cada14e24b64f436",
+      "serial": "RID000752",
+      "name": "R916",
+      "address": "Lot 135, First Floor, Megalong Shopping Mall, Donggongon, Penampang, 89500, Kota Kinabalu, Sabah, Malaysia",
+      "region": "SABAH",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "63da21c649aefdc2d1cc0a27",
+      "serial": "RID000288",
+      "name": "TABLETOP ARENA",
+      "address": "S-206, 2ND FLOOR, 1BORNEO HYPERMALL, JALAN SULAMAN, 88450, KOTA KINABALU, Sabah, Malaysia",
+      "region": "SABAH",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a72e577b18886216334f7be",
+      "serial": "RID000805",
+      "name": "Aegis Group",
+      "address": "Lot 1.12A, Bintang Megamall, 98000, Miri, Sarawak, Malaysia",
+      "region": "SARAWAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "69fac18f1c18ca681fafffa6",
+      "serial": "RID000709",
+      "name": "Buddy Connection",
+      "address": "Ground Floor & 1st Floor, Sub Lot 4, Block A Emporium, Jalan Tun Jugah, 93350 Kuching, Sarawak, Malaysia",
+      "region": "SARAWAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6711f710c837ef236d753ec9",
+      "serial": "RID000505",
+      "name": "Card Genesis Sdn. Bhd.",
+      "address": "NO.3,LOT5433,GROUND FLOOR,RH PLAZA,JALAN LAPANGAN TERBANG, 93250, Kuching, Sarawak, Malaysia",
+      "region": "SARAWAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a19105602f6a9005a179bf1",
+      "serial": "RID000745",
+      "name": "Dardam Base Limited",
+      "address": "Lot 10755, first floor, Desa Senadin 8, 98000, Miri, Sarawak, Malaysia",
+      "region": "SARAWAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "688051a72ec283af709e6366",
+      "serial": "RID000610",
+      "name": "GENTOSHI PLT",
+      "address": "2nd Floor, Sublot 64, Parent Lots 456 & 592, Block 16, KCLD, Gala City Kuching City Land District, 93350, Sarawak, Malaysia",
+      "region": "SARAWAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6ac75078e94e74d832b9a67f",
+      "serial": "RID000858",
+      "name": "Hidden Card",
+      "address": "No. 1B, Jalan Wawasan 18B2, 96000, Sibu, Sarawak, Malaysia",
+      "region": "SARAWAK",
+      "country": "Malaysia",
+      "playing": true,
+      "storeType": "hobby"
+    },
+    {
+      "id": "67039745ea09bb2a379ecc6f",
+      "serial": "RID000499",
+      "name": "LUCKY TCG",
+      "address": "2A,Lorong Oya Utara 4, 96000, Sibu, Sarawak, Malaysia",
+      "region": "SARAWAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a2fc6945661454438a2138e",
+      "serial": "RID000761",
+      "name": "MEOWHOBBIES",
+      "address": "no16 1st pusat tanah wang SIBU sarawak, 96000, Malaysia",
+      "region": "SARAWAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "65ae5d27a28b68b4541fd9e8",
+      "serial": "RID000404",
+      "name": "Neko neko nyaa",
+      "address": "KCLD, Lot 2762, Block 10, 1st floor, Q3A, 93150 Kuching, Sarawak, Malaysia",
+      "region": "SARAWAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "624e81a3c04674cf034e735f",
+      "serial": "RID000025",
+      "name": "SBCG SDN BHD",
+      "address": "6810, 1st floor, section 65, ktld, 93050, Petrajaya (Jalan Matang), Sarawak, Malaysia",
+      "region": "SARAWAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "656d7fc1427babc19c26da7a",
+      "serial": "RID000392",
+      "name": "Shuffle Up",
+      "address": "KTLD, Lot 564, Section 62, Datuk Wee Kheng Chiang, Jalan Ang Cheng Ho, 93450, Kuching, Sarawak, Malaysia",
+      "region": "SARAWAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a054e6a2a4a4cfbddf362e7",
+      "serial": "RID000728",
+      "name": "Vincent’s Card Colosseum",
+      "address": "YD Shoppe, Lot1.07, Soon Hup Tower, First Floor, 98000, Miri, Sarawak, Malaysia",
+      "region": "SARAWAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "retail"
+    },
+    {
+      "id": "66fe974bea09bb2a378396c4",
+      "serial": "RID000491",
+      "name": "Yolo TCG Park",
+      "address": "Parcel No 2 Level 3 Of Bintulu, Commerce Square 97000 Bintulu Sarawak, Malaysia",
+      "region": "SARAWAK",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a012be15258c820dac5d0e4",
+      "serial": "RID000718",
+      "name": "Games & Lattes Cafe",
+      "address": "G/F, Unit E9, Blk E,Setia Kenangan II,Spg 150-5-13-18, Kg Kiulap, Brunei BE1518, BF1920, BSB, Brunei Darussalam",
+      "region": "BRUNEI",
+      "country": "Brunei",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a1558204e59c091938162b9",
+      "serial": "RID000742",
+      "name": "Hobby Lookout",
+      "address": "Unit G38, 1st Floor, Citis Square Shopping Complex, Spg 13-41 Jln Old Airport, Bandar Seri Begawan, Brunei Darussalam BB2713",
+      "region": "BRUNEI",
+      "country": "Brunei",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "651c6e587350943640e35819",
+      "serial": "RID000380",
+      "name": "Labyrinth Games & Collectibles",
+      "address": "Kampong Gadong, Bagunan Gadong Central, Simpang 27, Block B, No.26, 2/F, BE4119, Brunei Darussalam",
+      "region": "BRUNEI",
+      "country": "Brunei",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a4b2311a209d5713284b4a3",
+      "serial": "RID000779",
+      "name": "MASH Company",
+      "address": "Lot 15819, Simpang 192, Kampong Bebatek Kilanas, BF2520, Bandar Seri Begawan, Brunei Muara, Brunei Darussalam",
+      "region": "BRUNEI",
+      "country": "Brunei",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a607277973e5cd5e562d295",
+      "serial": "RID000791",
+      "name": "Sean Play United Sdn Bhd",
+      "address": "Lv2-22, second floor, Ioi, 62502, Putrajaya, Malaysia",
+      "region": "PUTRAJAYA",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    },
+    {
+      "id": "6a97f949518c2c0d321e1f3f",
+      "serial": "RID000834",
+      "name": "The Hive Miniatures & TCG",
+      "address": "57A, JALAN DIPLOMATIK, DIPLOMATIK BUSINESS CENTRE, PRESINT 15, 62050, PUTRAJAYA, Malaysia",
+      "region": "PUTRAJAYA",
+      "country": "Malaysia",
+      "playing": false,
+      "storeType": "hobby"
+    }
+  ]
+}
