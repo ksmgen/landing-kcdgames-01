@@ -22,6 +22,7 @@ function eventAnswer(info: string) {
 describe("retailer survey simulation", () => {
   beforeEach(() => {
     sessionStorage.clear();
+    vi.restoreAllMocks(); vi.unstubAllGlobals();
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ status: 401 }));
     HTMLDialogElement.prototype.showModal = function () { this.setAttribute("open", ""); };
     HTMLDialogElement.prototype.close = function () { this.removeAttribute("open"); };
@@ -40,10 +41,10 @@ describe("retailer survey simulation", () => {
     next(); progress(2);
   });
 
-  it("completes all twelve sections in order and opens the submission UI", () => {
+  it("completes all twelve sections in order and opens the submission UI", async () => {
     render(<SurveyForm />);
     chooseShop(); progress(2);
-    change(/retail area picture/i, "retail-card-wall"); change(/play area picture/i, "play-table-rows"); next();
+    next(); // Photos are optional; real uploads are covered below.
     progress(3); seating(); progress(4);
     change(/^instagram/i, "@demo_shop"); change(/^facebook/i, "Demo shop"); change(/^tiktok/i, "@demo"); next();
     progress(5); closeWeek();
@@ -183,6 +184,60 @@ describe("retailer survey simulation", () => {
     expect(sessionStorage.getItem(KEY)).toBeNull();
     expect(sessionStorage.getItem(RETRY_KEY)).toBeNull();
     expect(sessionStorage.getItem("unrelated")).toBe("keep");
+  });
+
+  it("removes the staging notice and provides real file inputs", () => {
+    seed(1); render(<SurveyForm />);
+    expect(screen.queryByText(/Draft answers stay in this tab session until/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Simulated samples only/i)).not.toBeInTheDocument();
+    expect(screen.getByLabelText(/retail area picture/i)).toHaveAttribute("type", "file");
+    expect(screen.getByLabelText(/play area picture/i)).toHaveAttribute("accept", "image/jpeg,image/png,image/webp");
+  });
+
+  it("rejects unsupported and oversized files before preparing them", async () => {
+    seed(1); render(<SurveyForm />);
+    fireEvent.change(screen.getByLabelText(/retail area picture/i), { target: { files: [new File(["svg"], "unsafe.svg", { type: "image/svg+xml" })] } });
+    await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent(/JPEG, PNG or WebP/i));
+    fireEvent.change(screen.getByLabelText(/play area picture/i), { target: { files: [new File([new Uint8Array(5 * 1024 * 1024 + 1)], "large.jpg", { type: "image/jpeg" })] } });
+    await waitFor(() => expect(screen.getAllByRole("alert").some((node) => node.textContent?.includes("5 MB"))).toBe(true));
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("carries real photo bytes through back/next and into the submit request", async () => {
+    vi.stubGlobal("Image", class {
+      naturalWidth = 80; naturalHeight = 60; onload?: () => void;
+      set src(_value: string) { queueMicrotask(() => this.onload?.()); }
+    });
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({ fillRect: vi.fn(), drawImage: vi.fn() } as unknown as CanvasRenderingContext2D);
+    vi.spyOn(HTMLCanvasElement.prototype, "toDataURL").mockReturnValue("data:image/jpeg;base64,/9j/VEVTVC1QSE9UTw==");
+    const { webcrypto } = await import("node:crypto"); vi.stubGlobal("crypto", webcrypto);
+    seed(1, { shop: { selection: "retailer:52", branchId: 0 } }); render(<SurveyForm />);
+    fireEvent.change(screen.getByLabelText(/retail area picture/i), { target: { files: [new File(["TEST-file"], "private-name.png", { type: "image/png" })] } });
+    await waitFor(() => expect(screen.getByAltText(/retail area picture preview/i)).toBeInTheDocument());
+    next(); progress(3); back(); progress(2);
+    expect(screen.getByAltText(/retail area picture preview/i)).toBeInTheDocument();
+    next(); seating(); next(); closeWeek();
+    for (let step = 6; step <= 11; step++) next();
+    fireEvent.click(screen.getByRole("button", { name: "Ready to submit" }));
+    change(/^email/i, "test@example.invalid"); change(/^password/i, "TEST-password");
+    fireEvent.click(screen.getByRole("button", { name: /^submit$/i }));
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent(/Rejected/i));
+    const payload = JSON.parse(vi.mocked(fetch).mock.calls[0][1]!.body as string);
+    expect(payload.images).toEqual([{ key: "retailArea", fileType: "image/jpeg", base64: "/9j/VEVTVC1QSE9UTw==" }]);
+    expect(payload.answers.pictures.retailArea).toBe("");
+    expect(sessionStorage.getItem(KEY)).toContain("upload-selected");
+    expect(sessionStorage.getItem(KEY)).not.toContain("/9j/");
+    expect(sessionStorage.getItem(RETRY_KEY)).not.toContain("/9j/");
+    expect(sessionStorage.getItem(RETRY_KEY)).not.toContain("private-name");
+  });
+
+  it("requires reselection or removal after refresh without losing other answers", () => {
+    seed(1, { pictures: { retailArea: "upload-selected", playArea: "" }, otherProducts: "retain" });
+    render(<SurveyForm />); next(); progress(2);
+    expect(screen.getByText(/Reselect or remove the photos before continuing/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /remove retail area picture/i }));
+    next(); progress(3);
+    expect(JSON.parse(sessionStorage.getItem(KEY)!)).toMatchObject({ values: { pictures: { retailArea: "" }, otherProducts: "retain" } });
   });
 
   it("continues when storage writes fail", () => {

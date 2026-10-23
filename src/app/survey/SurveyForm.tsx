@@ -2,9 +2,10 @@
 
 import type { FormEvent, ReactNode } from "react";
 import { useCallback, useMemo, useRef, useState } from "react";
-import { ArrowLeft, ImageIcon } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useFormity } from "@formity/react";
 import SubmissionModal from "./SubmissionModal";
+import { PictureUpload, SurveyImagesProvider, useSurveyImages } from "./surveyImages";
 import { clearSubmissionAttempt, type Receipt } from "./submitSurvey";
 import type { Flow, OnReturn, State, s } from "@formity/react";
 import {
@@ -16,7 +17,6 @@ import {
   emptyShopValue,
   findPictureSample,
   resolveShop,
-  type PictureSample,
   type ShopValue,
 } from "./surveyData";
 import {
@@ -245,6 +245,11 @@ function createSurveyFlow({ saveDraft, saveField, onReady }: DraftStore) {
 }
 
 export default function SurveyForm() {
+  return <SurveyImagesProvider><SurveyContent /></SurveyImagesProvider>;
+}
+
+function SurveyContent() {
+  const { images, clearImages } = useSurveyImages();
   const { draft, ready, saveDraft, saveField, clearDraft } = useSurveyDraft();
   const [values, setValues] = useState<SurveyValues | null>(null);
   const [pendingAnswers, setPendingAnswers] = useState<SurveyValues | null>(null);
@@ -259,6 +264,7 @@ export default function SurveyForm() {
     setPendingAnswers(null);
     clearDraft();
     clearSubmissionAttempt();
+    clearImages();
   };
 
   // Formity hands the accumulated answers back here. They are kept in React
@@ -276,9 +282,10 @@ export default function SurveyForm() {
   const handleStartOver = useCallback(() => {
     clearDraft();
     clearSubmissionAttempt();
+    clearImages();
     setReceipt(null);
     setValues(null);
-  }, [clearDraft]);
+  }, [clearDraft, clearImages]);
 
   const restoredValues = useMemo<SurveyValues | null>(
     () => (draft?.completed ? draftToSurveyValues(draft.values) : null),
@@ -302,7 +309,6 @@ export default function SurveyForm() {
           <h1 className="mb-2 font-display text-2xl font-bold text-white sm:text-3xl">KC Games Retailer Survey</h1>
           <p className="mb-6 text-sm text-navy-200">KC Games retailer survey — staging submission. Share details about your shop, your events, and your KC Games experience.</p>
 
-          <DemoNotice />
 
           {receipt ? (
             <section role="status" className="space-y-4 text-white">
@@ -327,7 +333,7 @@ export default function SurveyForm() {
               />
             )
           ) : null}
-          {pendingAnswers && <SubmissionModal answers={pendingAnswers} onClose={() => setPendingAnswers(null)} onAccepted={handleAccepted} />}
+          {pendingAnswers && <SubmissionModal answers={pendingAnswers} images={Object.values(images).filter((image) => image !== undefined)} onClose={() => setPendingAnswers(null)} onAccepted={handleAccepted} />}
         </div>
 
         <footer className="mt-12 flex justify-center">
@@ -429,14 +435,6 @@ function FieldError({ message }: { message: string | null }) {
           {message}
         </span>
       )}
-    </div>
-  );
-}
-
-function DemoNotice() {
-  return (
-    <div className="mb-6 rounded-xl border border-amber-400/30 bg-[rgba(50,42,28,0.6)] p-4 text-xs leading-relaxed text-amber-200/80">
-      <strong className="text-amber-100">Staging / livetest</strong> — Draft answers stay in this tab session until you explicitly Submit. Submit sends the survey and distributor credentials to the livetest API; production is not used. Drafts resume after refresh and normally end when the tab closes. Credentials are never saved in the draft. Picture choices and shop/branch grouping remain sample data.
     </div>
   );
 }
@@ -567,130 +565,39 @@ function ShopStep({
   );
 }
 
-function PicturePreview({ sample }: { sample: PictureSample | null }) {
-  if (!sample) {
-    return (
-      <div className="flex h-36 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-navy-600 bg-navy-900/40 p-4 text-center">
-        <ImageIcon className="h-6 w-6 text-navy-400" aria-hidden />
-        <p className="text-xs text-navy-200">
-          No picture selected yet. Pick a simulated sample to preview it here.
-        </p>
-      </div>
-    );
-  }
-  const SampleIcon = sample.icon;
-  return (
-    <div
-      className={`relative flex h-36 items-center justify-center overflow-hidden rounded-xl border border-navy-700 bg-gradient-to-br ${sample.gradient} p-4`}
-    >
-      <div
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.35) 1px, transparent 0)",
-          backgroundSize: "18px 18px",
-        }}
-      />
-      <div className="relative flex flex-col items-center gap-1.5 text-center">
-        <SampleIcon className="h-8 w-8 text-white/90" aria-hidden />
-        <span className="font-display text-sm font-semibold text-white">
-          {sample.label}
-        </span>
-        <span className="max-w-[280px] text-[10px] leading-snug text-white/75">
-          {sample.description}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function PictureSelector({
-  id,
-  label,
-  samples,
-  selectedId,
-  onChange,
-}: {
-  id: string;
-  label: string;
-  samples: PictureSample[];
-  selectedId: string;
-  onChange: (sampleId: string) => void;
-}) {
-  return (
-    <div className="mb-4">
-      <label htmlFor={id} className={fieldLabelClass}>
-        {label}
-        <span className="ml-2 text-xs font-normal text-silver-400">(optional)</span>
-      </label>
-      <select
-        id={id}
-        value={selectedId}
-        onChange={(event) => onChange(event.target.value)}
-        className={selectClass}
-      >
-        <option value="">No sample selected</option>
-        {samples.map((sample) => (
-          <option key={sample.id} value={sample.id}>
-            {sample.label}
-          </option>
-        ))}
-      </select>
-      <div className="mt-3">
-        <PicturePreview sample={findPictureSample(selectedId, samples)} />
-      </div>
-    </div>
-  );
-}
-
-function PicturesStep({
-  value,
-  onNext,
-  onBack,
-  onDraftChange,
-}: {
+function PicturesStep({ value, onNext, onBack, onDraftChange }: {
   value: PicturesValue;
   onNext: (fields: { pictures: PicturesValue }) => void;
   onBack: (fields: { pictures: PicturesValue }) => void;
   onDraftChange: (partial: Partial<PicturesValue>) => void;
 }) {
   const [pictures, setPictures] = useState<PicturesValue>(value);
-
+  const [processing, setProcessing] = useState({ retailArea: false, playArea: false });
+  const { images } = useSurveyImages();
+  const [error, setError] = useState("");
+  const busy = processing.retailArea || processing.playArea;
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        onNext({ pictures });
-      }}
-      noValidate
-    >
-      <StepHeader current={2} onBack={() => onBack({ pictures })} />
-      <div className="mb-4 rounded-xl border border-amber-400/30 bg-[rgba(50,42,28,0.6)] p-4 text-xs leading-relaxed text-amber-200/80">
-        <strong className="text-amber-100">Simulated samples only</strong> — this demo does not upload photos. Choose from the sample pictures to see how shop photos would be previewed.
-      </div>
-      <PictureSelector
-        id="retail-area-picture"
-        label="Retail area picture"
-        samples={RETAIL_AREA_SAMPLES}
-        selectedId={pictures.retailArea}
-        onChange={(sampleId) => {
-          setPictures((current) => ({ ...current, retailArea: sampleId }));
-          onDraftChange({ retailArea: sampleId });
+    <form onSubmit={(event) => {
+      event.preventDefault();
+      if (busy) return;
+      if ((pictures.retailArea && !images.retailArea) || (pictures.playArea && !images.playArea)) {
+        setError("Reselect or remove the photos before continuing."); return;
+      }
+      setError(""); onNext({ pictures });
+    }} noValidate>
+      <StepHeader current={2} onBack={busy ? undefined : () => onBack({ pictures })} />
+      {(["retailArea", "playArea"] as const).map((key) => <PictureUpload
+        key={key} pictureKey={key}
+        label={key === "retailArea" ? "Retail area picture" : "Play area picture"}
+        selected={pictures[key]}
+        onBusy={(active) => setProcessing((current) => ({ ...current, [key]: active }))}
+        onChange={(marker) => {
+          setPictures((current) => ({ ...current, [key]: marker }));
+          onDraftChange({ [key]: marker }); setError("");
         }}
-      />
-      <PictureSelector
-        id="play-area-picture"
-        label="Play area picture"
-        samples={PLAY_AREA_SAMPLES}
-        selectedId={pictures.playArea}
-        onChange={(sampleId) => {
-          setPictures((current) => ({ ...current, playArea: sampleId }));
-          onDraftChange({ playArea: sampleId });
-        }}
-      />
-      <button type="submit" className={nextButtonClass}>
-        Next
-      </button>
+      />)}
+      {error && <p role="alert" className="text-sm text-red-300">{error}</p>}
+      <button type="submit" disabled={busy} className={nextButtonClass}>{busy ? "Preparing photos…" : "Next"}</button>
     </form>
   );
 }

@@ -199,6 +199,7 @@ function seatingCount(value: unknown): number | null {
 
 /** Stale or malformed sample ids fall back to "" so the rest still restores. */
 function sampleIdOrEmpty(value: unknown): string {
+  if (value === "upload-selected") return value;
   if (typeof value !== "string" || !PICTURE_SAMPLE_IDS.has(value)) return "";
   return value;
 }

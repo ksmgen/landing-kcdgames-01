@@ -1,3 +1,4 @@
+import { webcrypto } from "node:crypto";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { draftToSurveyValues } from "./useSurveyDraft";
 import { RETRY_KEY, SUBMIT_URL, clearSubmissionAttempt, submitSurvey } from "./submitSurvey";
@@ -69,6 +70,40 @@ describe("livetest survey request", () => {
     sessionStorage.clear();
     vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw new Error("blocked"); });
     await expect(submitSurvey(answers(), "a@example.invalid", "secret")).rejects.toThrow(/Not sent/);
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("sends real image bytes, blank picture references and no filenames; retries the same images", async () => {
+    vi.stubGlobal("crypto", webcrypto);
+    const photo = { key: "retailArea" as const, fileType: "image/jpeg" as const, base64: "/9j/VEVTVC1QSE9UTw==" };
+    const imageAnswers = { ...answers(), pictures: { retailArea: "upload-selected", playArea: "" } };
+    const fetch = success(201); vi.stubGlobal("fetch", fetch);
+    await submitSurvey(imageAnswers, "a@example.invalid", "secret", [photo]);
+    const payload = JSON.parse(fetch.mock.calls[0][1].body);
+    expect(payload.images).toEqual([photo]);
+    expect(payload.answers.pictures).toEqual({ retailArea: "", playArea: "" });
+    expect(payload).not.toHaveProperty("imageHashes");
+    const recovery = sessionStorage.getItem(RETRY_KEY)!;
+    expect(recovery).not.toContain(photo.base64);
+    expect(recovery).not.toContain("secret");
+    expect(JSON.parse(recovery).imageHashes[0]).toHaveLength(64);
+    await submitSurvey(imageAnswers, "a@example.invalid", "secret", [photo]);
+    expect(JSON.parse(fetch.mock.calls[1][1].body).submissionId).toBe(payload.submissionId);
+    await expect(submitSurvey(imageAnswers, "a@example.invalid", "secret", [{ ...photo, base64: "/9j/Q0hBTkdFRA==" }])).rejects.toThrow(/photos changed/);
+    expect(fetch).toHaveBeenCalledTimes(2);
+  });
+
+  it("never silently drops selected photos after refresh", async () => {
+    const fetch = vi.fn(); vi.stubGlobal("fetch", fetch);
+    await expect(submitSurvey({ ...answers(), pictures: { retailArea: "upload-selected", playArea: "" } }, "a@example.invalid", "secret")).rejects.toThrow(/reselect the photos/i);
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("rejects duplicate image keys and invalid image bytes before sending", async () => {
+    const fetch = vi.fn(); vi.stubGlobal("fetch", fetch);
+    const photo = { key: "retailArea" as const, fileType: "image/jpeg" as const, base64: "/9j/VEVTVC1QSE9UTw==" };
+    await expect(submitSurvey(answers(), "a@example.invalid", "secret", [photo, photo])).rejects.toThrow(/invalid photo/);
+    await expect(submitSurvey(answers(), "a@example.invalid", "secret", [{ ...photo, base64: "not base64!" }])).rejects.toThrow(/invalid photo/);
     expect(fetch).not.toHaveBeenCalled();
   });
 

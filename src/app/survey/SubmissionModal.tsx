@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { submitSurvey, type Receipt } from "./submitSurvey";
+import type { SurveyImage } from "./surveyImages";
 import type { SurveyValues } from "./useSurveyDraft";
 
 /** Credentials go only to the staging API, never to the session draft. */
-export default function SubmissionModal({ answers, onClose, onAccepted }: { answers: SurveyValues; onClose: () => void; onAccepted: (receipt: Receipt) => void }) {
+export default function SubmissionModal({ answers, images = [], onClose, onAccepted }: { answers: SurveyValues; images?: SurveyImage[]; onClose: () => void; onAccepted: (receipt: Receipt) => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -53,7 +54,7 @@ export default function SubmissionModal({ answers, onClose, onAccepted }: { answ
         setBusy(true);
         setMessage("");
         try {
-          const receipt = await submitSurvey(answers, username, password);
+          const receipt = await submitSurvey(answers, username, password, images);
           setUsername("");
           setPassword("");
           onAccepted(receipt);
