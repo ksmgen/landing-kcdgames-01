@@ -251,11 +251,11 @@ describe("retailer survey simulation", () => {
     try { render(<SurveyForm />); chooseShop(); progress(2); } finally { spy.mockRestore(); }
   });
 
-  // --- Hours Step (Step 5) ---
+  // --- Hours Step (Step 5) — 12-hour AM/PM format ---
 
-  it("renders wider text inputs with Opening/Closing column headers and closed checkboxes", () => {
+  it("renders wide time inputs with Opening/Closing column headers, closed checkboxes, and AM/PM selectors", () => {
     seed(4); render(<SurveyForm />); next();
-    // Column header labels (may appear multiple times due to per-day + mobile header)
+    // Column header labels
     expect(screen.getAllByText(/opening/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/closing/i).length).toBeGreaterThan(0);
     // Day name labels still present
@@ -264,119 +264,177 @@ describe("retailer survey simulation", () => {
     DAY_KEYS.forEach(day => {
       expect(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))).toBeInTheDocument();
     });
-    // Inputs are text type, not native time picker
+    // Inputs are text type, numeric mode for hours/minutes
     DAY_KEYS.forEach(day => {
-      const openInput = screen.getByLabelText(new RegExp(`^${day} opening time$`, "i"));
-      expect(openInput).toHaveAttribute("type", "text");
-      expect(openInput).toHaveAttribute("placeholder", "HH:MM");
+      const openHourInput = screen.getByLabelText(new RegExp(`^${day} opening hour$`, "i"));
+      expect(openHourInput).toHaveAttribute("type", "text");
+      expect(openHourInput).toHaveAttribute("inputMode", "numeric");
+      expect(openHourInput).toHaveAttribute("placeholder", "HH");
+      const openPeriodSelect = screen.getByLabelText(new RegExp(`^${day} opening period$`, "i"));
+      expect(openPeriodSelect.tagName).toBe("SELECT");
+      const openMinuteInput = screen.getByLabelText(new RegExp(`^${day} opening minute$`, "i"));
+      expect(openMinuteInput).toHaveAttribute("inputMode", "numeric");
+      expect(openMinuteInput).toHaveAttribute("placeholder", "MM");
     });
   });
 
-  it("normalizes H:MM to HH:MM on blur and accepts on Next", () => {
+  it("converts 12-hour AM/PM input to 24-hour HH:MM on Next", () => {
     seed(4); render(<SurveyForm />); next();
-    for (let i = 0; i < 7; i++) {
-      const day = DAY_KEYS[i];
-      fireEvent.change(screen.getByLabelText(new RegExp(`^${day} opening time$`, "i")), { target: { value: "9:30" } });
-      fireEvent.change(screen.getByLabelText(new RegExp(`^${day} closing time$`, "i")), { target: { value: "18:00" } });
-    }
-    // Blur triggers normalization
-    for (const day of DAY_KEYS) {
-      fireEvent.blur(screen.getByLabelText(new RegExp(`^${day} opening time$`, "i")));
-      fireEvent.blur(screen.getByLabelText(new RegExp(`^${day} closing time$`, "i")));
-    }
-    // Values should be normalized
-    for (const day of DAY_KEYS) {
-      expect(screen.getByLabelText(new RegExp(`^${day} opening time$`, "i"))).toHaveValue("09:30");
-      expect(screen.getByLabelText(new RegExp(`^${day} closing time$`, "i"))).toHaveValue("18:00");
-    }
+    // Monday 9:30 AM → 09:30
+    change(/monday opening hour/i, "9");
+    change(/monday opening minute/i, "30");
+    // Need to select period via fireEvent since change() doesn't work on selects
+    fireEvent.change(screen.getByLabelText(/monday opening period/i), { target: { value: "AM" } });
+    change(/monday closing hour/i, "5");
+    change(/monday closing minute/i, "30");
+    fireEvent.change(screen.getByLabelText(/monday closing period/i), { target: { value: "PM" } });
+    DAY_KEYS.slice(1).forEach(day => fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))));
     next(); progress(6);
+    const stored = JSON.parse(sessionStorage.getItem(KEY)!).values.hours.monday;
+    expect(stored).toEqual({ closed: false, open: "09:30", close: "17:30" });
   });
 
-  it("preserves unfinished typed values during drafting without losing sibling times", () => {
-    seed(4); const view = render(<SurveyForm />); next();
-    // Set monday fully
-    fireEvent.change(screen.getByLabelText(/monday opening time/i), { target: { value: "10:00" } });
-    fireEvent.change(screen.getByLabelText(/monday closing time/i), { target: { value: "18:00" } });
-    // Start typing Tuesday with incomplete value
-    fireEvent.change(screen.getByLabelText(/tuesday opening time/i), { target: { value: "10:0" } });
-    view.unmount();
-    // Restore from draft
-    const restored = render(<SurveyForm />); next();
-    expect(screen.getByLabelText(/monday opening time/i)).toHaveValue("10:00");
-    expect(screen.getByLabelText(/monday closing time/i)).toHaveValue("18:00");
-    expect(screen.getByLabelText(/tuesday opening time/i)).toHaveValue("10:0");
-    // Completing it should normalize on blur
-    fireEvent.change(screen.getByLabelText(/tuesday opening time/i), { target: { value: "10:00" } });
-    fireEvent.blur(screen.getByLabelText(/tuesday opening time/i));
-    expect(screen.getByLabelText(/tuesday opening time/i)).toHaveValue("10:00");
-  });
-
-  it("shows day-specific error messages for missing malformed times on open days", () => {
+  it("handles 12 AM midnight correctly as 00:00", () => {
     seed(4); render(<SurveyForm />); next();
-    // Set only monday, leave tuesday empty
-    fireEvent.change(screen.getByLabelText(/monday opening time/i), { target: { value: "10:00" } });
-    fireEvent.change(screen.getByLabelText(/monday closing time/i), { target: { value: "18:00" } });
-    // Clicking Next shows error for tuesday
-    fireEvent.click(screen.getByRole("button", { name: /^next$/i }));
-    expect(screen.getByRole("alert")).toHaveTextContent(/tuesday/i);
-    // Enter abc as tuesday open (stays as-is since normalize doesn't touch non-time text)
-    // and fill close — Tuesday must still be rejected
-    fireEvent.change(screen.getByLabelText(/tuesday opening time/i), { target: { value: "abc" } });
-    fireEvent.change(screen.getByLabelText(/tuesday closing time/i), { target: { value: "18:00" } });
-    fireEvent.click(screen.getByRole("button", { name: /^next$/i }));
-    expect(screen.getByRole("alert")).toHaveTextContent(/tuesday/i);
+    // Midnight start: 12:00 AM
+    change(/monday opening hour/i, "12");
+    change(/monday opening minute/i, "00");
+    fireEvent.change(screen.getByLabelText(/monday opening period/i), { target: { value: "AM" } });
+    change(/monday closing hour/i, "12");
+    change(/monday closing minute/i, "30");
+    fireEvent.change(screen.getByLabelText(/monday closing period/i), { target: { value: "AM" } });
+    DAY_KEYS.slice(1).forEach(day => fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))));
+    next(); progress(6);
+    const stored = JSON.parse(sessionStorage.getItem(KEY)!).values.hours.monday;
+    expect(stored.open).toBe("00:00");
+    expect(stored.close).toBe("00:30");
+  });
+
+  it("handles 12 PM noon correctly as 12:00", () => {
+    seed(4); render(<SurveyForm />); next();
+    // Noon: 12:00 PM
+    change(/monday opening hour/i, "12");
+    change(/monday opening minute/i, "00");
+    fireEvent.change(screen.getByLabelText(/monday opening period/i), { target: { value: "PM" } });
+    change(/monday closing hour/i, "2");
+    change(/monday closing minute/i, "00");
+    fireEvent.change(screen.getByLabelText(/monday closing period/i), { target: { value: "PM" } });
+    DAY_KEYS.slice(1).forEach(day => fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))));
+    next(); progress(6);
+    const stored = JSON.parse(sessionStorage.getItem(KEY)!).values.hours.monday;
+    expect(stored.open).toBe("12:00");
+    expect(stored.close).toBe("14:00");
+  });
+
+  it("supports overnight shifts (e.g. 10 PM to 2 AM)", () => {
+    seed(4); render(<SurveyForm />); next();
+    // Friday 10 PM → Saturday 2 AM (overnight)
+    change(/friday opening hour/i, "10");
+    change(/friday opening minute/i, "00");
+    fireEvent.change(screen.getByLabelText(/friday opening period/i), { target: { value: "PM" } });
+    change(/friday closing hour/i, "2");
+    change(/friday closing minute/i, "00");
+    fireEvent.change(screen.getByLabelText(/friday closing period/i), { target: { value: "AM" } });
+    DAY_KEYS.filter(d => d !== "friday").forEach(day => fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))));
+    next(); progress(6);
+    const stored = JSON.parse(sessionStorage.getItem(KEY)!).values.hours.friday;
+    expect(stored.open).toBe("22:00");
+    expect(stored.close).toBe("02:00");
+  });
+
+  it("rejects invalid 12-hour values before leaving hours", () => {
+    seed(4); render(<SurveyForm />); next();
+    DAY_KEYS.slice(1).forEach(day => fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))));
+    // Hour out of range (13)
+    change(/monday opening hour/i, "13");
+    change(/monday opening minute/i, "00");
+    fireEvent.change(screen.getByLabelText(/monday opening period/i), { target: { value: "AM" } });
+    change(/monday closing hour/i, "5");
+    change(/monday closing minute/i, "00");
+    fireEvent.change(screen.getByLabelText(/monday closing period/i), { target: { value: "PM" } });
+    next();
+    expect(screen.getByRole("alert")).toHaveTextContent(/Monday/i);
+    // Minute out of range (60)
+    change(/monday opening hour/i, "9");
+    change(/monday opening minute/i, "60");
+    next();
+    expect(screen.getByRole("alert")).toHaveTextContent(/Monday/i);
     progress(5);
   });
 
-  it.each(["24:00", "12:60", "abc", "12:"])("rejects invalid typed time %s before leaving hours", (invalid) => {
-    seed(4); render(<SurveyForm />); next();
-    DAY_KEYS.slice(1).forEach(day => fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))));
-    change(/monday opening time/i, invalid); change(/monday closing time/i, "18:00");
-    next(); progress(5);
-    expect(screen.getByRole("alert")).toHaveTextContent(/Monday/);
-  });
-
-  it("normalizes typed H:MM on Next without requiring a blur", () => {
-    seed(4); render(<SurveyForm />); next();
-    DAY_KEYS.slice(1).forEach(day => fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))));
-    change(/monday opening time/i, "9:30"); change(/monday closing time/i, "01:00");
-    next(); progress(6);
-    expect(JSON.parse(sessionStorage.getItem(KEY)!).values.hours.monday).toEqual({ closed: false, open: "09:30", close: "01:00" });
+  it("preserves partial drafts across refresh without losing sibling days", () => {
+    seed(4); const view = render(<SurveyForm />); next();
+    // Set monday fully (9:30 AM – 5:00 PM)
+    change(/monday opening hour/i, "9");
+    change(/monday opening minute/i, "30");
+    fireEvent.change(screen.getByLabelText(/monday opening period/i), { target: { value: "AM" } });
+    change(/monday closing hour/i, "5");
+    change(/monday closing minute/i, "0"); // partial
+    fireEvent.change(screen.getByLabelText(/monday closing period/i), { target: { value: "PM" } });
+    // Start typing tuesday but leave incomplete
+    change(/tuesday opening hour/i, "9");
+    view.unmount();
+    // Restore from draft
+    const restored = render(<SurveyForm />); next();
+    expect(screen.getByLabelText(/monday opening hour/i)).toHaveValue("9");
+    expect(screen.getByLabelText(/monday opening minute/i)).toHaveValue("30");
+    expect(screen.getByLabelText(/monday opening period/i)).toHaveValue("AM");
+    expect(screen.getByLabelText(/monday closing hour/i)).toHaveValue("5");
+    expect(screen.getByLabelText(/monday closing minute/i)).toHaveValue("0");
+    expect(screen.getByLabelText(/monday closing period/i)).toHaveValue("PM");
+    expect(screen.getByLabelText(/tuesday opening hour/i)).toHaveValue("9");
   });
 
   it("keeps closed-day behavior: checking closed clears times, disabled inputs", () => {
     seed(4); render(<SurveyForm />); next();
     // Fill in monday
-    fireEvent.change(screen.getByLabelText(/monday opening time/i), { target: { value: "10:00" } });
-    fireEvent.change(screen.getByLabelText(/monday closing time/i), { target: { value: "18:00" } });
+    change(/monday opening hour/i, "9");
+    change(/monday opening minute/i, "30");
+    fireEvent.change(screen.getByLabelText(/monday opening period/i), { target: { value: "AM" } });
+    change(/monday closing hour/i, "5");
+    change(/monday closing minute/i, "30");
+    fireEvent.change(screen.getByLabelText(/monday closing period/i), { target: { value: "PM" } });
     // Check closed for tuesday-through-sunday
     DAY_KEYS.slice(1).forEach(day => {
       fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i")));
     });
-    expect(screen.getByLabelText(/tuesday opening time/i)).toHaveValue("");
-    expect(screen.getByLabelText(/tuesday opening time/i)).toBeDisabled();
-    expect(screen.getByLabelText(/tuesday closing time/i)).toBeDisabled();
+    expect(screen.getByLabelText(/tuesday opening hour/i)).toHaveValue("");
+    expect(screen.getByLabelText(/tuesday opening hour/i)).toBeDisabled();
+    expect(screen.getByLabelText(/tuesday closing hour/i)).toBeDisabled();
     next(); progress(6);
   });
 
-  it("unchecking closed preserves previously filled times", () => {
+  it("requires times to be re-entered after clearing a closed day", () => {
     seed(4); render(<SurveyForm />); next();
     // Fill monday and tuesday
-    fireEvent.change(screen.getByLabelText(/monday opening time/i), { target: { value: "10:00" } });
-    fireEvent.change(screen.getByLabelText(/monday closing time/i), { target: { value: "18:00" } });
-    fireEvent.change(screen.getByLabelText(/tuesday opening time/i), { target: { value: "09:00" } });
-    fireEvent.change(screen.getByLabelText(/tuesday closing time/i), { target: { value: "17:00" } });
+    change(/monday opening hour/i, "9");
+    change(/monday opening minute/i, "30");
+    fireEvent.change(screen.getByLabelText(/monday opening period/i), { target: { value: "AM" } });
+    change(/monday closing hour/i, "5");
+    change(/monday closing minute/i, "00");
+    fireEvent.change(screen.getByLabelText(/monday closing period/i), { target: { value: "PM" } });
+    change(/tuesday opening hour/i, "10");
+    change(/tuesday opening minute/i, "00");
+    fireEvent.change(screen.getByLabelText(/tuesday opening period/i), { target: { value: "AM" } });
+    change(/tuesday closing hour/i, "6");
+    change(/tuesday closing minute/i, "00");
+    fireEvent.change(screen.getByLabelText(/tuesday closing period/i), { target: { value: "PM" } });
     // Close tuesday by ticking closed — clears its times
     const tuesdayCheckbox = screen.getByLabelText(/tuesday closed/i);
     fireEvent.click(tuesdayCheckbox);
-    expect(screen.getByLabelText(/tuesday opening time/i)).toHaveValue("");
-    expect(screen.getByLabelText(/tuesday opening time/i)).toBeDisabled();
+    expect(screen.getByLabelText(/tuesday opening hour/i)).toHaveValue("");
+    expect(screen.getByLabelText(/tuesday opening hour/i)).toBeDisabled();
     // Uncheck closed — times restored from draft via Formity
     fireEvent.click(tuesdayCheckbox);
-    expect(screen.getByLabelText(/tuesday opening time/i)).not.toBeDisabled();
-    // Re-fill and submit
-    fireEvent.change(screen.getByLabelText(/tuesday opening time/i), { target: { value: "09:30" } });
-    fireEvent.change(screen.getByLabelText(/tuesday closing time/i), { target: { value: "17:00" } });
+    expect(screen.getByLabelText(/tuesday opening hour/i)).not.toBeDisabled();
+    // Verify restored values
+    expect(screen.getByLabelText(/tuesday opening hour/i)).toHaveValue("");
+    change(/tuesday opening hour/i, "10");
+    change(/tuesday opening minute/i, "00");
+    change(/tuesday closing hour/i, "6");
+    change(/tuesday closing minute/i, "00");
+    fireEvent.change(screen.getByLabelText(/tuesday closing period/i), { target: { value: "PM" } });
+    expect(screen.getByLabelText(/tuesday opening period/i)).toHaveValue("AM");
     DAY_KEYS.slice(2).forEach(day => fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))));
     next(); progress(6);
   });

@@ -35,6 +35,70 @@ const TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/;
 /** Accepts H:MM, HH:MM, or partial typed strings (empty, digits + colons only). */
 const TIME_INPUT_PATTERN = /^[0-9]{0,2}(:[0-9]{0,2})?$/;
 
+/** Convert 12-hour components to strict 24-hour HH:MM; returns null on invalid inputs. */
+export function convert12To24(rawHour: string, rawMinute: string, period: string): string | null {
+  if (rawHour === "" || rawMinute === "" || period === "") return "";
+  if (!/^\d{1,2}$/.test(rawHour) || !/^\d{1,2}$/.test(rawMinute)) return null;
+  const h = parseInt(rawHour, 10);
+  const m = parseInt(rawMinute, 10);
+  if (Number.isNaN(h) || Number.isNaN(m)) return null;
+  if (h < 1 || h > 12) return null;
+  if (m < 0 || m > 59) return null;
+  const upperPeriod = period.toUpperCase();
+  if (upperPeriod !== "AM" && upperPeriod !== "PM") return null;
+  let hh: number;
+  if (h === 12) {
+    hh = upperPeriod === "AM" ? 0 : 12;
+  } else if (upperPeriod === "AM") {
+    hh = h;
+  } else {
+    hh = h + 12;
+  }
+  return `${String(hh).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
+/** Parse a stored 24-hour HH:MM into 12-hour display components. */
+export function parse24For12Display(raw: string): { hour: string; minute: string; period: string } | null {
+  if (raw === "") return { hour: "", minute: "", period: "AM" };
+  if (!TIME_PATTERN.test(raw)) return null;
+  const hh = parseInt(raw.slice(0, 2), 10);
+  const mm = parseInt(raw.slice(3, 5), 10);
+  let h: number;
+  let period: string;
+  if (hh === 0) {
+    h = 12; period = "AM";
+  } else if (hh < 12) {
+    h = hh; period = "AM";
+  } else if (hh === 12) {
+    h = 12; period = "PM";
+  } else {
+    h = hh - 12; period = "PM";
+  }
+  return { hour: String(h), minute: String(mm).padStart(2, "0"), period };
+}
+
+/** Validate that a 12-hour minute input is strictly 0–59 digits only. */
+export function is12MinuteValid(value: string): boolean {
+  if (value === "") return true;
+  if (!/^\d{1,2}$/.test(value)) return false;
+  const n = parseInt(value, 10);
+  return n >= 0 && n <= 59;
+}
+
+/** Accept 1–12 digits for the 12-hour field, preserving partial drafts. */
+export function is12HourValid(value: string): boolean {
+  if (value === "") return true;
+  if (!/^\d{1,2}$/.test(value)) return false;
+  const n = parseInt(value, 10);
+  return n >= 1 && n <= 12;
+}
+
+/** Normalize a combined AM/PM time value — converts to 24-hour HH:MM. */
+export function normalizeHoursTime(hour: string, minute: string, period: string): string {
+  const result = convert12To24(hour, minute, period);
+  return result ?? hour;
+}
+
 export const DAY_KEYS = [
   "monday",
   "tuesday",
@@ -74,7 +138,7 @@ export type SurveyStep = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 export type PicturesValue = { retailArea: string; playArea: string };
 export type SeatingValue = { tables: number | null; chairs: number | null };
 export type SocialValue = { instagram: string; facebook: string; tiktok: string };
-export type DayHours = { closed: boolean; open: string; close: string };
+export type DayHours = { closed: boolean; open: string; close: string; openHour?: string; openMinute?: string; openPeriod?: string; closeHour?: string; closeMinute?: string; closePeriod?: string };
 export type HoursValue = Record<DayKey, DayHours>;
 export type EventValue = {
   enabled: boolean;
@@ -251,7 +315,14 @@ function validDayHours(value: unknown): DayHours | null {
   const close = parseTimeOrEmpty(value.close);
   if (open === null || close === null) return null;
   if (value.closed) return { closed: true, open: "", close: "" };
-  return { closed: false, open, close };
+  const result: DayHours = { closed: false, open, close };
+  for (const field of ["openHour", "openMinute", "closeHour", "closeMinute"] as const) {
+    if (typeof value[field] === "string" && /^\d{0,2}$/.test(value[field])) result[field] = value[field];
+  }
+  for (const field of ["openPeriod", "closePeriod"] as const) {
+    if (value[field] === "AM" || value[field] === "PM") result[field] = value[field];
+  }
+  return result;
 }
 
 function validEvent(value: unknown): EventValue | null {

@@ -31,9 +31,12 @@ import {
   defaultSocialValue,
   draftToFormityState,
   draftToSurveyValues,
-  formatTime,
-  parseTime,
+  is12HourValid,
+  is12MinuteValid,
+  normalizeHoursTime,
+  parse24For12Display,
   useSurveyDraft,
+  type DayHours,
   type DayKey,
   type DraftField,
   type EventValue,
@@ -770,6 +773,37 @@ function SocialStep({
   );
 }
 
+function displayHoursTime(raw: string): string {
+  const parsed = parse24For12Display(raw);
+  return parsed ? `${parsed.hour}:${parsed.minute} ${parsed.period}` : raw;
+}
+
+/** Extra fields stored alongside DayHours in the HoursValue state during editing. */
+interface EditableDayHours extends DayHours {
+  openHour?: string;
+  openMinute?: string;
+  openPeriod?: string;
+  closeHour?: string;
+  closeMinute?: string;
+  closePeriod?: string;
+}
+
+/** Restore 24-hour open/close into 12-hour editable fields for rendering. */
+function restoreDayFields(day: DayHours): EditableDayHours {
+  return {
+    closed: day.closed,
+    open: day.open,
+    close: day.close,
+    openHour: day.open ? parse24For12Display(day.open)?.hour : "",
+    openMinute: day.open ? parse24For12Display(day.open)?.minute : "",
+    openPeriod: day.open ? parse24For12Display(day.open)?.period || "AM" : "AM",
+    closeHour: day.close ? parse24For12Display(day.close)?.hour : "",
+    closeMinute: day.close ? parse24For12Display(day.close)?.minute : "",
+    closePeriod: day.close ? parse24For12Display(day.close)?.period || "AM" : "AM",
+    ...Object.fromEntries(Object.entries(day).filter(([key]) => /^(open|close)(Hour|Minute|Period)$/.test(key))),
+  };
+}
+
 function HoursStep({
   value,
   onNext,
@@ -781,70 +815,84 @@ function HoursStep({
   onBack: (fields: { hours: HoursValue }) => void;
   onDraftChange: (partial: Partial<HoursValue>) => void;
 }) {
-  const [hours, setHours] = useState<HoursValue>(value);
+  const [hours, setHours] = useState<Record<DayKey, EditableDayHours>>(() => {
+    const edited = {} as Record<DayKey, EditableDayHours>;
+    for (const day of DAY_KEYS) {
+      edited[day] = restoreDayFields(value[day]);
+    }
+    return edited;
+  });
   const [error, setError] = useState<string | null>(null);
-  // Ref to capture latest draft values and avoid stale closure in updateDay.
   const hoursRef = useRef(hours);
   hoursRef.current = hours;
 
-  function normalize(value: string): string {
-    if (value === "") return "";
-    // Only normalize structured inputs (contains colon, looks like time).
-    const m = value.match(/^(\d{1,2}):(\d{2})$/);
-    if (!m) return value;
-    const h = parseInt(m[1], 10), mi = parseInt(m[2], 10);
-    if (h > 23 || mi > 59) return value;
-    return `${String(h).padStart(2, "0")}:${String(mi).padStart(2, "0")}`;
-  }
-
-  function updateDay(day: DayKey, patch: Partial<HoursValue[DayKey]>) {
+  function updateDay(day: DayKey, patch: Partial<EditableDayHours>) {
     setHours((current) => ({ ...current, [day]: { ...current[day], ...patch } }));
     // Always save from latest state via ref.
     const merged = { ...hoursRef.current[day], ...patch };
     onDraftChange({ [day]: merged });
   }
 
-  function onBlur(day: DayKey, field: "open" | "close") {
+  function validateDay(day: DayKey): boolean {
     const entry = hours[day];
-    const normalized = normalize(entry[field]);
-    if (normalized !== entry[field]) {
-      setHours((current) => ({
-        ...current,
-        [day]: { ...current[day], [field]: normalized },
-      }));
-      onDraftChange({ [day]: { ...hoursRef.current[day], [field]: normalized } });
-    }
+    if (entry.closed) return true;
+    const hOpen = entry.openHour ?? "";
+    const mOpen = entry.openMinute ?? "";
+    const pOpen = entry.openPeriod ?? "AM";
+    const hClose = entry.closeHour ?? "";
+    const mClose = entry.closeMinute ?? "";
+    const pClose = entry.closePeriod ?? "AM";
+    if (hOpen === "" || mOpen === "" || hClose === "" || mClose === "") return false;
+    if (!is12HourValid(hOpen) || !is12MinuteValid(mOpen)) return false;
+    if (!is12HourValid(hClose) || !is12MinuteValid(mClose)) return false;
+    // Both must produce valid 24-hour output
+    if (normalizeHoursTime(hOpen, mOpen, pOpen) === "") return false;
+    if (normalizeHoursTime(hClose, mClose, pClose) === "") return false;
+    return true;
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const normalizedHours = { ...hours };
+    const normalizedHours = {} as HoursValue;
     for (const day of DAY_KEYS) {
       const entry = hours[day];
-      const open = normalize(entry.open);
-      const close = normalize(entry.close);
-      if (!entry.closed && (!open || !close || parseTime(open) === null || parseTime(close) === null)) {
+      if (entry.closed) {
+        normalizedHours[day] = { closed: true, open: "", close: "" };
+        continue;
+      }
+      const hOpen = entry.openHour ?? "";
+      const mOpen = entry.openMinute ?? "";
+      const pOpen = entry.openPeriod ?? "AM";
+      const hClose = entry.closeHour ?? "";
+      const mClose = entry.closeMinute ?? "";
+      const pClose = entry.closePeriod ?? "AM";
+      if (!validateDay(day)) {
         setError(
-          `Please enter valid opening and closing times for ${DAY_LABELS[day]} in 24-hour HH:MM format (00:00–23:59), or mark it as closed.`,
+          `Please enter valid opening and closing times for ${DAY_LABELS[day]} in 12-hour format (1–12 AM/PM), or mark it as closed.`,
         );
         return;
       }
+      const convertedOpen = normalizeHoursTime(hOpen, mOpen, pOpen);
+      const convertedClose = normalizeHoursTime(hClose, mClose, pClose);
+      normalizedHours[day] = { closed: false, open: convertedOpen, close: convertedClose };
     }
     setError(null);
-    for (const day of DAY_KEYS) {
-      normalizedHours[day] = hours[day].closed
-        ? { closed: true, open: "", close: "" }
-        : { closed: false, open: normalize(hours[day].open), close: normalize(hours[day].close) };
-    }
-    setHours(normalizedHours);
     onNext({ hours: normalizedHours });
   }
+
+  // Shared props for the time input components
+  const hourInputClass =
+    "w-12 rounded-lg border border-navy-700 bg-navy-900/50 px-2 py-2 text-base text-white placeholder-navy-400 outline-none ring-2 ring-transparent transition-all focus:ring-amber-400/60 disabled:opacity-40 text-center";
+  const minInputClass =
+    "w-12 rounded-lg border border-navy-700 bg-navy-900/50 px-2 py-2 text-base text-white placeholder-navy-400 outline-none ring-2 ring-transparent transition-all focus:ring-amber-400/60 disabled:opacity-40 text-center";
+  const periodSelectClass =
+    "rounded-lg border border-navy-700 bg-navy-900/70 px-1 py-2 text-xs font-bold text-white outline-none ring-2 ring-transparent transition-all focus:ring-amber-400/60 disabled:opacity-40";
 
   return (
     <form onSubmit={handleSubmit} noValidate>
       <StepHeader current={5} onBack={() => onBack({ hours })} />
       <p className="mb-4 text-xs text-navy-200">
-        Set your weekly operation hours. Open days need both an opening and a closing time; toggle a day as closed to skip it. Times are typed in 24-hour HH:MM format — entering&nbsp;<code className="text-silver-300">9:30</code>&nbsp;normalises to&nbsp;<code className="text-silver-300">09:30</code>.
+        Set your weekly operation hours. Open days need both an opening and a closing time; toggle a day as closed to skip it. Times are entered in 12-hour format — midnight is 12:00 AM and noon is 12:00 PM.
       </p>
       <div className="space-y-3">
         {DAY_KEYS.map((day) => {
@@ -852,7 +900,7 @@ function HoursStep({
           return (
             <div
               key={day}
-              className="grid min-w-0 grid-cols-2 gap-3 rounded-xl border border-navy-700/60 bg-navy-900/40 p-4"
+              className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-2 rounded-xl border border-navy-700/60 bg-navy-900/40 p-4 items-center"
             >
               {/* Day name + closed toggle */}
               <label htmlFor={`hours-${day}-closed`} className="col-span-2 flex cursor-pointer items-center gap-2 font-display text-sm font-semibold text-white">
@@ -862,49 +910,114 @@ function HoursStep({
                   type="checkbox"
                   checked={entry.closed}
                   onChange={(event) =>
-                    updateDay(day, event.target.checked ? { closed: true, open: "", close: "" } : { closed: false })
+                    updateDay(day, event.target.checked
+                      ? { closed: true, open: "", close: "", openHour: "", openMinute: "", openPeriod: "AM", closeHour: "", closeMinute: "", closePeriod: "AM" }
+                      : { closed: false }
+                    )
                   }
                   className="h-4 w-4 shrink-0 rounded border-navy-600 bg-navy-900 text-amber-400 focus:ring-amber-400/60"
                   aria-label={`${DAY_LABELS[day]} closed`}
                 />
                 <span className="text-xs font-semibold text-silver-300">Closed</span>
               </label>
-              <label htmlFor={`hours-${day}-open`} className="min-w-0 text-xs font-semibold text-silver-300">
+
+              {/* Opening label */}
+              <span className="min-w-0 text-xs font-semibold text-silver-300">
                 Opening
-              <input
-                id={`hours-${day}-open`}
-                name={`hoursOpen${day}`}
-                type="text"
-                inputMode="text"
-                maxLength={5}
-                placeholder="HH:MM"
-                autoComplete="off"
-                value={formatTime(hours[day].open)}
-                disabled={entry.closed}
-                onChange={(event) => updateDay(day, { open: event.target.value })}
-                onBlur={() => onBlur(day, "open")}
-                className="mt-2 min-h-12 w-full min-w-0 rounded-lg border border-navy-700 bg-navy-900/50 px-3 py-3 text-base text-white placeholder-navy-400 outline-none ring-2 ring-transparent transition-all focus:ring-amber-400/60 disabled:opacity-40"
-                aria-label={`${DAY_LABELS[day]} opening time`}
-              />
-              </label>
-              <label htmlFor={`hours-${day}-close`} className="min-w-0 text-xs font-semibold text-silver-300">
+              </span>
+
+              {/* Opening time fields */}
+              <div className="flex items-center gap-1">
+                <input
+                  id={`hours-${day}-open-hour`}
+                  name={`hoursOpen${day}Hour`}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={2}
+                  placeholder="HH"
+                  autoComplete="off"
+                  value={entry.openHour ?? ""}
+                  disabled={entry.closed}
+                  onChange={(event) => updateDay(day, { openHour: event.target.value })}
+                  className={hourInputClass}
+                  aria-label={`${DAY_LABELS[day]} opening hour`}
+                />
+                <span aria-hidden="true">:</span>
+                <input
+                  id={`hours-${day}-open-minute`}
+                  name={`hoursOpen${day}Minute`}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={2}
+                  placeholder="MM"
+                  autoComplete="off"
+                  value={entry.openMinute ?? ""}
+                  disabled={entry.closed}
+                  onChange={(event) => updateDay(day, { openMinute: event.target.value })}
+                  className={minInputClass}
+                  aria-label={`${DAY_LABELS[day]} opening minute`}
+                />
+                <select
+                  name={`hoursOpen${day}Period`}
+                  value={entry.openPeriod || "AM"}
+                  disabled={entry.closed}
+                  onChange={(event) => updateDay(day, { openPeriod: event.target.value })}
+                  className={periodSelectClass}
+                  aria-label={`${DAY_LABELS[day]} opening period`}
+                >
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
+
+              {/* Closing label */}
+              <span className="min-w-0 text-xs font-semibold text-silver-300">
                 Closing
-              <input
-                id={`hours-${day}-close`}
-                name={`hoursClose${day}`}
-                type="text"
-                inputMode="text"
-                maxLength={5}
-                placeholder="HH:MM"
-                autoComplete="off"
-                value={formatTime(hours[day].close)}
-                disabled={entry.closed}
-                onChange={(event) => updateDay(day, { close: event.target.value })}
-                onBlur={() => onBlur(day, "close")}
-                className="mt-2 min-h-12 w-full min-w-0 rounded-lg border border-navy-700 bg-navy-900/50 px-3 py-3 text-base text-white placeholder-navy-400 outline-none ring-2 ring-transparent transition-all focus:ring-amber-400/60 disabled:opacity-40"
-                aria-label={`${DAY_LABELS[day]} closing time`}
-              />
-              </label>
+              </span>
+
+              {/* Closing time fields */}
+              <div className="flex items-center gap-1">
+                <input
+                  id={`hours-${day}-close-hour`}
+                  name={`hoursClose${day}Hour`}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={2}
+                  placeholder="HH"
+                  autoComplete="off"
+                  value={entry.closeHour ?? ""}
+                  disabled={entry.closed}
+                  onChange={(event) => updateDay(day, { closeHour: event.target.value })}
+                  className={hourInputClass}
+                  aria-label={`${DAY_LABELS[day]} closing hour`}
+                />
+                <span aria-hidden="true">:</span>
+                <input
+                  id={`hours-${day}-close-minute`}
+                  name={`hoursClose${day}Minute`}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={2}
+                  placeholder="MM"
+                  autoComplete="off"
+                  value={entry.closeMinute ?? ""}
+                  disabled={entry.closed}
+                  onChange={(event) => updateDay(day, { closeMinute: event.target.value })}
+                  className={minInputClass}
+                  aria-label={`${DAY_LABELS[day]} closing minute`}
+                />
+                <select
+                  name={`hoursClose${day}Period`}
+                  value={entry.closePeriod || "AM"}
+                  disabled={entry.closed}
+                  onChange={(event) => updateDay(day, { closePeriod: event.target.value })}
+                  className={periodSelectClass}
+                  aria-label={`${DAY_LABELS[day]} closing period`}
+                >
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
             </div>
           );
         })}
@@ -1286,7 +1399,7 @@ function SurveySummary({
               {DAY_LABELS[day]}:{" "}
               {values.hours[day].closed
                 ? "Closed"
-                : `${values.hours[day].open} – ${values.hours[day].close}`}
+                : `${displayHoursTime(values.hours[day].open)} – ${displayHoursTime(values.hours[day].close)}`}
             </p>
           ))}
         </SummarySection>

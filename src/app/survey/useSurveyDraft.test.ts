@@ -1,10 +1,15 @@
 import { describe, it, expect } from "vitest";
 import {
   SURVEY_DRAFT_STORAGE_KEY,
+  convert12To24,
   defaultHoursValue,
   draftToFormityState,
   draftToSurveyValues,
   formatTime,
+  is12HourValid,
+  is12MinuteValid,
+  normalizeHoursTime,
+  parse24For12Display,
   parseSurveyDraft,
   parseTime,
   parseTimeOrEmpty,
@@ -474,5 +479,116 @@ describe("parseTimeOrEmpty", () => {
     expect(parseTimeOrEmpty("1a:00")).toBeNull();
     expect(parseTimeOrEmpty(null as never)).toBeNull();
     expect(parseTimeOrEmpty(42 as never)).toBeNull();
+  });
+});
+
+describe("convert12To24", () => {
+  it("converts standard AM times correctly", () => {
+    expect(convert12To24("9", "30", "AM")).toBe("09:30");
+    expect(convert12To24("1", "0", "AM")).toBe("01:00");
+    expect(convert12To24("12", "0", "AM")).toBe("00:00"); // midnight
+    expect(convert12To24("12", "30", "AM")).toBe("00:30"); // half past midnight
+    expect(convert12To24("11", "59", "AM")).toBe("11:59");
+  });
+
+  it("converts standard PM times correctly", () => {
+    expect(convert12To24("1", "0", "PM")).toBe("13:00");
+    expect(convert12To24("12", "0", "PM")).toBe("12:00"); // noon
+    expect(convert12To24("12", "30", "PM")).toBe("12:30"); // half past noon
+    expect(convert12To24("11", "0", "PM")).toBe("23:00");
+    expect(convert12To24("11", "59", "PM")).toBe("23:59");
+  });
+
+  it("handles empty partial drafts", () => {
+    expect(convert12To24("", "30", "AM")).toBe("");
+    expect(convert12To24("9", "", "AM")).toBe("");
+    expect(convert12To24("9", "30", "")).toBe("");
+  });
+
+  it("rejects invalid inputs", () => {
+    expect(convert12To24("0", "0", "AM")).toBeNull(); // hour 0
+    expect(convert12To24("13", "0", "AM")).toBeNull(); // hour > 12
+    expect(convert12To24("1", "60", "AM")).toBeNull(); // minute > 59
+    expect(convert12To24("1", "0", "XX")).toBeNull(); // invalid period
+    expect(convert12To24("abc", "0", "AM")).toBeNull(); // non-numeric hour
+    expect(convert12To24("1", "xyz", "AM")).toBeNull(); // non-numeric minute
+  });
+
+  it("is case-insensitive for period", () => {
+    expect(convert12To24("9", "30", "am")).toBe("09:30");
+    expect(convert12To24("9", "30", "Am")).toBe("09:30");
+    expect(convert12To24("1", "0", "pm")).toBe("13:00");
+    expect(convert12To24("1", "0", "Pm")).toBe("13:00");
+  });
+});
+
+describe("parse24For12Display", () => {
+  it("converts 24-hour times to 12-hour display", () => {
+    expect(parse24For12Display("00:00")).toEqual({ hour: "12", minute: "00", period: "AM" });
+    expect(parse24For12Display("00:30")).toEqual({ hour: "12", minute: "30", period: "AM" });
+    expect(parse24For12Display("09:30")).toEqual({ hour: "9", minute: "30", period: "AM" });
+    expect(parse24For12Display("12:00")).toEqual({ hour: "12", minute: "00", period: "PM" });
+    expect(parse24For12Display("12:30")).toEqual({ hour: "12", minute: "30", period: "PM" });
+    expect(parse24For12Display("17:30")).toEqual({ hour: "5", minute: "30", period: "PM" });
+    expect(parse24For12Display("23:59")).toEqual({ hour: "11", minute: "59", period: "PM" });
+  });
+
+  it("handles empty strings", () => {
+    expect(parse24For12Display("")).toEqual({ hour: "", minute: "", period: "AM" });
+  });
+
+  it("returns null for malformed inputs", () => {
+    expect(parse24For12Display("abc")).toBeNull();
+    expect(parse24For12Display("25:00")).toBeNull();
+  });
+});
+
+describe("is12HourValid", () => {
+  it("accepts 1–12", () => {
+    expect(is12HourValid("1")).toBe(true);
+    expect(is12HourValid("12")).toBe(true);
+    expect(is12HourValid("6")).toBe(true);
+  });
+
+  it("preserves empty drafts", () => {
+    expect(is12HourValid("")).toBe(true);
+  });
+
+  it("rejects invalid ranges", () => {
+    expect(is12HourValid("0")).toBe(false);
+    expect(is12HourValid("13")).toBe(false);
+    expect(is12HourValid("abc")).toBe(false);
+    expect(is12HourValid("09")).toBe(true); // leading zero is valid
+  });
+});
+
+describe("is12MinuteValid", () => {
+  it("accepts 0–59", () => {
+    expect(is12MinuteValid("0")).toBe(true);
+    expect(is12MinuteValid("00")).toBe(true);
+    expect(is12MinuteValid("59")).toBe(true);
+  });
+
+  it("preserves empty drafts", () => {
+    expect(is12MinuteValid("")).toBe(true);
+  });
+
+  it("rejects out-of-range or invalid", () => {
+    expect(is12MinuteValid("60")).toBe(false);
+    expect(is12MinuteValid("abc")).toBe(false);
+    expect(is12MinuteValid("a0")).toBe(false);
+  });
+});
+
+describe("normalizeHoursTime", () => {
+  it("returns converted 24-hour string for valid inputs", () => {
+    expect(normalizeHoursTime("9", "30", "AM")).toBe("09:30");
+    expect(normalizeHoursTime("5", "30", "PM")).toBe("17:30");
+    expect(normalizeHoursTime("12", "0", "AM")).toBe("00:00");
+    expect(normalizeHoursTime("12", "0", "PM")).toBe("12:00");
+  });
+
+  it("falls back to raw hour string on conversion failure", () => {
+    expect(normalizeHoursTime("13", "0", "AM")).toBe("13");
   });
 });
