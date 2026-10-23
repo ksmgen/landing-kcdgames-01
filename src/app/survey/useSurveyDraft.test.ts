@@ -4,7 +4,10 @@ import {
   defaultHoursValue,
   draftToFormityState,
   draftToSurveyValues,
+  formatTime,
   parseSurveyDraft,
+  parseTime,
+  parseTimeOrEmpty,
   sanitizeDraftValues,
   type SurveyDraft,
 } from "./useSurveyDraft";
@@ -159,6 +162,28 @@ describe("sanitizeDraftValues", () => {
         monday: { closed: false, open: "10:00", close: "22:00" },
         tuesday: { closed: true, open: "", close: "" },
         wednesday: { closed: false, open: "", close: "" },
+        thursday: { closed: false, open: "", close: "" },
+        friday: { closed: false, open: "", close: "" },
+        saturday: { closed: false, open: "", close: "" },
+        sunday: { closed: false, open: "", close: "" },
+      },
+    });
+  });
+
+  it("preserves unfinished partial time strings through draft refresh", () => {
+    expect(
+      sanitizeDraftValues({
+        hours: {
+          monday: { closed: false, open: "10:0", close: "18:" },
+          tuesday: { closed: false, open: "9", close: "17" },
+          wednesday: { closed: true, open: "10:0", close: "22:00" },
+        },
+      }),
+    ).toEqual({
+      hours: {
+        monday: { closed: false, open: "10:0", close: "18:" },
+        tuesday: { closed: false, open: "9", close: "17" },
+        wednesday: { closed: true, open: "", close: "" },
         thursday: { closed: false, open: "", close: "" },
         friday: { closed: false, open: "", close: "" },
         saturday: { closed: false, open: "", close: "" },
@@ -378,5 +403,76 @@ describe("draftToFormityState", () => {
 
   it("uses the shared draft storage key", () => {
     expect(SURVEY_DRAFT_STORAGE_KEY).toBe("kcgames-retailer-survey-draft-v2");
+  });
+});
+
+describe("parseTime", () => {
+  it("accepts valid HH:MM times", () => {
+    expect(parseTime("00:00")).toBe("00:00");
+    expect(parseTime("09:30")).toBe("09:30");
+    expect(parseTime("10:00")).toBe("10:00");
+    expect(parseTime("23:59")).toBe("23:59");
+  });
+
+  it("rejects out-of-range hours and minutes", () => {
+    expect(parseTime("24:00")).toBeNull();
+    expect(parseTime("25:00")).toBeNull();
+    expect(parseTime("12:60")).toBeNull();
+    expect(parseTime("12:99")).toBeNull();
+  });
+
+  it("rejects malformed input", () => {
+    expect(parseTime("abc")).toBeNull();
+    expect(parseTime("12:3a")).toBeNull();
+    expect(parseTime(":30")).toBeNull();
+    expect(parseTime("12:")).toBeNull();
+    expect(parseTime("-1:00")).toBeNull();
+  });
+});
+
+describe("formatTime", () => {
+  it("returns strict HH:MM for valid inputs", () => {
+    expect(formatTime("09:30")).toBe("09:30");
+    expect(formatTime("00:00")).toBe("00:00");
+    expect(formatTime("23:59")).toBe("23:59");
+  });
+
+  it("preserves partial/raw values as-is", () => {
+    expect(formatTime("")).toBe("");
+    expect(formatTime("10:0")).toBe("10:0");
+    expect(formatTime("10:")).toBe("10:");
+  });
+});
+
+describe("parseTimeOrEmpty", () => {
+  it("accepts empty strings", () => {
+    expect(parseTimeOrEmpty("")).toBe("");
+    expect(parseTimeOrEmpty(undefined)).toBe("");
+  });
+
+  it("accepts valid HH:MM", () => {
+    expect(parseTimeOrEmpty("09:30")).toBe("09:30");
+    expect(parseTimeOrEmpty("23:59")).toBe("23:59");
+  });
+
+  it("preserves unfinished typed drafts", () => {
+    expect(parseTimeOrEmpty("10:0")).toBe("10:0");
+    expect(parseTimeOrEmpty("10:")).toBe("10:");
+    expect(parseTimeOrEmpty("1")).toBe("1");
+    expect(parseTimeOrEmpty("1:3")).toBe("1:3");
+  });
+
+  it("rejects structurally-complete but out-of-range times", () => {
+    expect(parseTimeOrEmpty("99:00")).toBeNull(); // hour > 23
+    expect(parseTimeOrEmpty("24:00")).toBeNull(); // hour = 24
+    expect(parseTimeOrEmpty("10:60")).toBeNull(); // minute > 59
+  });
+
+  it("rejects values with letters or invalid patterns", () => {
+    expect(parseTimeOrEmpty("abc")).toBeNull();
+    expect(parseTimeOrEmpty("12:3x")).toBeNull();
+    expect(parseTimeOrEmpty("1a:00")).toBeNull();
+    expect(parseTimeOrEmpty(null as never)).toBeNull();
+    expect(parseTimeOrEmpty(42 as never)).toBeNull();
   });
 });

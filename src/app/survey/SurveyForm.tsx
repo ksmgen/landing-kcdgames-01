@@ -31,6 +31,8 @@ import {
   defaultSocialValue,
   draftToFormityState,
   draftToSurveyValues,
+  formatTime,
+  parseTime,
   useSurveyDraft,
   type DayKey,
   type DraftField,
@@ -781,32 +783,68 @@ function HoursStep({
 }) {
   const [hours, setHours] = useState<HoursValue>(value);
   const [error, setError] = useState<string | null>(null);
+  // Ref to capture latest draft values and avoid stale closure in updateDay.
+  const hoursRef = useRef(hours);
+  hoursRef.current = hours;
+
+  function normalize(value: string): string {
+    if (value === "") return "";
+    // Only normalize structured inputs (contains colon, looks like time).
+    const m = value.match(/^(\d{1,2}):(\d{2})$/);
+    if (!m) return value;
+    const h = parseInt(m[1], 10), mi = parseInt(m[2], 10);
+    if (h > 23 || mi > 59) return value;
+    return `${String(h).padStart(2, "0")}:${String(mi).padStart(2, "0")}`;
+  }
 
   function updateDay(day: DayKey, patch: Partial<HoursValue[DayKey]>) {
     setHours((current) => ({ ...current, [day]: { ...current[day], ...patch } }));
-    onDraftChange({ [day]: { ...hours[day], ...patch } });
+    // Always save from latest state via ref.
+    const merged = { ...hoursRef.current[day], ...patch };
+    onDraftChange({ [day]: merged });
+  }
+
+  function onBlur(day: DayKey, field: "open" | "close") {
+    const entry = hours[day];
+    const normalized = normalize(entry[field]);
+    if (normalized !== entry[field]) {
+      setHours((current) => ({
+        ...current,
+        [day]: { ...current[day], [field]: normalized },
+      }));
+      onDraftChange({ [day]: { ...hoursRef.current[day], [field]: normalized } });
+    }
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const normalizedHours = { ...hours };
     for (const day of DAY_KEYS) {
       const entry = hours[day];
-      if (!entry.closed && (entry.open === "" || entry.close === "")) {
+      const open = normalize(entry.open);
+      const close = normalize(entry.close);
+      if (!entry.closed && (!open || !close || parseTime(open) === null || parseTime(close) === null)) {
         setError(
-          `Please enter the opening and closing times for ${DAY_LABELS[day]}, or mark it as closed.`,
+          `Please enter valid opening and closing times for ${DAY_LABELS[day]} in 24-hour HH:MM format (00:00–23:59), or mark it as closed.`,
         );
         return;
       }
     }
     setError(null);
-    onNext({ hours });
+    for (const day of DAY_KEYS) {
+      normalizedHours[day] = hours[day].closed
+        ? { closed: true, open: "", close: "" }
+        : { closed: false, open: normalize(hours[day].open), close: normalize(hours[day].close) };
+    }
+    setHours(normalizedHours);
+    onNext({ hours: normalizedHours });
   }
 
   return (
     <form onSubmit={handleSubmit} noValidate>
       <StepHeader current={5} onBack={() => onBack({ hours })} />
       <p className="mb-4 text-xs text-navy-200">
-        Set your weekly operation hours. Open days need both an opening and a closing time; toggle a day as closed to skip it.
+        Set your weekly operation hours. Open days need both an opening and a closing time; toggle a day as closed to skip it. Times are typed in 24-hour HH:MM format — entering&nbsp;<code className="text-silver-300">9:30</code>&nbsp;normalises to&nbsp;<code className="text-silver-300">09:30</code>.
       </p>
       <div className="space-y-3">
         {DAY_KEYS.map((day) => {
@@ -814,12 +852,11 @@ function HoursStep({
           return (
             <div
               key={day}
-              className="grid items-center gap-3 rounded-xl border border-navy-700/60 bg-navy-900/40 p-3 sm:grid-cols-[7rem_1fr_1fr]"
+              className="grid min-w-0 grid-cols-2 gap-3 rounded-xl border border-navy-700/60 bg-navy-900/40 p-4"
             >
-              <span className="font-display text-sm font-semibold text-white">
+              {/* Day name + closed toggle */}
+              <label htmlFor={`hours-${day}-closed`} className="col-span-2 flex cursor-pointer items-center gap-2 font-display text-sm font-semibold text-white">
                 {DAY_LABELS[day]}
-              </span>
-              <div className="flex items-center gap-3">
                 <input
                   id={`hours-${day}-closed`}
                   type="checkbox"
@@ -827,33 +864,47 @@ function HoursStep({
                   onChange={(event) =>
                     updateDay(day, event.target.checked ? { closed: true, open: "", close: "" } : { closed: false })
                   }
-                  className="h-4 w-4 rounded border-navy-600 bg-navy-900 text-amber-400 focus:ring-amber-400/60"
+                  className="h-4 w-4 shrink-0 rounded border-navy-600 bg-navy-900 text-amber-400 focus:ring-amber-400/60"
                   aria-label={`${DAY_LABELS[day]} closed`}
                 />
-                <label htmlFor={`hours-${day}-closed`} className="text-xs font-semibold text-silver-300">
-                  Closed
-                </label>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <input
-                  id={`hours-${day}-open`}
-                  type="time"
-                  value={entry.open}
-                  disabled={entry.closed}
-                  onChange={(event) => updateDay(day, { open: event.target.value })}
-                  className={`${inputClass} px-2 py-2 text-sm disabled:opacity-40`}
-                  aria-label={`${DAY_LABELS[day]} opening time`}
-                />
-                <input
-                  id={`hours-${day}-close`}
-                  type="time"
-                  value={entry.close}
-                  disabled={entry.closed}
-                  onChange={(event) => updateDay(day, { close: event.target.value })}
-                  className={`${inputClass} px-2 py-2 text-sm disabled:opacity-40`}
-                  aria-label={`${DAY_LABELS[day]} closing time`}
-                />
-              </div>
+                <span className="text-xs font-semibold text-silver-300">Closed</span>
+              </label>
+              <label htmlFor={`hours-${day}-open`} className="min-w-0 text-xs font-semibold text-silver-300">
+                Opening
+              <input
+                id={`hours-${day}-open`}
+                name={`hoursOpen${day}`}
+                type="text"
+                inputMode="text"
+                maxLength={5}
+                placeholder="HH:MM"
+                autoComplete="off"
+                value={formatTime(hours[day].open)}
+                disabled={entry.closed}
+                onChange={(event) => updateDay(day, { open: event.target.value })}
+                onBlur={() => onBlur(day, "open")}
+                className="mt-2 min-h-12 w-full min-w-0 rounded-lg border border-navy-700 bg-navy-900/50 px-3 py-3 text-base text-white placeholder-navy-400 outline-none ring-2 ring-transparent transition-all focus:ring-amber-400/60 disabled:opacity-40"
+                aria-label={`${DAY_LABELS[day]} opening time`}
+              />
+              </label>
+              <label htmlFor={`hours-${day}-close`} className="min-w-0 text-xs font-semibold text-silver-300">
+                Closing
+              <input
+                id={`hours-${day}-close`}
+                name={`hoursClose${day}`}
+                type="text"
+                inputMode="text"
+                maxLength={5}
+                placeholder="HH:MM"
+                autoComplete="off"
+                value={formatTime(hours[day].close)}
+                disabled={entry.closed}
+                onChange={(event) => updateDay(day, { close: event.target.value })}
+                onBlur={() => onBlur(day, "close")}
+                className="mt-2 min-h-12 w-full min-w-0 rounded-lg border border-navy-700 bg-navy-900/50 px-3 py-3 text-base text-white placeholder-navy-400 outline-none ring-2 ring-transparent transition-all focus:ring-amber-400/60 disabled:opacity-40"
+                aria-label={`${DAY_LABELS[day]} closing time`}
+              />
+              </label>
             </div>
           );
         })}

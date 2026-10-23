@@ -28,7 +28,12 @@ const MAX_HANDLE_LENGTH = 300;
 const SEATING_MAX = 99999;
 
 const DATE_PATTERN = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+
+/** Strict 24-hour HH:MM — used for final submission validation. */
 const TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/;
+
+/** Accepts H:MM, HH:MM, or partial typed strings (empty, digits + colons only). */
+const TIME_INPUT_PATTERN = /^[0-9]{0,2}(:[0-9]{0,2})?$/;
 
 export const DAY_KEYS = [
   "monday",
@@ -126,6 +131,41 @@ export function defaultHoursValue(): HoursValue {
   return hours;
 }
 
+/** Parse a flexible HH/H:MM/HH:M/HH:MM string into strict HH:MM, or null on failure. */
+export function parseTime(raw: string): string | null {
+  if (raw === "") return "";
+  if (!TIME_INPUT_PATTERN.test(raw)) return null;
+  if (!TIME_PATTERN.test(raw)) return null;
+  return raw;
+}
+
+/** Format a stored HH:MM (or partial) string — returns "HH:MM" when valid, raw otherwise. */
+export function formatTime(raw: string): string {
+  if (raw === "") return "";
+  if (TIME_PATTERN.test(raw)) return raw;
+  return raw;
+}
+
+/** Accept empty or strict HH:MM; reject malformed while preserving unfinished drafts. */
+export function parseTimeOrEmpty(value: unknown): string | null {
+  if (value === undefined || value === "") return "";
+  if (typeof value !== "string") return null;
+  // Reject input with letters or multiple colons.
+  if (!TIME_INPUT_PATTERN.test(value)) return null;
+  // Distinguish structured vs freeform input:
+  // Structured (contains ':') requires valid 24h range; freeform (digits only) is preserved.
+  const colonIndex = value.indexOf(":");
+  if (colonIndex > 0) {
+    const hourPart = parseInt(value.slice(0, colonIndex), 10);
+    const minuteStr = value.slice(colonIndex + 1);
+    if (hourPart > 23) return null;
+    const minuteVal = parseInt(minuteStr, 10);
+    if (minuteVal > 59) return null;
+    return value;
+  }
+  return value;
+}
+
 export function defaultEventValue(): EventValue {
   return { enabled: false, date: "", time: "", info: "" };
 }
@@ -207,8 +247,8 @@ function sampleIdOrEmpty(value: unknown): string {
 function validDayHours(value: unknown): DayHours | null {
   if (!isRecord(value)) return null;
   if (typeof value.closed !== "boolean") return null;
-  const open = timeOrEmpty(value.open);
-  const close = timeOrEmpty(value.close);
+  const open = parseTimeOrEmpty(value.open);
+  const close = parseTimeOrEmpty(value.close);
   if (open === null || close === null) return null;
   if (value.closed) return { closed: true, open: "", close: "" };
   return { closed: false, open, close };

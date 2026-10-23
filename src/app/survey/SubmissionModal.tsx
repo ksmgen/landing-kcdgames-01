@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { Eye, EyeOff } from "lucide-react";
 import { submitSurvey, type Receipt } from "./submitSurvey";
 import type { SurveyImage } from "./surveyImages";
 import type { SurveyValues } from "./useSurveyDraft";
@@ -11,9 +12,15 @@ export default function SubmissionModal({ answers, images = [], onClose, onAccep
   const dialog = useRef<HTMLDialogElement>(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const inFlight = useRef(false);
+
+  // Reset visibility each time the modal opens or after an attempt.
+  const handleReset = useCallback(() => {
+    setShowPassword(false);
+  }, []);
 
   useEffect(() => {
     const element = dialog.current;
@@ -21,12 +28,13 @@ export default function SubmissionModal({ answers, images = [], onClose, onAccep
     const previousOverflow = document.body.style.overflow;
     element?.showModal();
     document.body.style.overflow = "hidden";
+    handleReset();
     return () => {
       element?.close();
       document.body.style.overflow = previousOverflow;
       previousFocus?.focus();
     };
-  }, []);
+  }, [handleReset]);
 
   const inputClass = "mt-2 w-full rounded-lg border border-navy-700 bg-navy-950 px-4 py-3 text-white outline-none focus:ring-2 focus:ring-amber-400";
 
@@ -52,17 +60,20 @@ export default function SubmissionModal({ answers, images = [], onClose, onAccep
         if (inFlight.current) return;
         inFlight.current = true;
         setBusy(true);
+        setShowPassword(false);
         setMessage("");
         try {
           const receipt = await submitSurvey(answers, username, password, images);
           setUsername("");
           setPassword("");
+          handleReset();
           onAccepted(receipt);
         } catch (error) {
           setMessage(error instanceof Error ? error.message : "Not confirmed: retry with the same answers.");
+          setPassword("");
+          handleReset();
         } finally {
           setUsername("");
-          setPassword("");
           inFlight.current = false;
           setBusy(false);
         }
@@ -71,10 +82,24 @@ export default function SubmissionModal({ answers, images = [], onClose, onAccep
           Email
           <input autoFocus required id="submission-username" name="email" type="email" disabled={busy} autoComplete="off" maxLength={254} value={username} onChange={(event) => setUsername(event.target.value)} className={inputClass} />
         </label>
-        <label className="mb-4 block font-semibold" htmlFor="submission-password">
-          Password
-          <input required id="submission-password" name="password" disabled={busy} type="password" autoComplete="off" maxLength={1024} value={password} onChange={(event) => setPassword(event.target.value)} className={inputClass} />
-        </label>
+        <div className="mb-4">
+          <label className="block font-semibold" htmlFor="submission-password">Password</label>
+          <div className="relative mt-2">
+            <input required id="submission-password" name="password" disabled={busy} type={showPassword ? "text" : "password"} autoComplete="off" maxLength={1024} value={password} onChange={(event) => setPassword(event.target.value)} className="w-full rounded-lg border border-navy-700 bg-navy-950 px-4 py-3 pr-14 text-white outline-none focus:ring-2 focus:ring-amber-400" aria-describedby="password-hint" />
+            <button
+              type="button"
+              onClick={() => setShowPassword((s) => !s)}
+              disabled={busy}
+              aria-pressed={showPassword}
+              aria-controls="submission-password"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-lg text-silver-300 hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-400 disabled:opacity-40"
+            >
+              {showPassword ? <EyeOff className="h-5 w-5" aria-hidden="true" /> : <Eye className="h-5 w-5" aria-hidden="true" />}
+            </button>
+          </div>
+          <p id="password-hint" className="mt-1 text-xs text-silver-400">Passwords are case-sensitive.</p>
+        </div>
         {message && <p role="status" className="mb-4 rounded-lg border border-amber-400/40 bg-amber-400/10 p-3 text-sm text-amber-200">{message}</p>}
         <div className="mt-6 flex flex-wrap justify-end gap-3">
           <button type="button" disabled={busy} onClick={() => { if (!inFlight.current) onClose(); }} className="min-h-12 rounded-lg border border-silver-400/40 px-5 py-3 font-semibold hover:bg-navy-800">Cancel</button>

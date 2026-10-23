@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import SurveyForm from "./SurveyForm";
 import { RETRY_KEY } from "./submitSurvey";
 import { DAY_KEYS, SURVEY_DRAFT_STORAGE_KEY as KEY, type SurveyDraftValues } from "./useSurveyDraft";
@@ -249,5 +249,232 @@ describe("retailer survey simulation", () => {
   it("continues when storage writes fail", () => {
     const spy = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw new DOMException("blocked"); });
     try { render(<SurveyForm />); chooseShop(); progress(2); } finally { spy.mockRestore(); }
+  });
+
+  // --- Hours Step (Step 5) ---
+
+  it("renders wider text inputs with Opening/Closing column headers and closed checkboxes", () => {
+    seed(4); render(<SurveyForm />); next();
+    // Column header labels (may appear multiple times due to per-day + mobile header)
+    expect(screen.getAllByText(/opening/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/closing/i).length).toBeGreaterThan(0);
+    // Day name labels still present
+    expect(screen.getByText("Monday")).toBeInTheDocument();
+    // Closed checkbox per day
+    DAY_KEYS.forEach(day => {
+      expect(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))).toBeInTheDocument();
+    });
+    // Inputs are text type, not native time picker
+    DAY_KEYS.forEach(day => {
+      const openInput = screen.getByLabelText(new RegExp(`^${day} opening time$`, "i"));
+      expect(openInput).toHaveAttribute("type", "text");
+      expect(openInput).toHaveAttribute("placeholder", "HH:MM");
+    });
+  });
+
+  it("normalizes H:MM to HH:MM on blur and accepts on Next", () => {
+    seed(4); render(<SurveyForm />); next();
+    for (let i = 0; i < 7; i++) {
+      const day = DAY_KEYS[i];
+      fireEvent.change(screen.getByLabelText(new RegExp(`^${day} opening time$`, "i")), { target: { value: "9:30" } });
+      fireEvent.change(screen.getByLabelText(new RegExp(`^${day} closing time$`, "i")), { target: { value: "18:00" } });
+    }
+    // Blur triggers normalization
+    for (const day of DAY_KEYS) {
+      fireEvent.blur(screen.getByLabelText(new RegExp(`^${day} opening time$`, "i")));
+      fireEvent.blur(screen.getByLabelText(new RegExp(`^${day} closing time$`, "i")));
+    }
+    // Values should be normalized
+    for (const day of DAY_KEYS) {
+      expect(screen.getByLabelText(new RegExp(`^${day} opening time$`, "i"))).toHaveValue("09:30");
+      expect(screen.getByLabelText(new RegExp(`^${day} closing time$`, "i"))).toHaveValue("18:00");
+    }
+    next(); progress(6);
+  });
+
+  it("preserves unfinished typed values during drafting without losing sibling times", () => {
+    seed(4); const view = render(<SurveyForm />); next();
+    // Set monday fully
+    fireEvent.change(screen.getByLabelText(/monday opening time/i), { target: { value: "10:00" } });
+    fireEvent.change(screen.getByLabelText(/monday closing time/i), { target: { value: "18:00" } });
+    // Start typing Tuesday with incomplete value
+    fireEvent.change(screen.getByLabelText(/tuesday opening time/i), { target: { value: "10:0" } });
+    view.unmount();
+    // Restore from draft
+    const restored = render(<SurveyForm />); next();
+    expect(screen.getByLabelText(/monday opening time/i)).toHaveValue("10:00");
+    expect(screen.getByLabelText(/monday closing time/i)).toHaveValue("18:00");
+    expect(screen.getByLabelText(/tuesday opening time/i)).toHaveValue("10:0");
+    // Completing it should normalize on blur
+    fireEvent.change(screen.getByLabelText(/tuesday opening time/i), { target: { value: "10:00" } });
+    fireEvent.blur(screen.getByLabelText(/tuesday opening time/i));
+    expect(screen.getByLabelText(/tuesday opening time/i)).toHaveValue("10:00");
+  });
+
+  it("shows day-specific error messages for missing malformed times on open days", () => {
+    seed(4); render(<SurveyForm />); next();
+    // Set only monday, leave tuesday empty
+    fireEvent.change(screen.getByLabelText(/monday opening time/i), { target: { value: "10:00" } });
+    fireEvent.change(screen.getByLabelText(/monday closing time/i), { target: { value: "18:00" } });
+    // Clicking Next shows error for tuesday
+    fireEvent.click(screen.getByRole("button", { name: /^next$/i }));
+    expect(screen.getByRole("alert")).toHaveTextContent(/tuesday/i);
+    // Enter abc as tuesday open (stays as-is since normalize doesn't touch non-time text)
+    // and fill close — Tuesday must still be rejected
+    fireEvent.change(screen.getByLabelText(/tuesday opening time/i), { target: { value: "abc" } });
+    fireEvent.change(screen.getByLabelText(/tuesday closing time/i), { target: { value: "18:00" } });
+    fireEvent.click(screen.getByRole("button", { name: /^next$/i }));
+    expect(screen.getByRole("alert")).toHaveTextContent(/tuesday/i);
+    progress(5);
+  });
+
+  it.each(["24:00", "12:60", "abc", "12:"])("rejects invalid typed time %s before leaving hours", (invalid) => {
+    seed(4); render(<SurveyForm />); next();
+    DAY_KEYS.slice(1).forEach(day => fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))));
+    change(/monday opening time/i, invalid); change(/monday closing time/i, "18:00");
+    next(); progress(5);
+    expect(screen.getByRole("alert")).toHaveTextContent(/Monday/);
+  });
+
+  it("normalizes typed H:MM on Next without requiring a blur", () => {
+    seed(4); render(<SurveyForm />); next();
+    DAY_KEYS.slice(1).forEach(day => fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))));
+    change(/monday opening time/i, "9:30"); change(/monday closing time/i, "01:00");
+    next(); progress(6);
+    expect(JSON.parse(sessionStorage.getItem(KEY)!).values.hours.monday).toEqual({ closed: false, open: "09:30", close: "01:00" });
+  });
+
+  it("keeps closed-day behavior: checking closed clears times, disabled inputs", () => {
+    seed(4); render(<SurveyForm />); next();
+    // Fill in monday
+    fireEvent.change(screen.getByLabelText(/monday opening time/i), { target: { value: "10:00" } });
+    fireEvent.change(screen.getByLabelText(/monday closing time/i), { target: { value: "18:00" } });
+    // Check closed for tuesday-through-sunday
+    DAY_KEYS.slice(1).forEach(day => {
+      fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i")));
+    });
+    expect(screen.getByLabelText(/tuesday opening time/i)).toHaveValue("");
+    expect(screen.getByLabelText(/tuesday opening time/i)).toBeDisabled();
+    expect(screen.getByLabelText(/tuesday closing time/i)).toBeDisabled();
+    next(); progress(6);
+  });
+
+  it("unchecking closed preserves previously filled times", () => {
+    seed(4); render(<SurveyForm />); next();
+    // Fill monday and tuesday
+    fireEvent.change(screen.getByLabelText(/monday opening time/i), { target: { value: "10:00" } });
+    fireEvent.change(screen.getByLabelText(/monday closing time/i), { target: { value: "18:00" } });
+    fireEvent.change(screen.getByLabelText(/tuesday opening time/i), { target: { value: "09:00" } });
+    fireEvent.change(screen.getByLabelText(/tuesday closing time/i), { target: { value: "17:00" } });
+    // Close tuesday by ticking closed — clears its times
+    const tuesdayCheckbox = screen.getByLabelText(/tuesday closed/i);
+    fireEvent.click(tuesdayCheckbox);
+    expect(screen.getByLabelText(/tuesday opening time/i)).toHaveValue("");
+    expect(screen.getByLabelText(/tuesday opening time/i)).toBeDisabled();
+    // Uncheck closed — times restored from draft via Formity
+    fireEvent.click(tuesdayCheckbox);
+    expect(screen.getByLabelText(/tuesday opening time/i)).not.toBeDisabled();
+    // Re-fill and submit
+    fireEvent.change(screen.getByLabelText(/tuesday opening time/i), { target: { value: "09:30" } });
+    fireEvent.change(screen.getByLabelText(/tuesday closing time/i), { target: { value: "17:00" } });
+    DAY_KEYS.slice(2).forEach(day => fireEvent.click(screen.getByLabelText(new RegExp(`^${day} closed$`, "i"))));
+    next(); progress(6);
+  });
+
+  // --- Submission Modal Password Toggle ---
+
+  it("opens the submission dialog when user clicks Ready to submit", () => {
+    seed(11, { shop: { selection: VALID_SHOP_SELECTION, branchId: "" }, otherProducts: "Sleeves" });
+    render(<SurveyForm />);
+    fireEvent.click(screen.getByRole("button", { name: "Ready to submit" }));
+    expect(screen.getByRole("dialog", { name: /ready to submit/i })).toBeInTheDocument();
+  });
+
+  it("toggles password visibility with eye/eyeoff icons and aria-pressed", () => {
+    seed(11, { shop: { selection: VALID_SHOP_SELECTION, branchId: "" } });
+    render(<SurveyForm />);
+    fireEvent.click(screen.getByRole("button", { name: "Ready to submit" }));
+    const dialog = screen.getByRole("dialog");
+    // Should have an eye button next to the password field
+    const eyeButton = within(dialog).getByRole("button", { name: /show password/i });
+    expect(eyeButton).toBeInTheDocument();
+    expect(eyeButton).toHaveAttribute("aria-pressed", "false");
+    // Input should be type password
+    const passwordInput = within(dialog).getByLabelText(/^password/i);
+    expect(passwordInput).toHaveAttribute("type", "password");
+    // Click to show
+    fireEvent.click(eyeButton);
+    expect(within(dialog).getByRole("button", { name: /hide password/i })).toBeInTheDocument();
+    expect(eyeButton).toHaveAttribute("aria-pressed", "true");
+    expect(passwordInput).toHaveAttribute("type", "text");
+    // Click again to hide
+    fireEvent.click(eyeButton);
+    expect(within(dialog).getByRole("button", { name: /show password/i })).toBeInTheDocument();
+    expect(eyeButton).toHaveAttribute("aria-pressed", "false");
+    expect(passwordInput).toHaveAttribute("type", "password");
+  });
+
+  it("resets password visibility to masked on reopen and after attempts", async () => {
+    seed(11, { shop: { selection: VALID_SHOP_SELECTION, branchId: "" } });
+    render(<SurveyForm />);
+    const open = () => {
+      fireEvent.click(screen.getByRole("button", { name: "Ready to submit" }));
+      return screen.getByRole("dialog");
+    };
+    const dialog = open();
+    const eyeButton = within(dialog).getByRole("button", { name: /show password/i });
+    fireEvent.click(eyeButton);
+    expect(eyeButton).toHaveAttribute("aria-pressed", "true");
+    // Submit fails -> closes, reopen -> masked
+    change(/^email/i, "test@example.invalid"); change(/^password/i, "fake-secret");
+    const form = dialog.querySelector("form")!;
+    fireEvent.submit(form);
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent(/Rejected/i));
+    // Reopen
+    const reopened = open();
+    const reEye = within(reopened).getByRole("button", { name: /show password/i });
+    expect(reEye).toHaveAttribute("aria-pressed", "false");
+    const pwInput = within(reopened).getByLabelText(/^password/i);
+    expect(pwInput).toHaveAttribute("type", "password");
+  });
+
+  it("preserves password case and spaces through the eye toggle and request", async () => {
+    seed(11, { shop: { selection: VALID_SHOP_SELECTION, branchId: "" } });
+    const fetchMock = vi.fn().mockResolvedValue({ status: 401 });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<SurveyForm />);
+    fireEvent.click(screen.getByRole("button", { name: "Ready to submit" }));
+    const input = screen.getByLabelText(/^password/i);
+    change(/^email/i, "test@example.invalid");
+    change(/^password/i, " Dummy-Case123! ");
+    fireEvent.click(screen.getByRole("button", { name: "Show password" }));
+    expect(input).toHaveValue(" Dummy-Case123! ");
+    expect(fetchMock).not.toHaveBeenCalled();
+    fireEvent.submit(screen.getByRole("dialog").querySelector("form")!);
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body).credentials.password).toBe(" Dummy-Case123! ");
+    await waitFor(() => expect(input).toHaveValue(""));
+    expect(input).toHaveAttribute("type", "password");
+  });
+
+  it("disables eye button while submitting", async () => {
+    seed(11, { shop: { selection: VALID_SHOP_SELECTION, branchId: "" } });
+    render(<SurveyForm />);
+    fireEvent.click(screen.getByRole("button", { name: "Ready to submit" }));
+    const dialog = screen.getByRole("dialog");
+    const eyeButton = within(dialog).getByRole("button", { name: /show password/i });
+    expect(eyeButton).toBeEnabled();
+    fireEvent.click(eyeButton);
+    expect(within(dialog).getByLabelText(/^password/i)).toHaveAttribute("type", "text");
+    // Busy state — disable while submitting
+    vi.useFakeTimers();
+    const form = dialog.querySelector("form")!;
+    // Make fetch hang by not mocking a response
+    vi.stubGlobal("fetch", vi.fn(() => new Promise(() => {})));
+    change(/^email/i, "test@example.invalid"); change(/^password/i, "secret");
+    fireEvent.submit(form);
+    expect(eyeButton).toBeDisabled();
+    expect(within(dialog).getByLabelText(/^password/i)).toHaveAttribute("type", "password");
+    vi.useRealTimers();
   });
 });
