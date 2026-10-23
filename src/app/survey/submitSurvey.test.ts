@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { draftToSurveyValues } from "./useSurveyDraft";
 import { RETRY_KEY, SUBMIT_URL, clearSubmissionAttempt, submitSurvey } from "./submitSurvey";
 
-const answers = () => draftToSurveyValues({ otherProducts: "TEST-sleeves" });
+const answers = () => draftToSurveyValues({ shop: { selection: "retailer:6a204dcccada14e24b758e79", branchId: "" }, otherProducts: "TEST-sleeves" });
 const success = (status: number) => vi.fn().mockImplementation(async (_url, init) => ({ status, json: async () => ({ receipt: { surveyID: "TEST-reference", submissionId: JSON.parse(init.body).submissionId, status: "received", receivedDate: "2026-10-23T00:00:00Z" } }) }));
 
 describe("livetest survey request", () => {
@@ -105,6 +105,34 @@ describe("livetest survey request", () => {
     await expect(submitSurvey(answers(), "a@example.invalid", "secret", [photo, photo])).rejects.toThrow(/invalid photo/);
     await expect(submitSurvey(answers(), "a@example.invalid", "secret", [{ ...photo, base64: "not base64!" }])).rejects.toThrow(/invalid photo/);
     expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    { selection: "retailer:6a204dcccada14e24b758e79", branchId: "", id: "6a204dcccada14e24b758e79", ref: "RID000755" },
+    { selection: "chain:bulba", branchId: "6841b1c188db84875a1d978d", id: "6841b1c188db84875a1d978d", ref: "RID000588" },
+  ])("includes selected store id and RID ref for $selection", async ({ selection, branchId, id, ref }) => {
+    const fetch = success(201); vi.stubGlobal("fetch", fetch);
+    await submitSurvey({ ...answers(), shop: { selection, branchId } }, "a@example.invalid", "secret");
+    const payload = JSON.parse(fetch.mock.calls[0][1].body);
+    expect(payload.answers.shop).toEqual({ selection, branchId, id, ref });
+    expect(JSON.parse(sessionStorage.getItem(RETRY_KEY)!).answers.shop).toEqual(payload.answers.shop);
+  });
+
+  it("does not submit unresolved stores or trust injected id/ref fields", async () => {
+    const fetch = success(201); vi.stubGlobal("fetch", fetch);
+    await expect(submitSurvey({ ...answers(), shop: { selection: "retailer:52", branchId: "" } }, "a@example.invalid", "secret")).rejects.toThrow(/choose a valid shop/i);
+    expect(fetch).not.toHaveBeenCalled();
+    const forgedShop = { ...answers().shop, id: "forged", ref: "forged" };
+    await submitSurvey({ ...answers(), shop: forgedShop }, "a@example.invalid", "secret");
+    expect(JSON.parse(fetch.mock.calls[0][1].body).answers.shop).toMatchObject({ id: "6a204dcccada14e24b758e79", ref: "RID000755" });
+  });
+
+  it("keeps an older pending request immutable when store metadata is added", async () => {
+    sessionStorage.setItem(RETRY_KEY, JSON.stringify({ submissionId: "old-pending-123", answers: answers(), imageHashes: [] }));
+    const fetch = success(201); vi.stubGlobal("fetch", fetch);
+    await expect(submitSurvey(answers(), "a@example.invalid", "secret")).rejects.toThrow(/answers differ/);
+    expect(fetch).not.toHaveBeenCalled();
+    expect(JSON.parse(sessionStorage.getItem(RETRY_KEY)!).submissionId).toBe("old-pending-123");
   });
 
   it("clears only its retry key", () => {

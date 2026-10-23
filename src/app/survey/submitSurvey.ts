@@ -1,14 +1,18 @@
 import type { SurveyValues } from "./useSurveyDraft";
+import { resolveShop } from "./surveyData";
 import { MAX_IMAGE_BYTES, UPLOAD_SELECTED, type SurveyImage } from "./surveyImages";
 
 export const SUBMIT_URL = "https://livetest-api.betobee.co/api/survey/sales-distributor/submitSurvey";
 export const RETRY_KEY = "kcgames-retailer-survey-submit-v1";
 export type Receipt = { surveyID: string; submissionId: string; status: "received"; receivedDate: string };
 
-type Attempt = { submissionId: string; answers: SurveyValues; imageHashes?: string[] };
+type SubmissionAnswers = Omit<SurveyValues, "shop"> & {
+  shop: SurveyValues["shop"] & { id: string; ref: string };
+};
+type Attempt = { submissionId: string; answers: SubmissionAnswers; imageHashes?: string[] };
 
 /** Credential-free snapshot: ambiguous outcomes must retry the exact same payload. */
-function getAttempt(answers: SurveyValues, imageHashes: string[]): Attempt {
+function getAttempt(answers: SubmissionAnswers, imageHashes: string[]): Attempt {
   try {
     const raw = sessionStorage.getItem(RETRY_KEY);
     if (raw) {
@@ -54,7 +58,20 @@ export async function submitSurvey(answers: SurveyValues, email: string, passwor
       throw new Error("Not sent: reselect the photos after refresh before submitting. Your answers are retained.");
     }
   }
-  const normalized = { ...answers, pictures: { ...answers.pictures } };
+  const selectedShop = resolveShop(answers.shop);
+  if (!selectedShop || !selectedShop.retailer.id || !selectedShop.retailer.serial) {
+    throw new Error("Not sent: choose a valid shop and branch before submitting.");
+  }
+  const normalized: SubmissionAnswers = {
+    ...answers,
+    shop: {
+      selection: answers.shop.selection,
+      branchId: answers.shop.branchId,
+      id: selectedShop.retailer.id,
+      ref: selectedShop.retailer.serial,
+    },
+    pictures: { ...answers.pictures },
+  };
   for (const image of images) normalized.pictures[image.key] = "";
   const imageHashes = await Promise.all(images.map(async (image) => {
     const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`${image.key}:${image.fileType}:${image.base64}`));

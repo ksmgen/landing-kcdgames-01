@@ -144,7 +144,7 @@ describe("retailer survey simulation", () => {
   });
 
   it("dismisses only with X or Cancel and never stores credentials", async () => {
-    seed(11, { otherProducts: "Sleeves" });
+    seed(11, { shop: { selection: VALID_SHOP_SELECTION, branchId: "" }, otherProducts: "Sleeves" });
     render(<SurveyForm />);
     const open = () => fireEvent.click(screen.getByRole("button", { name: "Ready to submit" }));
     open();
