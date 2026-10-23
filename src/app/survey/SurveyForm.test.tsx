@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import SurveyForm from "./SurveyForm";
+import { RETRY_KEY } from "./submitSurvey";
 import { DAY_KEYS, SURVEY_DRAFT_STORAGE_KEY as KEY, type SurveyDraftValues } from "./useSurveyDraft";
 
 function next() { fireEvent.click(screen.getByRole("button", { name: /^next$/i })); }
@@ -21,6 +22,7 @@ function eventAnswer(info: string) {
 describe("retailer survey simulation", () => {
   beforeEach(() => {
     sessionStorage.clear();
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ status: 401 }));
     HTMLDialogElement.prototype.showModal = function () { this.setAttribute("open", ""); };
     HTMLDialogElement.prototype.close = function () { this.removeAttribute("open"); };
   });
@@ -134,7 +136,7 @@ describe("retailer survey simulation", () => {
     sessionStorage.setItem(KEY, payload); render(<SurveyForm />); progress(1);
   });
 
-  it("dismisses only with X or Cancel and never stores credentials", () => {
+  it("dismisses only with X or Cancel and never stores credentials", async () => {
     seed(11, { otherProducts: "Sleeves" });
     render(<SurveyForm />);
     const open = () => fireEvent.click(screen.getByRole("button", { name: "Ready to submit" }));
@@ -144,19 +146,43 @@ describe("retailer survey simulation", () => {
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(fireEvent(dialog, new Event("cancel", { cancelable: true }))).toBe(false);
     expect(screen.getByRole("dialog")).toBeInTheDocument();
-    change(/^username/i, "fake-user"); change(/^password/i, "fake-secret");
+    change(/^email/i, "test@example.invalid"); change(/^password/i, "fake-secret");
     fireEvent.click(screen.getByRole("button", { name: /^submit$/i }));
-    expect(screen.getByRole("status")).toHaveTextContent(/not connected/i);
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent(/Rejected/i));
     expect(screen.getByLabelText(/^password/i)).toHaveValue("");
     expect(sessionStorage.getItem(KEY)).not.toContain("fake-secret");
-    expect(sessionStorage.getItem(KEY)).not.toContain("fake-user");
+    expect(sessionStorage.getItem(KEY)).not.toContain("test@example.invalid");
     fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(screen.getByLabelText(/^other products/i)).toHaveValue("Sleeves");
-    open(); expect(screen.getByLabelText(/^username/i)).toHaveValue("");
+    open(); expect(screen.getByLabelText(/^email/i)).toHaveValue("");
     change(/^password/i, "discard-this");
     fireEvent.click(screen.getByRole("button", { name: /close submission dialog/i }));
     open(); expect(screen.getByLabelText(/^password/i)).toHaveValue("");
+  });
+
+  it("sends all answers once, shows an accepted receipt and clears only survey data", async () => {
+    sessionStorage.setItem("unrelated", "keep");
+    seed(11, { shop: { selection: "retailer:52", branchId: 0 }, seating: { tables: 4, chairs: 16 }, feedback: { shop: "TEST-feedback", retailer: "" }, otherProducts: "TEST-sleeves" });
+    const fetchMock = vi.fn().mockImplementation(async (_url, init) => {
+      const payload = JSON.parse(init.body);
+      return { status: 201, json: async () => ({ receipt: { surveyID: "TEST-receipt", submissionId: payload.submissionId, status: "received", receivedDate: "2026-10-23T00:00:00Z" } }) };
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<SurveyForm />);
+    fireEvent.click(screen.getByRole("button", { name: "Ready to submit" }));
+    change(/^email/i, "test@example.invalid"); change(/^password/i, "TEST-password");
+    const form = screen.getByRole("button", { name: /^submit$/i }).closest("form")!;
+    fireEvent.submit(form); fireEvent.submit(form);
+    await waitFor(() => expect(screen.getByRole("heading", { name: "Accepted" })).toBeInTheDocument());
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const payload = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(payload).toMatchObject({ credentials: { email: "test@example.invalid", password: "TEST-password" }, schemaVersion: "kcg-retailer-survey-v1", answers: { seating: { tables: 4, chairs: 16 }, feedback: { shop: "TEST-feedback" }, otherProducts: "TEST-sleeves" } });
+    expect(Object.keys(payload.answers)).toHaveLength(12);
+    expect(fetchMock.mock.calls[0][1].headers).not.toHaveProperty("Authorization");
+    expect(sessionStorage.getItem(KEY)).toBeNull();
+    expect(sessionStorage.getItem(RETRY_KEY)).toBeNull();
+    expect(sessionStorage.getItem("unrelated")).toBe("keep");
   });
 
   it("continues when storage writes fail", () => {

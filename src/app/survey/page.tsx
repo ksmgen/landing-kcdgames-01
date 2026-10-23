@@ -4,7 +4,7 @@ import SurveyForm from "./SurveyForm";
 export const metadata: Metadata = {
   title: "KC Games Retailer Survey (Demo)",
   description:
-    "Try a demo simulation of the KC Games retailer survey. Answers stay in this browser tab and are never submitted.",
+    "KC Games retailer survey with tab-session drafts and explicit submission to the livetest API.",
   robots: {
     index: false,
     follow: true,

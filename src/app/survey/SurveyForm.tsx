@@ -1,10 +1,11 @@
 "use client";
 
 import type { FormEvent, ReactNode } from "react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ImageIcon } from "lucide-react";
 import { useFormity } from "@formity/react";
 import SubmissionModal from "./SubmissionModal";
+import { clearSubmissionAttempt, type Receipt } from "./submitSurvey";
 import type { Flow, OnReturn, State, s } from "@formity/react";
 import {
   CHAIN_GROUPS,
@@ -92,6 +93,7 @@ function formStep<K extends keyof SurveyValues>(
 }
 
 type DraftStore = {
+  onReady: (otherProducts: string) => void;
   saveDraft: (next: {
     step: SurveyStep;
     values: SurveyDraftValues;
@@ -101,7 +103,7 @@ type DraftStore = {
 };
 
 /** Formity controls the steps; callbacks mirror transitions into the session draft. */
-function createSurveyFlow({ saveDraft, saveField }: DraftStore) {
+function createSurveyFlow({ saveDraft, saveField, onReady }: DraftStore) {
   return [
     formStep("shop", emptyShopValue(), ({ fields, next }) => (
           <ShopStep
@@ -218,7 +220,7 @@ function createSurveyFlow({ saveDraft, saveField }: DraftStore) {
     formStep("otherProducts", "", ({ fields, next, back }) => (
           <OtherProductsStep
             value={fields.otherProducts}
-            onNext={(fields) => { saveDraft({ step: 11, values: fields }); next(fields); }}
+            onNext={(fields) => { saveDraft({ step: 11, values: fields }); onReady(fields.otherProducts); }}
             onBack={(fields) => { saveDraft({ step: 10, values: fields }); back(fields); }}
             onDraftChange={(value) => saveField("otherProducts", value)}
           />
@@ -245,6 +247,19 @@ function createSurveyFlow({ saveDraft, saveField }: DraftStore) {
 export default function SurveyForm() {
   const { draft, ready, saveDraft, saveField, clearDraft } = useSurveyDraft();
   const [values, setValues] = useState<SurveyValues | null>(null);
+  const [pendingAnswers, setPendingAnswers] = useState<SurveyValues | null>(null);
+  const [receipt, setReceipt] = useState<Receipt | null>(null);
+  const latestDraft = useRef(draft);
+  latestDraft.current = draft;
+  const handleReady = useCallback((otherProducts: string) => {
+    setPendingAnswers(draftToSurveyValues({ ...latestDraft.current?.values, otherProducts }));
+  }, []);
+  const handleAccepted = (accepted: Receipt) => {
+    setReceipt(accepted);
+    setPendingAnswers(null);
+    clearDraft();
+    clearSubmissionAttempt();
+  };
 
   // Formity hands the accumulated answers back here. They are kept in React
   // state and the tab's session draft only — never submitted or sent anywhere.
@@ -260,6 +275,8 @@ export default function SurveyForm() {
   // session draft key, so a fresh flow mounts from step 1.
   const handleStartOver = useCallback(() => {
     clearDraft();
+    clearSubmissionAttempt();
+    setReceipt(null);
     setValues(null);
   }, [clearDraft]);
 
@@ -283,11 +300,18 @@ export default function SurveyForm() {
 
         <div className="rounded-2xl border border-navy-700/50 bg-card-gradient p-6 shadow-2xl sm:p-10">
           <h1 className="mb-2 font-display text-2xl font-bold text-white sm:text-3xl">KC Games Retailer Survey</h1>
-          <p className="mb-6 text-sm text-navy-200">A demo simulation of the KC Games retailer survey. Share details about your shop, your events, and your KC Games experience.</p>
+          <p className="mb-6 text-sm text-navy-200">KC Games retailer survey — staging submission. Share details about your shop, your events, and your KC Games experience.</p>
 
           <DemoNotice />
 
-          {ready ? (
+          {receipt ? (
+            <section role="status" className="space-y-4 text-white">
+              <h2 className="font-display text-xl font-bold text-amber-200">Accepted</h2>
+              <p>Your survey was received by livetest.</p>
+              <p className="break-all">Reference: {receipt.surveyID}</p>
+              <button type="button" className={nextButtonClass} onClick={handleStartOver}>Start over</button>
+            </section>
+          ) : ready ? (
             summaryValues ? (
               <SurveySummary
                 values={summaryValues}
@@ -299,9 +323,11 @@ export default function SurveyForm() {
                 saveDraft={saveDraft}
                 saveField={saveField}
                 onReturn={handleReturn}
+                onReady={handleReady}
               />
             )
           ) : null}
+          {pendingAnswers && <SubmissionModal answers={pendingAnswers} onClose={() => setPendingAnswers(null)} onAccepted={handleAccepted} />}
         </div>
 
         <footer className="mt-12 flex justify-center">
@@ -320,6 +346,7 @@ function SurveyFlow({
   saveDraft,
   saveField,
   onReturn,
+  onReady,
 }: {
   initialDraft: SurveyDraft | null;
   saveDraft: (next: {
@@ -329,6 +356,7 @@ function SurveyFlow({
   }) => void;
   saveField: (field: DraftField, partial: unknown) => void;
   onReturn: OnReturn<RetailerSurveySchema>;
+  onReady: (otherProducts: string) => void;
 }) {
   // The draft snapshot taken at mount is the only input Formity needs to
   // resume. It is captured once so the flow and its state stay stable while
@@ -340,8 +368,8 @@ function SurveyFlow({
   );
 
   const flow = useMemo(
-    () => createSurveyFlow({ saveDraft, saveField }),
-    [saveDraft, saveField],
+    () => createSurveyFlow({ saveDraft, saveField, onReady }),
+    [saveDraft, saveField, onReady],
   );
 
   return useFormity<RetailerSurveySchema>({
@@ -408,7 +436,7 @@ function FieldError({ message }: { message: string | null }) {
 function DemoNotice() {
   return (
     <div className="mb-6 rounded-xl border border-amber-400/30 bg-[rgba(50,42,28,0.6)] p-4 text-xs leading-relaxed text-amber-200/80">
-      <strong className="text-amber-100">Demo mode</strong> — This retailer survey is a simulation. Your answers stay in this browser tab only. They are not sent anywhere or saved to any server, and no real submission happens. Progress and unsent inputs are kept in this tab session and reappear if you refresh; closing the tab ends the session.
+      <strong className="text-amber-100">Staging / livetest</strong> — Draft answers stay in this tab session until you explicitly Submit. Submit sends the survey and distributor credentials to the livetest API; production is not used. Drafts resume after refresh and normally end when the tab closes. Credentials are never saved in the draft. Picture choices and shop/branch grouping remain sample data.
     </div>
   );
 }
@@ -1157,14 +1185,13 @@ function OtherProductsStep({
   onDraftChange: (value: string) => void;
 }) {
   const [otherProducts, setOtherProducts] = useState(value);
-  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <form
       onSubmit={(submit) => {
         submit.preventDefault();
         onDraftChange(otherProducts);
-        setModalOpen(true);
+        onNext({ otherProducts });
       }}
       noValidate
     >
@@ -1188,12 +1215,11 @@ function OtherProductsStep({
         />
       </div>
       <p className="mb-4 text-xs text-navy-200">
-        Ready to submit opens the sign-in dialog. This is a UI demo only; authentication and submission are not connected.
+        Ready to submit opens the sign-in dialog. Submit sends your answers to livetest; the backend handles authentication.
       </p>
       <button type="submit" className={nextButtonClass}>
         Ready to submit
       </button>
-      {modalOpen && <SubmissionModal onClose={() => setModalOpen(false)} />}
     </form>
   );
 }
