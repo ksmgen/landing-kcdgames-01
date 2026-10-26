@@ -30,6 +30,8 @@ jobs:
         run: npm ci
 
       - name: Build static export
+        env:
+          NEXT_PUBLIC_SURVEY_SUBMIT_URL: https://api.betobee.co/api/survey/sales-distributor/submitSurvey
         run: npm run build
 
       - name: Stamp release metadata
