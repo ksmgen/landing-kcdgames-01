@@ -2,7 +2,7 @@ import type { SurveyValues } from "./useSurveyDraft";
 import { resolveShop } from "./surveyData";
 import { MAX_IMAGE_BYTES, UPLOAD_SELECTED, type SurveyImage } from "./surveyImages";
 
-export const SUBMIT_URL = "https://livetest-api.betobee.co/api/survey/sales-distributor/submitSurvey";
+export const SUBMIT_URL = process.env.NEXT_PUBLIC_SURVEY_SUBMIT_URL ?? "https://livetest-api.betobee.co/api/survey/sales-distributor/submitSurvey";
 export const RETRY_KEY = "kcgames-retailer-survey-submit-v1";
 export type Receipt = { surveyID: string; submissionId: string; status: "received"; receivedDate: string };
 

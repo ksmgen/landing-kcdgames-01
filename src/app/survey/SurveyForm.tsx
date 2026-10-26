@@ -312,13 +312,13 @@ function SurveyContent() {
 
         <div className="rounded-2xl border border-navy-700/50 bg-card-gradient p-6 shadow-2xl sm:p-10">
           <h1 className="mb-2 font-display text-2xl font-bold text-white sm:text-3xl">KC Games Retailer Survey</h1>
-          <p className="mb-6 text-sm text-navy-200">KC Games retailer survey — staging submission. Share details about your shop, your events, and your KC Games experience.</p>
+          <p className="mb-6 text-sm text-navy-200">KC Games retailer survey. Share details about your shop, your events, and your KC Games experience.</p>
 
 
           {receipt ? (
             <section role="status" className="space-y-4 text-white">
               <h2 className="font-display text-xl font-bold text-amber-200">Accepted</h2>
-              <p>Your survey was received by livetest.</p>
+              <p>Your survey was received by Betobee.</p>
               <p className="break-all">Reference: {receipt.surveyID}</p>
               <button type="button" className={nextButtonClass} onClick={handleStartOver}>Start over</button>
             </section>
@@ -1281,7 +1281,7 @@ function OtherProductsStep({
         />
       </div>
       <p className="mb-4 text-xs text-navy-200">
-        Ready to submit opens the sign-in dialog. Submit sends your answers to livetest; the backend handles authentication.
+        Ready to submit opens the sign-in dialog. Submit sends your answers to Betobee; the backend handles authentication.
       </p>
       <button type="submit" className={nextButtonClass}>
         Ready to submit

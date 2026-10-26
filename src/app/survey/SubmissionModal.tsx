@@ -7,7 +7,7 @@ import { submitSurvey, type Receipt } from "./submitSurvey";
 import type { SurveyImage } from "./surveyImages";
 import type { SurveyValues } from "./useSurveyDraft";
 
-/** Credentials go only to the staging API, never to the session draft. */
+/** Credentials go only to the configured Betobee API, never to the session draft. */
 export default function SubmissionModal({ answers, images = [], onClose, onAccepted }: { answers: SurveyValues; images?: SurveyImage[]; onClose: () => void; onAccepted: (receipt: Receipt) => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [username, setUsername] = useState("");
@@ -52,7 +52,7 @@ export default function SubmissionModal({ answers, images = [], onClose, onAccep
         <button type="button" aria-label="Close submission dialog" disabled={busy} onClick={() => { if (!inFlight.current) onClose(); }} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-navy-700 text-xl hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-400">×</button>
       </div>
       <p id="submission-notice" className="mb-6 text-sm text-silver-300">
-        Submit sends your survey and distributor email/password securely to the livetest API. The backend handles sign-in. Credentials are not saved.
+        Submit sends your survey and distributor email/password securely to the Betobee API. The backend handles sign-in. Credentials are not saved.
       </p>
       <form aria-busy={busy} onSubmit={async (event) => {
         event.preventDefault();
